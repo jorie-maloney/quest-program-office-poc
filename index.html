@@ -5,23 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CPTO Program Office</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,300;1,6..12,400&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy: #0F1F38;
-    --teal: #1B6B7B;
-    --teal-light: #2A8FA3;
-    --gold: #C9973A;
-    --cream: #F5F0E8;
-    --muted: #8A9BB0;
-    --white: #FFFFFF;
+    --q-dark-blue: #14215c;
+    --q-medium-blue: #0a8cbf;
+    --q-midnight: #0a0e21;
+    --q-lime: #a9bf04;
+    --q-orange: #ff4e00;
+    --q-bright-blue: #5ad2ee;
+    --q-gray: #7b7c81;
+    --q-light-gray: #e6e7e8;
+    --q-white: #ffffff;
+    --q-off-white: #f4f5f7;
   }
 
   body {
-    background: var(--cream);
-    font-family: 'DM Sans', sans-serif;
+    background: var(--q-midnight);
+    font-family: 'Nunito Sans', sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -29,113 +32,118 @@
     padding: 40px 24px;
   }
 
-  .card {
-    background: var(--white);
-    max-width: 680px;
+  .wrapper {
+    max-width: 700px;
     width: 100%;
-    border-radius: 2px;
-    overflow: hidden;
-    box-shadow: 0 4px 40px rgba(15,31,56,0.10);
   }
 
-  .header {
-    background: var(--navy);
-    padding: 40px 48px 36px;
+  /* Header — outside the card */
+  .site-header {
+    padding: 0 4px 32px;
   }
 
   .eyebrow {
     font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
+    font-weight: 800;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--q-medium-blue);
     margin-bottom: 10px;
   }
 
-  .title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--white);
-    line-height: 1.15;
-    margin-bottom: 14px;
+  .site-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--q-white);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
   }
 
-  .title em {
-    font-style: italic;
-    color: #A8C8D4;
+  .site-title span {
+    color: var(--q-lime);
   }
 
-  .header-desc {
+  .site-desc {
     font-size: 13px;
     font-weight: 300;
-    color: rgba(255,255,255,0.55);
-    line-height: 1.6;
-    max-width: 420px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+    max-width: 400px;
   }
 
+  /* Card — the link container */
+  .card {
+    background: var(--q-white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.4);
+  }
+
+  /* Sections */
   .section {
-    padding: 32px 48px 8px;
-    border-top: 1px solid #E8E2D8;
+    padding: 28px 32px 4px;
   }
 
-  .section:first-of-type {
-    border-top: none;
-    padding-top: 36px;
+  .section + .section {
+    border-top: 1px solid var(--q-light-gray);
   }
 
   .section-label {
     font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
+    font-weight: 800;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
+    color: var(--q-gray);
+    margin-bottom: 14px;
   }
 
   .link-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     margin-bottom: 24px;
   }
 
+  /* Link cards */
   .link-item {
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: 16px;
-    padding: 16px 20px;
-    background: #FAFAF7;
-    border: 1px solid #E0D9CE;
-    border-radius: 2px;
+    padding: 14px 18px;
+    background: var(--q-off-white);
+    border: 1.5px solid var(--q-light-gray);
+    border-radius: 8px;
     text-decoration: none;
-    transition: background 0.15s, border-color 0.15s;
+    transition: all 0.15s ease;
   }
 
   .link-item:hover {
-    background: #F0EDE6;
-    border-color: var(--teal-light);
+    background: var(--q-white);
+    border-color: var(--q-medium-blue);
+    box-shadow: 0 2px 12px rgba(10,140,191,0.12);
+    transform: translateY(-1px);
   }
 
   .link-item:hover .link-arrow {
-    color: var(--teal);
-    transform: translateX(3px);
+    background: var(--q-medium-blue);
+    color: var(--q-white);
+    transform: translateX(2px);
   }
-
-  .link-text {}
 
   .link-name {
     font-size: 13.5px;
-    font-weight: 500;
-    color: var(--navy);
+    font-weight: 700;
+    color: var(--q-dark-blue);
     margin-bottom: 3px;
   }
 
   .link-desc {
     font-size: 11.5px;
-    font-weight: 300;
-    color: #6A7A8A;
-    line-height: 1.45;
+    font-weight: 400;
+    color: var(--q-gray);
+    line-height: 1.5;
   }
 
   .link-meta {
@@ -147,116 +155,159 @@
 
   .link-badge {
     font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-weight: 700;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
-    background: #EDE9E0;
-    border-radius: 10px;
-    padding: 3px 9px;
+    color: var(--q-dark-blue);
+    background: #dde8f0;
+    border-radius: 20px;
+    padding: 4px 10px;
     white-space: nowrap;
   }
 
-  .link-arrow {
-    font-size: 14px;
-    color: var(--muted);
-    transition: color 0.15s, transform 0.15s;
+  .link-badge.internal {
+    background: #fff3cd;
+    color: #7a5800;
   }
 
-  .footer {
-    padding: 20px 48px 32px;
-    border-top: 1px solid #E8E2D8;
+  .link-badge.live {
+    background: #e8f5e0;
+    color: #3a6e00;
+  }
+
+  .link-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--q-light-gray);
+    color: var(--q-dark-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .card-footer {
+    padding: 16px 32px 20px;
+    border-top: 1px solid var(--q-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .footer-text {
-    font-size: 11.5px;
-    font-weight: 300;
-    color: var(--muted);
-    line-height: 1.6;
-    font-style: italic;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--q-gray);
+  }
+
+  .footer-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--q-lime);
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  .footer-status {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--q-gray);
   }
 </style>
 </head>
 <body>
-<div class="card">
+<div class="wrapper">
 
-  <div class="header">
+  <div class="site-header">
     <div class="eyebrow">CPTO Program Office</div>
-    <div class="title">Reporting &amp; Intelligence<br><em>Tools</em></div>
-    <div class="header-desc">Working views, health reports, and readout tools for the program office and its stakeholders. One source of truth — multiple lenses.</div>
+    <div class="site-title">Reporting &amp; Intelligence<br><span>Tools</span></div>
+    <div class="site-desc">Working views, health reports, and readout tools for the program office and its stakeholders. One source of truth — multiple lenses.</div>
   </div>
 
-  <div class="section">
-    <div class="section-label">Portfolio Views</div>
-    <div class="link-list">
+  <div class="card">
 
-      <a class="link-item" href="portfolio-dashboard.html">
-        <div class="link-text">
-          <div class="link-name">Portfolio Intelligence Dashboard</div>
-          <div class="link-desc">The working view. Live data, always on. Program managers maintain it, everyone inspects it.</div>
-        </div>
-        <div class="link-meta">
-          <div class="link-badge">Continuous</div>
-          <div class="link-arrow">→</div>
-        </div>
-      </a>
+    <div class="section">
+      <div class="section-label">Portfolio Views</div>
+      <div class="link-list">
 
-      <a class="link-item" href="portfolio-health.html">
-        <div class="link-text">
-          <div class="link-name">Portfolio Health Summary</div>
-          <div class="link-desc">Derived from the dashboard. Brooke curates. Feeds Mike's weekly package and the Friday metrics meeting.</div>
-        </div>
-        <div class="link-meta">
-          <div class="link-badge">Weekly — Friday</div>
-          <div class="link-arrow">→</div>
-        </div>
-      </a>
+        <a class="link-item" href="portfolio-dashboard.html">
+          <div class="link-text">
+            <div class="link-name">Portfolio Intelligence Dashboard</div>
+            <div class="link-desc">The working view. Live data, always on. Program managers maintain it, everyone inspects it.</div>
+          </div>
+          <div class="link-meta">
+            <div class="link-badge live">Continuous</div>
+            <div class="link-arrow">→</div>
+          </div>
+        </a>
 
-      <a class="link-item" href="stale-stalled.html">
-        <div class="link-text">
-          <div class="link-name">Stale &amp; Stalled Dashboard</div>
-          <div class="link-desc">PO internal. Surfaces data currency and momentum gaps before the Friday reporting cycle runs.</div>
-        </div>
-        <div class="link-meta">
-          <div class="link-badge">Thursday — PO only</div>
-          <div class="link-arrow">→</div>
-        </div>
-      </a>
+        <a class="link-item" href="portfolio-health.html">
+          <div class="link-text">
+            <div class="link-name">Portfolio Health Summary</div>
+            <div class="link-desc">Derived from the dashboard. Brooke curates. Feeds Mike's weekly package and the Friday metrics meeting.</div>
+          </div>
+          <div class="link-meta">
+            <div class="link-badge">Weekly — Friday</div>
+            <div class="link-arrow">→</div>
+          </div>
+        </a>
 
+        <a class="link-item" href="stale-stalled.html">
+          <div class="link-text">
+            <div class="link-name">Stale &amp; Stalled Dashboard</div>
+            <div class="link-desc">PO internal. Surfaces data currency and momentum gaps before the Friday reporting cycle runs.</div>
+          </div>
+          <div class="link-meta">
+            <div class="link-badge internal">Thursday — PO only</div>
+            <div class="link-arrow">→</div>
+          </div>
+        </a>
+
+      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-label">Stakeholder Tools</div>
-    <div class="link-list">
+    <div class="section">
+      <div class="section-label">Stakeholder Tools</div>
+      <div class="link-list">
 
-      <a class="link-item" href="gtm-readiness.html">
-        <div class="link-text">
-          <div class="link-name">GTM Readiness Outlook</div>
-          <div class="link-desc">Live calendar view of upcoming product milestones filtered for GTM and M&amp;D. Self-serve, no health signals.</div>
-        </div>
-        <div class="link-meta">
-          <div class="link-badge">Live — self-serve</div>
-          <div class="link-arrow">→</div>
-        </div>
-      </a>
+        <a class="link-item" href="gtm-readiness.html">
+          <div class="link-text">
+            <div class="link-name">GTM Readiness Outlook</div>
+            <div class="link-desc">Live calendar view of upcoming product milestones filtered for GTM and M&amp;D. Self-serve, no health signals.</div>
+          </div>
+          <div class="link-meta">
+            <div class="link-badge live">Live — self-serve</div>
+            <div class="link-arrow">→</div>
+          </div>
+        </a>
 
-      <a class="link-item" href="weekly-readout.html">
-        <div class="link-text">
-          <div class="link-name">Weekly Readout Tool</div>
-          <div class="link-desc">Brooke curates the brief. Mike selects what makes the Monday agenda, fires to his team, drops PO follow-ons to intake.</div>
-        </div>
-        <div class="link-meta">
-          <div class="link-badge">Weekly — Monday</div>
-          <div class="link-arrow">→</div>
-        </div>
-      </a>
+        <a class="link-item" href="weekly-readout.html">
+          <div class="link-text">
+            <div class="link-name">Weekly Readout Tool</div>
+            <div class="link-desc">Brooke curates the brief. Mike selects what makes the Monday agenda, fires to his team, drops PO follow-ons to intake.</div>
+          </div>
+          <div class="link-meta">
+            <div class="link-badge">Weekly — Monday</div>
+            <div class="link-arrow">→</div>
+          </div>
+        </a>
 
+      </div>
     </div>
-  </div>
 
-  <div class="footer">
-    <div class="footer-text">CPTO Program Office · Quest · POC build — in progress</div>
+    <div class="card-footer">
+      <div class="footer-text">CPTO Program Office · Quest · POC build</div>
+      <div class="footer-status"><span class="footer-dot"></span>In progress</div>
+    </div>
+
   </div>
 
 </div>
