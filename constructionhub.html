@@ -1,0 +1,454 @@
+<!-- v1.3 · 2026-05-26 · Shortcuts: two-col compact layout, no descriptions -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quest Program Office — Construction Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,300;1,6..12,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --q-dark-blue: #14215c;
+    --q-medium-blue: #0a8cbf;
+    --q-midnight: #0a0e21;
+    --q-lime: #a9bf04;
+    --q-gray: #7b7c81;
+    --q-light-gray: #e6e7e8;
+    --q-white: #ffffff;
+    --q-off-white: #f4f5f7;
+  }
+
+  body {
+    background: var(--q-midnight);
+    font-family: 'Nunito Sans', sans-serif;
+    min-height: 100vh;
+    padding: 48px 24px 64px;
+  }
+
+  .wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .site-header {
+    padding: 0 4px 36px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--q-medium-blue);
+    margin-bottom: 10px;
+  }
+
+  .site-title {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--q-white);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .site-title span { color: var(--q-lime); }
+
+  .site-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+    max-width: 460px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--q-white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 48px rgba(0,0,0,0.4);
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    padding: 20px 28px 16px;
+    border-bottom: 1px solid var(--q-light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--q-dark-blue);
+  }
+
+  .card-count {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--q-gray);
+    background: var(--q-off-white);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  /* Items */
+  .item-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--q-light-gray);
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+
+  .item:last-child { border-bottom: none; }
+
+  .item:hover { background: #f0f4f8; }
+
+  .item:hover .item-arrow {
+    background: var(--q-medium-blue);
+    color: var(--q-white);
+    transform: translateX(2px);
+  }
+
+  /* Full-width items (reporting section) */
+  .item-full {
+    padding: 16px 32px;
+    gap: 20px;
+  }
+
+  .item-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--q-dark-blue);
+    margin-bottom: 2px;
+  }
+
+  .item-desc {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--q-gray);
+    line-height: 1.5;
+  }
+
+  .item-updated {
+    font-size: 10px;
+    font-weight: 400;
+    color: #aab0b8;
+    margin-top: 3px;
+  }
+
+  .item-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .item-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--q-light-gray);
+    color: var(--q-dark-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  /* Badges */
+  .badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 20px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+
+  .badge-live    { background: #e8f5e0; color: #3a6e00; }
+  .badge-placeholder { background: #fff3cd; color: #7a5800; }
+  .badge-doc     { background: #dde8f0; color: var(--q-dark-blue); }
+  .badge-board   { background: #ede8f8; color: #3d1a8c; }
+  .badge-miro    { background: #fff0e6; color: #b03a00; }
+
+  /* Section subheaders within a card */
+  .section-subhead {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--q-medium-blue);
+    padding: 10px 32px;
+    background: var(--q-off-white);
+    border-bottom: 1px solid var(--q-light-gray);
+    border-top: 1px solid var(--q-light-gray);
+  }
+
+  /* Placeholder item (not a link) */
+  .item-placeholder {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  .item-placeholder:hover {
+    background: transparent;
+  }
+
+  .item-placeholder:hover .item-arrow {
+    background: var(--q-light-gray);
+    color: var(--q-dark-blue);
+    transform: none;
+  }
+
+  /* Shortcuts two-col grid */
+  .shortcuts-grid {
+    display: grid;
+    grid-template-columns: 1fr 3px 1fr;
+  }
+
+  .shortcut-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shortcut-divider {
+    background: var(--q-light-gray);
+    width: 1px;
+    margin: 0 auto;
+  }
+
+  .sc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 24px;
+    border-bottom: 1px solid var(--q-light-gray);
+    text-decoration: none;
+    transition: background 0.12s;
+    gap: 10px;
+  }
+
+  .sc-item:last-child { border-bottom: none; }
+
+  .sc-item:hover { background: #f0f4f8; }
+
+  .sc-item:hover .item-arrow {
+    background: var(--q-medium-blue);
+    color: var(--q-white);
+    transform: translateX(2px);
+  }
+
+  .sc-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--q-dark-blue);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sc-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* Section subhead inside shortcut col needs no top border on first instance */
+  .shortcut-col .section-subhead:first-child {
+    border-top: none;
+  }
+
+  /* Footer */
+  .hub-footer {
+    padding: 0 4px;
+    margin-top: 8px;
+  }
+
+  .hub-footer-text {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.25);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="site-header">
+    <div class="eyebrow">CPTO Program Office</div>
+    <div class="site-title">Construction <span>Hub</span></div>
+    <div class="site-desc">Internal Program Office reference. Everything that's built, where it lives, and what state it's in.</div>
+  </div>
+
+  <!-- Shortcuts -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Shortcuts</div>
+      <div class="card-count">8</div>
+    </div>
+    <div class="shortcuts-grid">
+
+      <!-- Left col: SharePoint -->
+      <div class="shortcut-col">
+        <div class="section-subhead">SharePoint</div>
+        <a class="sc-item" href="https://prodcloudoutlook.sharepoint.com/sites/QuestPMO-ProgramOffice/Shared%20Documents/Portfolio%20Intelligence%20Model%20-%20POC/Quest_PO_Framework_v1.0_published.pdf?csf=1&web=1&e=jbaFdl" target="_blank">
+          <div class="sc-name">PO Framework</div>
+          <div class="sc-right"><div class="badge badge-doc">PDF</div><div class="item-arrow">↗</div></div>
+        </a>
+        <a class="sc-item" href="https://prodcloudoutlook.sharepoint.com/sites/QuestPMO-ProgramOffice/Shared%20Documents/Portfolio%20Intelligence%20Model%20-%20POC/Portfolio_Intelligence_Model_Data_Schema_v1.6_published.pdf?csf=1&web=1&e=W0CUib" target="_blank">
+          <div class="sc-name">Data Schema</div>
+          <div class="sc-right"><div class="badge badge-doc">PDF</div><div class="item-arrow">↗</div></div>
+        </a>
+        <a class="sc-item" href="https://prodcloudoutlook.sharepoint.com/sites/QuestPMO-ProgramOffice/Shared%20Documents/Portfolio%20Intelligence%20Model%20-%20POC/Portfolio%20Intelligence%20Model_POC.xlsx?d=w86ae4b74a1504990b50b9181a613e1a2&csf=1&web=1&e=5FYCyU" target="_blank">
+          <div class="sc-name">POC Workbook</div>
+          <div class="sc-right"><div class="badge badge-doc">Excel</div><div class="item-arrow">↗</div></div>
+        </a>
+        <a class="sc-item" href="https://prodcloudoutlook.sharepoint.com/sites/QuestPMO-ProgramOffice/Shared%20Documents/CPTO%20ELT%20Status%20Reports?csf=1&web=1&e=IdgoL4" target="_blank">
+          <div class="sc-name">CPTO ELT Status Reports</div>
+          <div class="sc-right"><div class="badge badge-doc">Folder</div><div class="item-arrow">↗</div></div>
+        </a>
+      </div>
+
+      <!-- Divider -->
+      <div class="shortcut-divider"></div>
+
+      <!-- Right col: Monday, Miro, Aha -->
+      <div class="shortcut-col">
+        <div class="section-subhead">Monday</div>
+        <a class="sc-item" href="https://wkf.ms/4wP0Enw" target="_blank">
+          <div class="sc-name">Intake Form</div>
+          <div class="sc-right"><div class="badge badge-board">Form</div><div class="item-arrow">↗</div></div>
+        </a>
+        <a class="sc-item" href="https://quest806443.monday.com/boards/18414927391" target="_blank">
+          <div class="sc-name">Intake Board</div>
+          <div class="sc-right"><div class="badge badge-board">Monday</div><div class="item-arrow">↗</div></div>
+        </a>
+        <div class="section-subhead">Miro</div>
+        <a class="sc-item" href="https://miro.com/app/board/uXjVGxgZq4U=/?share_link_id=321429085472" target="_blank">
+          <div class="sc-name">PO Sandbox</div>
+          <div class="sc-right"><div class="badge badge-miro">Board</div><div class="item-arrow">↗</div></div>
+        </a>
+        <div class="section-subhead">Aha!</div>
+        <div class="sc-item item-placeholder">
+          <div class="sc-name">Roadmap Views</div>
+          <div class="sc-right"><div class="badge badge-placeholder">TBD</div><div class="item-arrow" style="opacity:0.35;">↗</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Portfolio Intelligence Reporting -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Portfolio Intelligence Reporting — HTML</div>
+      <div class="card-count">6 items</div>
+    </div>
+    <div class="item-list">
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/" target="_blank">
+        <div>
+          <div class="item-name">Home — Reporting &amp; Intelligence Tools</div>
+          <div class="item-desc">Link tree for all five reporting tools. Entry point for stakeholders.</div>
+          <div class="item-updated">Last updated: 26 May 2026</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">In Progress</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html" target="_blank">
+        <div>
+          <div class="item-name">Portfolio Intelligence Dashboard</div>
+          <div class="item-desc">The working view. Live data, always on. Program managers maintain it, everyone inspects it.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-health.html" target="_blank">
+        <div>
+          <div class="item-name">Portfolio Health Summary</div>
+          <div class="item-desc">Derived from the dashboard. Brooke curates. Feeds Mike's weekly package and the Friday metrics meeting.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/stale-stalled.html" target="_blank">
+        <div>
+          <div class="item-name">Stale &amp; Stalled Dashboard</div>
+          <div class="item-desc">PO internal. Surfaces data currency and momentum gaps before the Friday reporting cycle runs.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/gtm-readiness.html" target="_blank">
+        <div>
+          <div class="item-name">GTM Readiness Outlook</div>
+          <div class="item-desc">Live calendar view of upcoming product milestones filtered for GTM and M&amp;D. Self-serve, no health signals.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/weekly-readout.html" target="_blank">
+        <div>
+          <div class="item-name">Weekly Readout Tool</div>
+          <div class="item-desc">Brooke curates the brief. Mike selects what makes the Monday agenda, fires to his team, drops PO follow-ons to intake.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <div class="hub-footer">
+    <div class="hub-footer-text">Quest Program Office · Construction Hub · Internal Program Office reference</div>
+  </div>
+
+</div>
+</body>
+</html>
