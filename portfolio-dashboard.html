@@ -3,144 +3,678 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio Intelligence Dashboard</title>
+<title>Portfolio Intelligence — Quest Program Office</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --navy: #0F1F38;
-    --teal: #1B6B7B;
-    --teal-light: #2A8FA3;
-    --gold: #C9973A;
-    --cream: #F5F0E8;
-    --muted: #8A9BB0;
-    --white: #FFFFFF;
-  }
-  body {
-    background: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-  }
-  .card {
-    background: var(--white);
-    max-width: 780px;
-    width: 100%;
-    border-radius: 2px;
-    overflow: hidden;
-    box-shadow: 0 4px 40px rgba(15,31,56,0.10);
-  }
-  .header {
-    background: var(--navy);
-    padding: 36px 48px 32px;
-  }
-  .eyebrow {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 10px;
-  }
-  .title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 30px;
-    color: var(--white);
-    line-height: 1.15;
-  }
-  .title em { font-style: italic; color: #A8C8D4; }
-  .placeholder {
-    padding: 64px 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
-  .status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #F0EDE6;
-    border: 1px solid #E0D9CE;
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-  }
-  .placeholder-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: var(--navy);
-    line-height: 1.2;
-  }
-  .placeholder-desc {
-    font-size: 14px;
-    font-weight: 300;
-    color: #4A5A6A;
-    line-height: 1.7;
-    max-width: 540px;
-  }
-  .meta-row {
-    display: flex;
-    gap: 32px;
-    padding-top: 8px;
-    border-top: 1px solid #E8E2D8;
-    width: 100%;
-  }
-  .meta-item { display: flex; flex-direction: column; gap: 4px; }
-  .meta-label {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .meta-value {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--navy);
-  }
+:root {
+  --q-dark:#14215c; --q-mid:#0a8cbf; --q-night:#0a0e21; --q-lime:#a9bf04;
+  --q-bright:#5ad2ee; --q-gray:#64748b; --q-lgray:#e2e8f0; --q-xlgray:#f1f5f9;
+  --q-bg:#f4f5f7; --q-text:#1a1a2e; --q-muted:#64748b; --q-border:#e2e8f0;
+  --green:#16a34a; --green-bg:#dcfce7; --green-dot:#22c55e;
+  --amber:#d97706; --amber-bg:#fef3c7; --amber-dot:#f59e0b;
+  --red:#dc2626; --red-bg:#fee2e2; --red-dot:#ef4444;
+  --IS:#1e40af; --IS-bg:#dbeafe; --DS:#5b21b6; --DS-bg:#ede9fe;
+  --XP:#0a8cbf; --XP-bg:#e0f2fe; --AIE:#92400e; --AIE-bg:#fef3c7;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--q-bg);color:var(--q-text);font-size:14px;line-height:1.5;}
+.topbar{background:var(--q-night);padding:0 28px;height:44px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
+.topbar-l{display:flex;align-items:center;gap:6px;font-size:12px;color:#7b7c81;}
+.topbar-l .sep{color:#3a3f5c;margin:0 2px;}
+.topbar-l .current{color:#a8c8d4;font-weight:500;}
+.topbar-r{font-size:11px;color:#7b7c81;}
+.hero{background:var(--q-dark);padding:20px 28px 16px;border-bottom:3px solid var(--q-lime);}
+.hero-top{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;}
+.hero-eye{font-size:10.5px;font-weight:600;letter-spacing:.1em;color:var(--q-mid);text-transform:uppercase;margin-bottom:6px;}
+.hero-title{font-size:22px;font-weight:700;color:white;line-height:1.2;}
+.hero-sub{font-size:12px;color:var(--q-bright);font-style:italic;margin-top:3px;}
+.intake-wrap{position:relative;display:inline-block;flex-shrink:0;}
+.intake-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--q-lime);color:var(--q-night);font-size:12px;font-weight:700;border-radius:5px;text-decoration:none;letter-spacing:.02em;white-space:nowrap;transition:opacity .15s;}
+.intake-btn:hover{opacity:.88;}
+.intake-wrap .intake-tip{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:var(--q-night);color:#c8d8e8;font-size:11px;padding:7px 11px;border-radius:5px;z-index:300;pointer-events:none;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,.25);max-width:260px;text-align:right;}
+.intake-wrap .intake-tip::after{content:'';position:absolute;top:100%;right:18px;border:5px solid transparent;border-top-color:var(--q-night);}
+.intake-wrap:hover .intake-tip{display:block;}
+.stats{background:white;border-bottom:1px solid var(--q-border);padding:12px 28px;display:flex;gap:0;align-items:center;flex-wrap:wrap;}
+.stat-item{display:flex;flex-direction:column;gap:2px;padding-right:20px;margin-right:20px;border-right:1px solid var(--q-lgray);}
+.stat-item:last-child{border-right:none;padding-right:0;margin-right:0;}
+.stat-val{font-size:20px;font-weight:700;color:var(--q-dark);line-height:1;}
+.stat-val.green{color:var(--green);}.stat-val.amber{color:var(--amber);}.stat-val.red{color:var(--red);}
+.stat-lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--q-gray);}
+.upcoming-strip{background:#fffbeb;border-bottom:1px solid #fde68a;padding:9px 28px;display:flex;align-items:center;gap:16px;overflow-x:auto;}
+.upcoming-label-wrap{position:relative;display:inline-flex;align-items:center;flex-shrink:0;}
+.upcoming-label{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#92400e;cursor:default;border-bottom:1px dashed #d97706;}
+.upcoming-label-wrap .upcoming-tooltip{display:none;position:absolute;top:calc(100% + 7px);left:0;background:var(--q-night);color:#c8d8e8;font-size:11px;padding:8px 12px;border-radius:5px;z-index:300;pointer-events:none;line-height:1.55;box-shadow:0 2px 8px rgba(0,0,0,.25);width:300px;}
+.upcoming-label-wrap .upcoming-tooltip::before{content:'';position:absolute;bottom:100%;left:14px;border:5px solid transparent;border-bottom-color:var(--q-night);}
+.upcoming-label-wrap:hover .upcoming-tooltip{display:block;}
+.upcoming-events{display:flex;gap:8px;flex-wrap:wrap;}
+.upcoming-event{display:flex;align-items:center;gap:7px;background:white;border:1px solid #fde68a;border-radius:4px;padding:3px 10px;white-space:nowrap;}
+.upcoming-event-date{font-size:10.5px;font-weight:700;color:#92400e;font-family:'DM Mono',monospace;}
+.upcoming-event-name{font-size:11px;color:var(--q-gray);}
+.filter-bar{background:white;border-bottom:1px solid var(--q-border);padding:10px 28px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;position:sticky;top:44px;z-index:100;box-shadow:0 1px 3px rgba(10,14,33,.04);}
+.filter-group{display:flex;align-items:center;gap:8px;}
+.filter-group-label{font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--q-gray);white-space:nowrap;}
+.filter-pills{display:flex;gap:5px;flex-wrap:wrap;}
+.pill{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--q-lgray);color:var(--q-gray);background:white;transition:all .12s;white-space:nowrap;}
+.pill:hover{border-color:var(--q-mid);color:var(--q-mid);}
+.pill.active-IS{background:var(--IS-bg);border-color:var(--IS);color:var(--IS);}
+.pill.active-DS{background:var(--DS-bg);border-color:var(--DS);color:var(--DS);}
+.pill.active-XP{background:var(--XP-bg);border-color:var(--XP);color:var(--XP);}
+.pill.active-AIE{background:var(--AIE-bg);border-color:#d97706;color:#92400e;}
+.pill.active-ai{background:#f0f9ff;border-color:var(--q-mid);color:var(--q-mid);}
+.pill.active-type{background:#f0fdf4;border-color:#15803d;color:#15803d;}
+.filter-sep{width:1px;height:20px;background:var(--q-lgray);flex-shrink:0;}
+.filter-clear{font-size:11px;font-weight:500;color:var(--q-gray);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;padding:3px 8px;border-radius:4px;transition:color .12s;white-space:nowrap;}
+.filter-clear:hover{color:var(--q-mid);}
+.filter-spacer{flex:1;}
+.pill-wrap,.tip-wrap{position:relative;display:inline-block;}
+.pill-wrap .tooltip,.tip-wrap .tooltip{display:none;position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--q-night);color:#c8d8e8;font-size:11px;padding:6px 10px;border-radius:5px;white-space:nowrap;z-index:300;pointer-events:none;line-height:1.4;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.pill-wrap .tooltip::before,.tip-wrap .tooltip::before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-bottom-color:var(--q-night);}
+.pill-wrap:hover .tooltip,.tip-wrap:hover .tooltip{display:block;}
+.search-wrap{position:relative;display:flex;align-items:center;}
+.search-icon{position:absolute;left:10px;font-size:13px;color:var(--q-gray);pointer-events:none;}
+.search-input{padding:4px 12px 4px 28px;border:1px solid var(--q-lgray);border-radius:20px;font-size:12px;font-family:'DM Sans',sans-serif;color:var(--q-text);background:white;outline:none;width:190px;transition:border-color .15s;}
+.search-input:focus{border-color:var(--q-mid);}
+.search-input::placeholder{color:#94a3b8;}
+.dropdown-wrap{position:relative;}
+.dropdown-btn{display:flex;align-items:center;gap:6px;padding:3px 10px 3px 12px;border-radius:20px;font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;border:1px solid var(--q-lgray);color:var(--q-gray);background:white;transition:all .12s;white-space:nowrap;user-select:none;}
+.dropdown-btn:hover{border-color:var(--q-mid);color:var(--q-mid);}
+.dropdown-btn.has-selection{background:#f0f9ff;border-color:var(--q-mid);color:var(--q-mid);}
+.dropdown-badge{background:var(--q-mid);color:white;font-size:9px;font-weight:700;padding:0 5px;border-radius:8px;min-width:16px;text-align:center;}
+.dropdown-arrow{font-size:8px;transition:transform .15s;}
+.dropdown-btn.open .dropdown-arrow{transform:rotate(180deg);}
+.dropdown-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;background:white;border:1px solid var(--q-lgray);border-radius:8px;box-shadow:0 4px 16px rgba(10,14,33,.1);min-width:220px;z-index:200;padding:6px 0;}
+.dropdown-menu.open{display:block;}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:7px 14px;cursor:pointer;transition:background .1s;font-size:12px;color:var(--q-text);}
+.dropdown-item:hover{background:var(--q-xlgray);}
+.dropdown-item input[type=checkbox]{accent-color:var(--q-mid);width:13px;height:13px;flex-shrink:0;}
+.dropdown-item-label{flex:1;}
+.main{max-width:1180px;margin:0 auto;padding:22px 28px 60px;}
+.result-meta{margin-bottom:16px;}
+.result-count{font-size:12px;color:var(--q-gray);}
+.result-count strong{color:var(--q-dark);font-weight:600;}
+.swimlane{margin-bottom:24px;}
+.sw-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;cursor:pointer;user-select:none;}
+.sw-header:hover .sw-title{color:var(--q-mid);}
+.sw-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--q-dark);transition:color .15s;}
+.sw-count{font-size:10px;color:var(--q-gray);font-weight:600;background:var(--q-lgray);padding:1px 8px;border-radius:10px;}
+.sw-line{flex:1;height:1px;background:var(--q-lgray);}
+.sw-chevron{font-size:9px;color:var(--q-gray);transition:transform .2s;}
+.sw-chevron.collapsed{transform:rotate(-90deg);}
+.sw-body.collapsed{display:none;}
+
+/* ROW — fixed 6-col grid. Last col is fixed width to prevent badge pushing other cols */
+.init-row{background:white;border:1px solid var(--q-border);border-radius:8px;margin-bottom:5px;overflow:hidden;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.init-row.on-hold{background:#f8fafc;border-color:#cbd5e1;opacity:.82;}
+.init-header{padding:10px 14px;display:grid;grid-template-columns:96px 16px 1fr 158px 76px 80px;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:background .12s;}
+.init-header:hover{background:#fafbfc;}
+.id-block{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.id-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 6px;border-radius:3px;letter-spacing:.02em;white-space:nowrap;display:inline-block;}
+.id-IS{background:var(--IS-bg);color:var(--IS);}
+.id-DS{background:var(--DS-bg);color:var(--DS);}
+.id-XP{background:var(--XP-bg);color:var(--XP);}
+.id-AIE{background:var(--AIE-bg);color:var(--AIE);}
+.type-label{font-size:10px;font-weight:600;letter-spacing:.02em;white-space:nowrap;}
+.type-label.tl-product{color:var(--q-mid);}
+.type-label.tl-feature{color:var(--q-mid);}
+.type-label.tl-internal{color:var(--q-gray);}
+.type-label.tl-sales{color:var(--q-gray);}
+.sig-dot{width:9px;height:9px;border-radius:50%;justify-self:center;flex-shrink:0;}
+.sig-green{background:var(--green-dot);box-shadow:0 0 0 2px rgba(34,197,94,.2);}
+.sig-amber{background:var(--amber-dot);box-shadow:0 0 0 2px rgba(245,158,11,.2);}
+.sig-red{background:var(--red-dot);box-shadow:0 0 0 2px rgba(239,68,68,.2);}
+.sig-none{background:var(--q-lgray);}
+.name-block{overflow:hidden;min-width:0;}
+.init-name{font-size:13px;font-weight:600;color:var(--q-text);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.init-oneliner{font-size:11.5px;color:var(--q-muted);line-height:1.35;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.init-header.row-expanded .init-name{white-space:normal;}
+.init-header.row-expanded .init-oneliner{white-space:normal;overflow:visible;text-overflow:unset;}
+.init-owner{font-size:11px;color:var(--q-gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.init-quarter{font-size:11px;color:var(--q-gray);white-space:nowrap;}
+/* Fixed width last column keeps alignment stable regardless of badge */
+.row-right{display:flex;align-items:center;justify-content:flex-end;gap:6px;width:80px;flex-shrink:0;}
+.open-sig-badge{background:#f1f5f9;color:#475569;font-size:9.5px;font-weight:600;padding:1px 7px;border-radius:8px;white-space:nowrap;flex-shrink:0;}
+.chevron{font-size:10px;color:var(--q-gray);transition:transform .2s;flex-shrink:0;}
+.chevron.open{transform:rotate(180deg);color:var(--q-mid);}
+.init-body{display:none;border-top:1px solid var(--q-lgray);}
+.init-body.open{display:block;}
+.canvas-section{display:grid;grid-template-columns:1fr 1fr 1fr 210px;border-bottom:1px solid var(--q-lgray);}
+.canvas-col{padding:14px 16px;border-right:1px solid var(--q-lgray);}
+.canvas-col:last-child{border-right:none;background:#fafbfc;}
+.canvas-label{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--q-gray);margin-bottom:5px;}
+.canvas-value{font-size:12.5px;color:var(--q-text);line-height:1.6;}
+.canvas-value.empty{color:#cbd5e1;font-style:italic;font-size:12px;}
+.canvas-value strong{font-weight:700;color:var(--q-dark);}
+.canvas-meta-row{margin-top:10px;}
+.ai-chip{display:inline-flex;align-items:center;padding:1px 7px;border-radius:3px;font-size:9.5px;font-weight:700;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.signals-section{padding:12px 16px 16px;}
+.signals-label{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--q-gray);margin-bottom:8px;}
+.signal-item{padding:9px 12px;border:1px solid var(--q-lgray);border-radius:5px;margin-bottom:5px;background:white;}
+.signal-item:last-child{margin-bottom:0;}
+.signal-item.risk{border-left:3px solid #fca5a5;}
+.signal-item.issue{border-left:3px solid #ef4444;}
+.signal-item.dependency{border-left:3px solid #93c5fd;}
+.signal-item.assumption{border-left:3px solid #d8b4fe;}
+.signal-item.milestone{border-left:3px solid #86efac;}
+.signal-item.decision{border-left:3px solid #c4b5fd;}
+.signal-item.win{border-left:3px solid #a3e635;}
+.signal-item.workstream,.signal-item.workstreamactivity{border-left:3px solid #e2e8f0;}
+.sig-top-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.sig-type-badge{font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:2px;white-space:nowrap;flex-shrink:0;}
+.stb-risk{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.stb-issue{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;}
+.stb-dependency{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
+.stb-assumption{background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff;}
+.stb-milestone{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.stb-decision{background:#faf5ff;color:#6b21a8;border:1px solid #e9d5ff;}
+.stb-win{background:#f7fee7;color:#3f6212;border:1px solid #d9f99d;}
+.stb-workstream,.stb-workstreamactivity{background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;}
+.sig-headline{font-size:12px;font-weight:600;color:var(--q-text);}
+.sig-desc{font-size:11.5px;color:var(--q-text);line-height:1.55;margin:4px 0;}
+.sig-action{font-size:11px;color:#475569;line-height:1.5;margin:3px 0;}
+.sig-action strong{font-weight:600;color:var(--q-dark);}
+.sig-meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:5px;}
+.sig-meta-item{font-size:10px;color:var(--q-gray);}
+.sig-meta-item strong{font-weight:600;color:var(--q-dark);}
+.status-pill{font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:10px;}
+.s-open{background:#fee2e2;color:#991b1b;}
+.s-inprogress{background:#dbeafe;color:#1e40af;}
+.s-resolved{background:#dcfce7;color:#15803d;}
+.s-closed{background:var(--q-lgray);color:var(--q-gray);}
+.s-delayed{background:#fef3c7;color:#92400e;}
+.no-signals{font-size:12px;color:var(--q-gray);font-style:italic;padding:4px 0;}
+.empty-state{text-align:center;padding:60px 20px;color:var(--q-gray);}
+.empty-state-title{font-size:16px;font-weight:600;color:var(--q-dark);margin-bottom:8px;}
+footer{background:var(--q-night);padding:12px 28px;font-size:11px;color:#7b7c81;display:flex;justify-content:space-between;align-items:center;margin-top:40px;}
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="header">
-    <div class="eyebrow">CPTO Program Office</div>
-    <div class="title">Portfolio Intelligence<br><em>Dashboard</em></div>
+
+<div class="topbar">
+  <div class="topbar-l">
+    <span>Program Office</span><span class="sep">/</span>
+    <span>CPTO Portfolio</span><span class="sep">/</span>
+    <span class="current">Portfolio Intelligence</span>
   </div>
-  <div class="placeholder">
-    <div class="status-pill"><div class="status-dot"></div>In design</div>
-    <div class="placeholder-title">The working view — always on.</div>
-    <div class="placeholder-desc">
-      Live portfolio data across all platforms and domains. Program managers maintain it continuously. PO and product leadership inspect it at any moment. This is the source of truth the health report is generated from — not assembled from it.
+  <div class="topbar-r">Data refreshed 27-May-2026</div>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-eye">Quest Program Office</div>
+      <div class="hero-title">Portfolio Intelligence</div>
+      <div class="hero-sub">IS · DS · XP · AIE — all platforms, one view</div>
     </div>
-    <div class="meta-row">
-      <div class="meta-item">
-        <div class="meta-label">Audience</div>
-        <div class="meta-value">Program Office + Product Leadership</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Cadence</div>
-        <div class="meta-value">Continuous</div>
-      </div>
-      <div class="meta-item">
-        <div class="meta-label">Maintained by</div>
-        <div class="meta-value">Program Managers</div>
-      </div>
+    <div class="intake-wrap">
+      <a href="https://wkf.ms/4wP0Enw" target="_blank" class="intake-btn">+ Submit New</a>
+      <div class="intake-tip">Raise a new initiative or flag work that needs portfolio tracking</div>
     </div>
   </div>
 </div>
+
+<div class="stats" id="statBar"></div>
+
+<div class="upcoming-strip">
+  <div class="upcoming-label-wrap">
+    <span class="upcoming-label">Key Dates</span>
+    <div class="upcoming-tooltip">Milestone signals with a target date in the next 90 days. Org-visible dates only — GAs, conferences, all hands. Internal workstream activities stay in the initiative drill-down.</div>
+  </div>
+  <div class="upcoming-events" id="upcomingEvents"></div>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-group">
+    <div class="filter-group-label">Platform</div>
+    <div class="filter-pills" id="platformFilters"></div>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <div class="filter-group-label">Type</div>
+    <div class="filter-pills" id="typeFilters"></div>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group" id="dropdownGroup"></div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <div class="filter-group-label">AI Tag</div>
+    <div class="filter-pills" id="aiFilters"></div>
+  </div>
+  <div class="filter-spacer"></div>
+  <button class="filter-clear" onclick="clearFilters()">Clear all</button>
+  <div class="filter-sep"></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Search initiatives..." oninput="renderPortfolio()">
+  </div>
+</div>
+
+<div class="main">
+  <div class="result-meta"><div class="result-count" id="resultCount"></div></div>
+  <div id="portfolioView"></div>
+</div>
+
+<footer>
+  <span>Quest Program Office · Portfolio Intelligence · Schema v1.6</span>
+  <span>Source of truth: Excel POC → Monday migration in progress</span>
+</footer>
+
+<script>
+const portfolio = [
+  { id:"AIE-001", name:"AskQ — Support AI Chatbot", owner:"Jeff Harris", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Build & Launch", quarter:"FY27-Q1", domain:"Customer", aiTag:"AI x 3", health:"amber", oneLiner:"AskQ Phase 1 at 1,400+ weekly conversations, 50% deflection rate, 97% CSAT — Phase 2 focus on advanced capabilities. On-site with Maven 5/19 to align on Phase 2 roadmap." },
+  { id:"AIE-002", name:"Product Chatbot — Licensing & Product Q&A", owner:"Anil Kamarajugadda", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Product managers including Julie testing v1 — 1–2 weeks for feedback, then iterate and fix before rollout to Sales and Renewals. Anil leading." },
+  { id:"AIE-003", name:"Accounting Optimization", owner:"Anil Kamarajugadda", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Discover & Plan", quarter:"TBD", domain:"Enterprise Operations", aiTag:"AI — Internal Operations", health:"amber", oneLiner:"AI-driven accounting optimization in early discovery — Anil working with Ashish to define scope and next steps." },
+  { id:"AIE-004", name:"Optimizing Customer Success w AI (>50K)", owner:"Stephanie Williamson", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Build & Launch", quarter:"FY27-Q2", domain:"Customer", aiTag:"AI — Internal Operations", health:"green", oneLiner:"CSM AI pilot active — daily brief redesign underway toward action-first format. Workstreams structured across daily brief, value attainment, enablement, and feature requests." },
+  { id:"AIE-005", name:"LT 50K Frictionless Renewals", owner:"Stephanie Williamson", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Discover & Plan", quarter:"FY27-Q2", domain:"Customer", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Automating the sub-$50K renewal motion using AI — dependent on churn model being built. Scope and stakeholder alignment in progress." },
+  { id:"AIE-006", name:"Optimizing Sales Operations w AI", owner:"George Li", pm:"Kelsey Rhodes", type:"Internal / Operational", platform:"AIE", state:"Discover & Plan", quarter:"TBD", domain:"Commercial", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Two combined Sales Operations AI workstreams — Deal Desk Optimization and Order Management Process — in scoping." },
+  { id:"AIE-007", name:"AI Bot / Agent Enablement — Platform & Standards", owner:"Anil Kamarajugadda", pm:"Rebecca Casey", type:"Internal / Operational", platform:"AIE", state:"Discover & Plan", quarter:"FY27-Q2", domain:"Enterprise Operations", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Foundational initiative defining how business teams build and publish AI bots and agents — guardrails, approved tooling, and internal publishing standards before the backlog opens." },
+  { id:"AIE-008", name:"HR Chatbot — iCIMS & Dayforce Integration", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"On Hold", quarter:"TBD", domain:"Enterprise Operations", aiTag:"AI — Internal Operations", health:"none", oneLiner:"HR chatbot to automate manual data updates between iCIMS and Dayforce — on hold pending AIE-007 standards." },
+  { id:"AIE-009", name:"AI Marketing Lead Scoring", owner:"Denise Still", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Marketing", aiTag:"AI — Internal Operations", health:"none", oneLiner:"AI-powered lead scoring to surface highest-value pipeline — MQL conversion improvement. In intake, fact-finding required." },
+  { id:"AIE-010", name:"Predictive Audience Intelligence", owner:"Nick Duke", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Marketing", aiTag:"AI — Internal Operations", health:"none", oneLiner:"In-house predictive audience intelligence capability — Demandbase/6Sense-like solution. Early intake, scope and feasibility not yet assessed." },
+  { id:"AIE-011", name:"AI Sales Outreach Agent", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Commercial", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Outreach orchestration and automation — from company name to personalized outreach in minutes. Gates on AIE-007." },
+  { id:"AIE-012", name:"AI Agent for Product Training", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Commercial", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Improve MQL conversion rates via AI-driven product training. Domain and scope TBD. Gates on AIE-007." },
+  { id:"AIE-013", name:"Quest Data Intelligence Licensing Support", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Commercial", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Prototype guides new sellers to the right quote and SKU — ownership and evaluation path undefined. Possible overlap with AIE-002." },
+  { id:"AIE-014", name:"Sales Guide Agent", owner:"Brian Holohan", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Internally-focused agent guiding sales reps through systems and tools — resourced with Rajesh Goldy." },
+  { id:"AIE-015", name:"PSO Operations Agent", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Customer", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Agent reads attachments and automates next steps for Professional Services operations. Gates on AIE-007." },
+  { id:"AIE-016", name:"Sales Compensation Chatbot", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Commercial", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Chatbot for sales compensation queries. Scope TBD. Gates on AIE-007." },
+  { id:"AIE-018", name:"AI Internal Communications & Fluency", owner:"Matt Hurst", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Marketing", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Internal AI communications and fluency initiative — currently a newsletter to CoE team with intent to scale org-wide." },
+  { id:"AIE-019", name:"AI for Finance — Secure Hosted Model", owner:"—", pm:"—", type:"Internal / Operational", platform:"AIE", state:"Intake & Scanning", quarter:"TBD", domain:"Enterprise Operations", aiTag:"AI — Internal Operations", health:"none", oneLiner:"Finance team (Cork) requesting a privately hosted AI model on Azure — infrastructure and data governance question before it's an AI initiative." },
+  { id:"AIE-020", name:"Friday Update Tool — CPTO Comms & Briefing", owner:"Michael Vaughn", pm:"Jorie Maloney", type:"Internal / Operational", platform:"AIE", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Internal Operations", health:"green", oneLiner:"GitHub-based CPTO briefing tool — POC exists, Michael Vaughn working with Goldy to post to internal repo this week." },
+  { id:"DS-001", name:"Quest Data Modeler", owner:"Vani Mishra", pm:"Danielle Betz", type:"Product", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability", health:"green", oneLiner:"GA achieved May 19; all cross-functional teams remain GREEN post-release. Next: finalizing training collateral for accreditation and Fast Lane sessions. Partner Fast Lane sessions June 9." },
+  { id:"DS-001-A", name:"Quest Data Modeler — Metadata Play", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Placeholder for Danielle input." },
+  { id:"DS-002", name:"Shareplex AI Insights", owner:"Richard Schiller", pm:"Danielle Betz", type:"Product", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability", health:"green", oneLiner:"GA as of May 4th. Focus turns to enablement for Sales, Presales, and Partners. Training content for May 27th sessions." },
+  { id:"DS-003", name:"Foglight AI Insights", owner:"Lior Astor", pm:"Danielle Betz", type:"Product", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability", health:"amber", oneLiner:"Progressing toward June launch but amber — product concerns and lack of pricing decisions remain. Agent performance and response consistency need work. License model definition pending." },
+  { id:"DS-004", name:"Quest Data Intelligence 16.0", owner:"Kartik Sridhar", pm:"Danielle Betz", type:"Product", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability + Product Build", health:"green", oneLiner:"16.0 includes Semantic Chat and Policy Engine. Support handoff completed May 21. On track for May 28 release." },
+  { id:"DS-005", name:"erwin Smart Connectors", owner:"TBD — DS Product Lead", pm:"Danielle Betz", type:"Feature / Capability", platform:"DS", state:"Steady State", quarter:"Ongoing", domain:"Customer", aiTag:"None", health:"green", oneLiner:"Steady state — no active development." },
+  { id:"DS-006", name:"DB Mgmt Tools Cross Sell", owner:"Ryan Crochet", pm:"Danielle Betz", type:"Internal / Operational", platform:"DS", state:"Discover & Plan", quarter:"FY27-Q2", domain:"Marketing", aiTag:"AI — Internal Operations", health:"amber", oneLiner:"Cross-sell motion for DB management tools. Snowflake Summit June 1–4 and Oracle AI October are key milestones." },
+  { id:"DS-007", name:"SAP PowerDesigner Takeout", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Q1 play continuing into Q2 — 382 opportunities from Q1. Placeholder for Danielle input." },
+  { id:"DS-008", name:"DBA Sales Play", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Placeholder for Danielle input." },
+  { id:"DS-009", name:"AI-Native Database DevOps", owner:"Julie Hyman", pm:"Jorie Maloney", type:"Product", platform:"DS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability + Product Build", health:"green", oneLiner:"AI-native database DevOps capability — deployment target 7/15, GA target 7/31. Customer validation underway." },
+  { id:"IS-001", name:"FedRAMP (Identity Defense & Identity Recovery)", owner:"Rakesh Shah", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"AI — Product Capability", health:"green", oneLiner:"FedRAMP ATO under Project Hosts — tracking." },
+  { id:"IS-002", name:"Vulnerability Assessment — Security Play", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-003", name:"Change Auditor Upsell — Identity Defense & Recovery", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-004", name:"Secure Migration — Partner Play", owner:"George Li", pm:"Kelsey Rhodes", type:"Sales Play", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Commercial", aiTag:"None", health:"green", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-005", name:"SMP GTM Launch Phase 1", owner:"—", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Intake & Scanning", quarter:"TBD", domain:"Product Strategy & Roadmap", aiTag:"None", health:"none", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-006", name:"ODM Support Case Reduction-Deflection", owner:"Tri Nguyen", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Intake & Scanning", quarter:"TBD", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability", health:"none", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-007", name:"KACE SMA Re-launch Phase 1", owner:"Michael Vaughn", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Intake & Scanning", quarter:"TBD", domain:"Product Strategy & Roadmap", aiTag:"None", health:"none", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-008", name:"Project Recovery", owner:"TBD", pm:"Jorie Maloney", type:"Product", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability + Product Build", health:"green", oneLiner:"AI-driven identity restore capability — Production Ready 4/21, GA target 7/31. Real-world testing underway." },
+  { id:"IS-009", name:"KACE SMP Integration Phase 2", owner:"Michael Vaughn", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Intake & Scanning", quarter:"TBD", domain:"Product Strategy & Roadmap", aiTag:"None", health:"none", oneLiner:"Placeholder for Sally input." },
+  { id:"IS-010", name:"ODM Support Case Reduction-Deflection", owner:"Jeff Harris", pm:"Sally Gonzalez", type:"Feature / Capability", platform:"IS", state:"Build & Launch", quarter:"FY27-Q2", domain:"Customer", aiTag:"AI — Product Build", health:"green", oneLiner:"Support Case Reduction via Onboarding Improvements & AI Migration Assistance — targeting ~30% near-term case reduction." },
+  { id:"XP-001", name:"Mythos Access / AI Capability Enablement", owner:"TBD — Product Lead", pm:"Jorie Maloney", type:"Internal / Operational", platform:"XP", state:"Discover & Plan", quarter:"TBD", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Capability + Product Build", health:"amber", oneLiner:"Quest pursuing early access to Anthropic Mythos — external timeline uncontrolled, roadmap dependencies unconfirmed, vendor conversation pending." },
+  { id:"XP-002", name:"IRAP — Cyber Security & Data Management Platform", owner:"Richard Kulkarni", pm:"Sally Gonzalez", type:"Internal / Operational", platform:"XP", state:"Closed", quarter:"FY27-Q2", domain:"Commercial", aiTag:"AI — Product Capability", health:"green", oneLiner:"Received final versions of both IRAP Assessment Reports. No further action needed. Richard's team has what is required to grow AU Gov sales." },
+  { id:"XP-003", name:"Partner BUILD Program", owner:"TBD — Maureen Perrelli", pm:"Jorie Maloney", type:"Internal / Operational", platform:"XP", state:"Discover & Plan", quarter:"TBD", domain:"Commercial", aiTag:"None", health:"amber", oneLiner:"Partner BUILD motion defined by AchieveUnite and in motion prior to PMO; product readiness intake underway across 15 products." },
+  { id:"XP-004", name:"Bring Your Own Identity (BYOI) — Okta Federation", owner:"TBD", pm:"Jorie Maloney", type:"Feature / Capability", platform:"XP", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Product Build", health:"green", oneLiner:"Okta federation enabling customers to bring their own identity provider — Production Ready 5/15, GA target 5/22." },
+  { id:"XP-005", name:"Program Office Operating Framework", owner:"Jorie Maloney", pm:"Jorie Maloney", type:"Internal / Operational", platform:"XP", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"None", health:"green", oneLiner:"Framework v0.2 and Schema v1.6 published; roadshow and stakeholder activation are the next milestone." },
+  { id:"XP-006", name:"Portfolio Intelligence Model & Monday Migration", owner:"Jorie Maloney", pm:"Jorie Maloney", type:"Internal / Operational", platform:"XP", state:"Build & Launch", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Internal Operations", health:"green", oneLiner:"Excel POC actively populated; Monday migration design complete; reporting layer including Dashboard, Health Summary, Weekly Readout, Stale & Stalled, and GTM Outlook in build." },
+  { id:"XP-007", name:"AI Programs — Operating Design & Integration", owner:"Jorie Maloney", pm:"Jorie Maloney", type:"Internal / Operational", platform:"XP", state:"Discover & Plan", quarter:"FY27-Q2", domain:"Product Strategy & Roadmap", aiTag:"AI — Internal Operations", health:"amber", oneLiner:"Anil and Ciaran directionally aligned to their lanes; light structure needed on intake and decisions — natural entry point for program office to formalize ways of working before CoE leadership transition completes." },
+];
+
+const signals = [
+  { id:"XP-001", type:"Dependency", headline:"Anthropic preview program approval", description:"Quest's position in Anthropic's Mythos preview cohort is unconfirmed and the approval timeline is external and uncontrolled.", mitigation:"Ciaran to confirm Quest is actively in the queue and Vassilis has sufficient context to advocate internally. Opus 4 available as interim.", owner:"Ciaran Ryan", status:"In Progress" },
+  { id:"XP-001", type:"Workstream Activity", headline:"Mythos access granted and operational", description:"Mythos preview access granted, credentials operational, and at least one engineering team actively using capability.", mitigation:"Get target date from Ciaran following Vassilis conversation.", owner:"Ciaran Ryan", status:"In Progress" },
+  { id:"AIE-001", type:"Risk", headline:"Salesforce Systems Refresh may impact Copilot", description:"Salesforce Systems Refresh scheduled May 18 may impact Co-pilot functionality.", mitigation:"Expose pilot team to AskQ and require adoption for case resolution.", owner:"—", status:"Open" },
+  { id:"AIE-001", type:"Risk", headline:"Incorrect link forces users to restart", description:"A broken or incorrect link in the customer journey forces users to restart the conversation process.", mitigation:"Live conversation monitoring with proactive customer contact when issue detected.", owner:"—", status:"Open" },
+  { id:"AIE-001", type:"Issue", headline:"Maven reporting inaccurate resolution data", description:"Maven is reporting inaccurate resolution data and incorrect 'resolve by Maven' field values — undermining deflection and case resolution reporting.", mitigation:"Correct and standardize the 'status' reporting field and correct the 'resolve by Maven' field values.", owner:"—", status:"Open" },
+  { id:"AIE-001", type:"Risk", headline:"Customers not discovering or using AskQ", description:"Customers are not finding or engaging with AskQ prominently enough.", mitigation:"Redesign pages to highlight Maven more prominently.", owner:"—", status:"Open" },
+  { id:"AIE-002", type:"Risk", headline:"No named owner for operationalization", description:"Tool exists but has no named functional owner accountable for adoption across Sales, CS, and Support.", mitigation:"Anil confirmed as owner. Iterate and fix before Sales and Renewals rollout.", owner:"Anil Kamarajugadda", status:"In Progress", targetDate:"2026-05-31" },
+  { id:"AIE-004", type:"Dependency", headline:"Claude Enterprise licenses — 70 seats via CIO", description:"70 licenses being secured through CIO. Prerequisite for organic adoption pilot and daily brief.", mitigation:"Confirm procurement path and timeline with CIO org. Licenses signed — should be available to assign week of 5/11.", owner:"Greg Sarich", status:"In Progress" },
+  { id:"AIE-004", type:"Dependency", headline:"Connectors required before daily brief", description:"CS use cases require live connectors to Gong, Salesforce, Gainsight, and Microsoft 365. Until connectors are in place the daily brief cannot be scoped, built, or tested.", mitigation:"Connector requests being consolidated into a shared list. Approval owners being identified.", owner:"Rajesh Goldy", status:"Open" },
+  { id:"AIE-004", type:"Risk", headline:"Data quality and coverage gaps in CIO models", description:"CIO data models being assessed for reuse. Gold tables in place but gaps identified.", mitigation:"Reuse CIO curated datasets. Ariana to identify and document gaps.", owner:"Ariana Jackson", status:"In Progress" },
+  { id:"AIE-004", type:"Risk", headline:"Salesforce data integrity risk", description:"Account hierarchy mismatches across Gong, Gainsight, and other connected systems could surface inaccurate customer context in AI-generated outputs.", mitigation:"Validate Salesforce account hierarchy against Gong and Gainsight before connectors go live.", owner:"Stephanie Williamson", status:"Open" },
+  { id:"AIE-004", type:"Risk", headline:"No workflow designer / builder resource identified", description:"Gap for a workflow designer capable of defining and implementing Claude workflows beyond basic prompt usage.", mitigation:"Identify AI-fluent super users on CS team. Define ceiling of what they can own.", owner:"Stephanie Williamson", status:"In Progress" },
+  { id:"AIE-005", type:"Dependency", headline:"Churn model dependency — confirmed closed", description:"Sub-$50K renewal automation was thought to depend on churn model under AIE-004. Confirmed with Ciaran and Anil — churn model is not a dependency for renewal automation.", mitigation:"Closed.", owner:"Ciaran Ryan", status:"Closed" },
+  { id:"AIE-006", type:"Risk", headline:"Initiative not currently staffed", description:"Both workstreams in scoping but no resource identified to own or execute.", mitigation:"Identify whether this requires new hire, contractor, or reallocation.", owner:"Anil Kamarajugadda", status:"Open" },
+  { id:"AIE-007", type:"Dependency", headline:"Backlog bot initiatives gate on this platform", description:"AIE-011, AIE-012, AIE-015, and AIE-016 all gated on AIE-007 defining approved tooling, guardrails, and publishing standards.", mitigation:"Prioritize AIE-007 scoping. Use AIE-014 as best practice generator.", owner:"Anil Kamarajugadda", status:"Open" },
+  { id:"AIE-003", type:"Risk", headline:"Committed on ELT pipeline ahead of discovery", description:"Initiative referenced on ELT pipeline with $1M–$2M estimate but discovery still early and canvas, scope, and plan not yet defined.", mitigation:"Confirm with Anil what's known and what the next step is.", owner:"Anil Kamarajugadda", status:"Open", targetDate:"2026-06-01" },
+  { id:"DS-001", type:"Milestone", headline:"NPI Launch — Quest Data Modeler GA", description:"GA achieved May 19. All cross-functional teams GREEN post-release.", mitigation:"", owner:"Vani Mishra", status:"Resolved" },
+  { id:"DS-001", type:"Issue", headline:"Pricing Decisions Pending with ELT", description:"Pricing and packaging decisions for QDM not yet finalized at ELT level.", mitigation:"Escalate to Brooke for ELT agenda.", owner:"—", status:"In Progress" },
+  { id:"DS-006", type:"Milestone", headline:"Snowflake Summit", description:"Critical co-sell announcement milestone.", mitigation:"", owner:"Ryan Crochet", status:"Open", targetDate:"2026-06-01" },
+  { id:"DS-006", type:"Milestone", headline:"Oracle AI World", description:"Bookend milestone for Cross Sell announcement.", mitigation:"", owner:"Ryan Crochet", status:"Open" },
+  { id:"XP-003", type:"Dependency", headline:"Product Readiness Intake", description:"Intake form sent across all 15 in-scope products. Responses inform feasibility assessment and scope decisions.", mitigation:"Follow up on non-responses before May 20. Review submissions for patterns.", owner:"Brooke Watson", status:"In Progress", targetDate:"2026-05-20" },
+  { id:"XP-003", type:"Decision", headline:"Readiness Synthesis Owner", description:"No named owner for synthesis of product readiness intake responses. PMO cannot absorb this ownership.", mitigation:"Confirm with Brooke who owns synthesis. If no resource named, escalate.", owner:"Jorie Maloney", status:"Open", targetDate:"2026-05-20" },
+  { id:"XP-003", type:"Dependency", headline:"Track 4 — PSO Delivery Methodology", description:"Track 4 cannot proceed until Jamie Coleman's PSO team documents internal delivery methodology and produces templates and curriculum.", mitigation:"", owner:"Jamie Coleman", status:"Open" },
+  { id:"XP-003", type:"Assumption", headline:"Product Extensibility Unconfirmed", description:"Track 1 and Track 2 assume Quest products have accessible APIs and extensibility layers — not confirmed across all 15 products.", mitigation:"Info gathering underway, needs a named owner for synthesis.", owner:"TBD", status:"Open" },
+  { id:"XP-003", type:"Dependency", headline:"Track 3 — CS Methodology Confirmation", description:"Track 3 requires Stephanie's CS team to develop and own CS methodology training content. Not yet confirmed with Stephanie directly.", mitigation:"", owner:"Stephanie Williamson", status:"Open" },
+  { id:"XP-005", type:"Workstream Activity", headline:"Roadshow / Stakeholder Communication", description:"Structured introduction of the operating model to product teams and key partners.", mitigation:"Review comms plan with Brooke by 29-May.", owner:"Jorie Maloney", status:"Open", targetDate:"2026-06-15" },
+  { id:"XP-006", type:"Workstream Activity", headline:"Schema v1.6 published", description:"Data architecture schema published, stable, in use as grounding document.", mitigation:"", owner:"Jorie Maloney", status:"Resolved" },
+  { id:"XP-006", type:"Workstream Activity", headline:"Excel POC active", description:"All six boards in Excel, actively populated by Jorie, Sally, and Danielle.", mitigation:"In progress starting 11-May.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-05-28" },
+  { id:"XP-006", type:"Workstream Activity", headline:"Monday boards live", description:"Boards configured in Monday, ID system enforced, team transitioned off Excel.", mitigation:"Target 1-June.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-06-01" },
+  { id:"XP-006", type:"Milestone", headline:"Portfolio Intelligence reporting layer operational", description:"Dashboard, Health Summary, Weekly Readout, Stale & Stalled, GTM Outlook all live and running on cadence.", mitigation:"", owner:"Jorie Maloney", status:"Open", targetDate:"2026-06-05" },
+  { id:"XP-006", type:"Dependency", headline:"Stable publishing infrastructure", description:"HTML artifacts need GitHub Pages hosting before reporting layer can be fully operationalized.", mitigation:"", owner:"Jorie Maloney", status:"Open", targetDate:"2026-06-02" },
+  { id:"XP-007", type:"Workstream Activity", headline:"Stakeholder alignment complete", description:"Ciaran and Anil aligned on intake structure, Test & Learn adoption, and tools visibility.", mitigation:"Light structure needed on intake and decisions — natural entry point for PO to formalize before CoE transition completes.", owner:"Jorie Maloney", status:"Open", targetDate:"2026-06-30" },
+  { id:"XP-007", type:"Risk", headline:"CoE leadership transition", description:"Ciaran moving to new role, backfill pending. Design work needs to proceed in parallel.", mitigation:"", owner:"Jorie Maloney", status:"Open", targetDate:"2026-06-01" },
+  { id:"IS-001", type:"Milestone", headline:"FedRAMP ATO — Project Hosts", description:"FedRAMP Authority to Operate milestone under Project Hosts.", mitigation:"", owner:"Rakesh Shah", status:"In Progress" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — June", description:"Quest Monthly All-Hands.", mitigation:"Flag date for Product team in advance.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-06-17" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — July", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-07-15" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — August", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-08-19" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — September", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-09-16" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — October", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-10-14" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — November", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-11-18" },
+  { id:"META-001", type:"Milestone", headline:"All Hands — December", description:"Quest Monthly All-Hands.", mitigation:"Confirm date when sent by Matt.", owner:"Jorie Maloney", status:"In Progress", targetDate:"2026-12-16" },
+];
+
+const canvas = {
+  "AIE-001":{ what:"AskQ is an AI-powered support chatbot built on Maven AGI's generative AI platform, deployed across Quest product pages to provide 24/7 customer self-service.", why:"Quest's support function carries significant case volume that could be resolved without human intervention. AskQ reduces that load by enabling customers to self-serve at the point of need.", outcomes:"Customers resolve issues without contacting support. Case volume deflects at scale, freeing the support team for complex issues. AskQ becomes the default first contact across all product pages.", value:"$4M–$7M cost savings" },
+  "AIE-002":{ what:"A chatbot that delivers instant answers to product and licensing questions, reducing PM load from repetitive inquiries from Sales, CS, and Support.", why:"Product managers spend significant time answering questions that could be self-served. Sales cycle time is extended when reps can't get fast answers.", outcomes:"Sales and CS teams self-serve product and licensing answers. PM time recovered for strategic work. Inquiry-to-answer latency drops to near-zero for common questions.", value:"$1M (7 FTE)" },
+  "AIE-004":{ what:"A program of AI initiatives optimizing how Quest's CSMs identify risk, retain customers, and drive expansion revenue — churn model and Claude Enterprise adoption.", why:"CSMs currently operate reactively. Limited ability to correlate product usage, support history, and sentiment means churn risk is identified late.", outcomes:"CSMs have a daily action-first brief surfacing at-risk accounts and expansion opportunities. Churn identified early enough to intervene. Renewal rate improves toward 80%.", value:"80% Renewal | $1M" },
+  "AIE-007":{ what:"Foundational initiative to define how business teams build, test, publish, and maintain AI bots and agents — approved tooling, guardrails, and publishing standards.", why:"Without standards the org accumulates technical debt, security exposure, and bots nobody can maintain. The backlog cannot scale safely without this foundation.", outcomes:"Business teams can build and publish AI agents within a defined safe framework. Backlog initiatives have a clear path to execution. Quest's internal AI capability scales with governance.", value:"$4M–$9M roll-up potential across backlog" },
+  "AIE-020":{ what:"A GitHub-based internal tool built with Claude that automates the weekly CPTO communications cycle.", why:"Producing a consistent weekly briefing that reflects the full CPTO portfolio is time-consuming and manually assembled today.", outcomes:"CPTO weekly briefing produced in minutes, not hours. Format is consistent and inspectable. Leadership has a reliable signal on portfolio state without chasing PMs.", value:"TBD" },
+  "DS-001":{ what:"Quest DM in Cloud — modern cloud-based SaaS modeling solution with conceptual, logical, and physical modeling, metadata management, and collaborative workflows.", why:"Cloud modeling experience to compete with SQLDBM and Ellie.ai — enterprise grade semantic data modeling powered by AI.", outcomes:"Quest establishes a credible cloud-native data modeling product. Customers migrate from legacy desktop tooling. New pipeline generated via metadata play and competitive displacement.", value:"TBD" },
+  "DS-003":{ what:"Lumina — standalone AI-powered conversational interface transforming how enterprises interact with database monitoring data via natural language.", why:"Traditional database monitoring tools demand deep expertise and 40+ hours training. Lumina removes that barrier and expands the user base beyond expert DBAs.", outcomes:"Non-expert users can query and interpret database performance data without DBA support. Adoption expands beyond the DBA persona. Competitive differentiation in the monitoring market.", value:"$8.1M projected first-year contribution" },
+  "XP-001":{ what:"Quest pursuing early access to Anthropic's Mythos model — a preview-tier AI capability. Immediate use case: security, vulnerability discovery, code hardening.", why:"Quest's products sit inside Tier Zero identity infrastructure for 45,000+ organizations. AI-accelerated threat landscape requires proactive capability to match attacker pace.", outcomes:"At least one IS or DS engineering team actively using Mythos capability. Quest ahead of the curve on next-generation AI model access for security use cases.", value:"TBD — defensive risk + offensive new capability" },
+  "XP-002":{ what:"Obtain IRAP certification for the Cyber Security and Data Management platforms to enable Australian government sales.", why:"To grow sales of SMP/Cyber Security Platform to Australian government agencies and their providers.", outcomes:"Quest certified to sell into Australian government. Sales team has documentation and positioning to pursue AU Gov opportunities without blockers.", value:"TBD" },
+  "XP-003":{ what:"Structured partner enablement program — four tracks: IP Build (Partner-Unique), IP Build (Azure-Native), Customer Success Build, Professional Services Build. Across 15 products.", why:"Partners need a clear, structured path to build IP and practices on Quest products to expand the partner ecosystem.", outcomes:"Partners have a defined, supported path to build on Quest products. Partner-sourced pipeline grows. Professional Services capacity extends through certified partner network.", value:"TBD" },
+  "XP-005":{ what:"The operating model, standards, and stakeholder activation that define how the Quest Product Program Office functions.", why:"A program office without a defined operating model defaults to task tracking. This framework gives the team standing to hold standards and extend product leadership capacity.", outcomes:"Program office operates from a shared, published model. PMs know what to expect. Leadership gets consistent portfolio visibility without heroics.", value:"$1.2M first year" },
+  "XP-006":{ what:"Six connected boards (Intake, Portfolio, Canvas, Signals, Test & Learn, AI Tools), a published schema, an Excel POC in active use, and a migration to Monday underway.", why:"Portfolio visibility that requires heroics to produce isn't portfolio visibility. The architecture exists so reporting is generated from continuously maintained data.", outcomes:"Program office operates from a single source of truth. Health reports generated from live data. Leadership has an inspectable view at any moment.", value:"TBD" },
+  "XP-007":{ what:"Design and integration work defining how the program office operates within and alongside the CPTO AI program — intake structure, Test & Learn, AI Tools Board, internal AI comms.", why:"The AI program has public momentum but the operating model underneath is incomplete: intake is informal, Test & Learn not adopted, Tools Board unpopulated.", outcomes:"Program office is the connective tissue for the CPTO AI program. Intake is structured. Test & Learn is adopted. AI Tools Board is populated and maintained.", value:"TBD" },
+};
+
+// ── CONSTANTS ──
+const activeFilters = { platform:new Set(), aiTag:new Set(), health:new Set(), quarter:new Set(), domain:new Set(), type:new Set(), state:new Set() };
+const STATE_ORDER = ["Build & Launch","Discover & Plan","Intake & Scanning","Sunset","Steady State","Closed","—","On Hold"];
+const PLATFORM_ORDER = ["XP","DS","IS","AIE"];
+const TYPES = ["Product","Feature / Capability","Sales Play","Internal / Operational"];
+const DOMAINS = ["Product Strategy & Roadmap","Product Delivery","Commercial","Marketing","Customer","Enterprise Operations"];
+const QUARTERS = ["FY27-Q1","FY27-Q2","FY27-Q3","FY27-Q4","FY28-Q1","TBD","Ongoing","—"];
+const DD_KEYS = ['state','health','quarter','domain'];
+
+const TYPE_META = {
+  "Product":                { cls:"tl-product",  short:"Product",    tip:"New product or major release" },
+  "Feature / Capability":   { cls:"tl-feature",  short:"Feature",    tip:"New feature or enhancement" },
+  "Sales Play":             { cls:"tl-sales",    short:"Sales Play", tip:"Structured commercial motion coordinating product and sales" },
+  "Internal / Operational": { cls:"tl-internal", short:"Internal",   tip:"Operational or capability work not customer-facing" },
+};
+const AI_TIPS = {
+  "AI — Product Capability":  "AI built into what we sell — product roadmap and innovation",
+  "AI — Product Build":       "AI tools used to build faster across the full product lifecycle",
+  "AI — Internal Operations": "AI adopted by business functions to run the org more efficiently",
+  "None":                     "Initiatives with no AI classification",
+};
+
+function getPrefix(id){ return id.split('-')[0]; }
+function itemHasTag(item, tag){
+  if(tag==='None') return !item.aiTag||item.aiTag==='None';
+  if(item.aiTag==='AI x 3') return true;
+  return item.aiTag&&item.aiTag.includes(tag);
+}
+function openSignalCount(id){
+  return signals.filter(s=>s.id===id&&["Risk","Issue","Dependency"].includes(s.type)&&["Open","In Progress","Delayed"].includes(s.status)).length;
+}
+
+// ── UPCOMING (90 days, Milestones only) ──
+function renderUpcoming(){
+  const now=new Date(), cutoff=new Date(now.getTime()+90*24*60*60*1000);
+  const future=signals
+    .filter(s=>s.type==='Milestone'&&s.targetDate&&s.status!=='Resolved'&&s.status!=='Closed')
+    .map(s=>({...s,dateObj:new Date(s.targetDate)}))
+    .filter(s=>s.dateObj>=now&&s.dateObj<=cutoff)
+    .sort((a,b)=>a.dateObj-b.dateObj);
+  document.getElementById('upcomingEvents').innerHTML=future.length
+    ?future.map(s=>{
+      const d=s.dateObj.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return `<div class="upcoming-event"><span class="upcoming-event-date">${d}</span><span class="upcoming-event-name">${s.headline}</span></div>`;
+    }).join('')
+    :'<span style="font-size:11px;color:#92400e;">No key dates in the next 90 days</span>';
+}
+
+// ── STATS ──
+function renderStats(f){
+  const vis=f.filter(p=>!['Closed'].includes(p.state));
+  const g=vis.filter(p=>p.health==='green').length, a=vis.filter(p=>p.health==='amber').length, r=vis.filter(p=>p.health==='red').length;
+  document.getElementById('statBar').innerHTML=`
+    <div class="stat-item"><div class="stat-val">${f.length}</div><div class="stat-lbl">Total</div></div>
+    <div class="stat-item"><div class="stat-val green">${g}</div><div class="stat-lbl">Green</div></div>
+    <div class="stat-item"><div class="stat-val amber">${a}</div><div class="stat-lbl">Amber</div></div>
+    <div class="stat-item"><div class="stat-val red">${r}</div><div class="stat-lbl">Red</div></div>
+    <div class="stat-item"><div class="stat-val">${f.filter(p=>p.state==='Build & Launch').length}</div><div class="stat-lbl">Build & Launch</div></div>
+    <div class="stat-item"><div class="stat-val">${f.filter(p=>p.state==='Discover & Plan').length}</div><div class="stat-lbl">Discover & Plan</div></div>
+    <div class="stat-item"><div class="stat-val">${f.filter(p=>p.state==='Intake & Scanning').length}</div><div class="stat-lbl">Intake & Scanning</div></div>
+    <div class="stat-item"><div class="stat-val">${f.filter(p=>p.state==='Sunset').length}</div><div class="stat-lbl">Sunset</div></div>
+    <div class="stat-item"><div class="stat-val">${f.filter(p=>p.state==='Steady State').length}</div><div class="stat-lbl">Steady State</div></div>
+  `;
+}
+
+// ── DROPDOWNS ──
+function buildDropdowns(){
+  const defs=[
+    {key:'state',  label:'State',   options:STATE_ORDER.map(s=>({val:s,label:s}))},
+    {key:'health', label:'Health',  options:[{val:'green',label:'Green'},{val:'amber',label:'Amber'},{val:'red',label:'Red'}]},
+    {key:'quarter',label:'Quarter', options:QUARTERS.map(q=>({val:q,label:q}))},
+    {key:'domain', label:'Domain',  options:DOMAINS.map(d=>({val:d,label:d}))},
+  ];
+  document.getElementById('dropdownGroup').innerHTML=defs.map(d=>`
+    <div class="dropdown-wrap" id="dw-${d.key}">
+      <div class="dropdown-btn" id="dbtn-${d.key}" onclick="toggleDropdown('${d.key}')">
+        <span>${d.label}</span>
+        <span class="dropdown-badge" id="dbadge-${d.key}" style="display:none">0</span>
+        <span class="dropdown-arrow">▼</span>
+      </div>
+      <div class="dropdown-menu" id="dmenu-${d.key}">
+        ${d.options.map(o=>`
+          <label class="dropdown-item">
+            <input type="checkbox" id="dck-${d.key}-${o.val.replace(/[^a-z0-9]/gi,'_')}" onchange="toggleDropdownFilter('${d.key}','${o.val}')">
+            <span class="dropdown-item-label">${o.label}</span>
+          </label>`).join('')}
+      </div>
+    </div>`).join('');
+  document.addEventListener('click',e=>{
+    DD_KEYS.forEach(k=>{
+      const wrap=document.getElementById('dw-'+k);
+      if(wrap&&!wrap.contains(e.target)){
+        document.getElementById('dmenu-'+k)?.classList.remove('open');
+        document.getElementById('dbtn-'+k)?.classList.remove('open');
+      }
+    });
+  });
+}
+function toggleDropdown(key){
+  const isOpen=document.getElementById('dmenu-'+key).classList.contains('open');
+  DD_KEYS.forEach(k=>{document.getElementById('dmenu-'+k)?.classList.remove('open');document.getElementById('dbtn-'+k)?.classList.remove('open');});
+  if(!isOpen){document.getElementById('dmenu-'+key).classList.add('open');document.getElementById('dbtn-'+key).classList.add('open');}
+}
+function toggleDropdownFilter(key,val){
+  const set=activeFilters[key];
+  if(set.has(val))set.delete(val);else set.add(val);
+  const badge=document.getElementById('dbadge-'+key),btn=document.getElementById('dbtn-'+key);
+  if(set.size>0){badge.textContent=set.size;badge.style.display='inline';btn.classList.add('has-selection');}
+  else{badge.style.display='none';btn.classList.remove('has-selection');}
+  renderPortfolio();
+}
+
+// ── PILL FILTERS ──
+function renderFilters(){
+  document.getElementById('platformFilters').innerHTML=PLATFORM_ORDER.map(p=>
+    `<button class="pill ${activeFilters.platform.has(p)?'active-'+p:''}" onclick="toggleFilter('platform','${p}')">${p}</button>`
+  ).join('');
+  document.getElementById('typeFilters').innerHTML=TYPES.map(t=>{
+    const m=TYPE_META[t]||{cls:'tl-internal',short:t,tip:''};
+    return `<div class="tip-wrap">
+      <button class="pill ${activeFilters.type.has(t)?'active-type':''}" onclick="toggleFilter('type','${t}')">${m.short}</button>
+      ${m.tip?`<div class="tooltip">${m.tip}</div>`:''}
+    </div>`;
+  }).join('');
+  document.getElementById('aiFilters').innerHTML=[
+    {label:'Product Capability',val:'AI — Product Capability'},
+    {label:'Product Build',     val:'AI — Product Build'},
+    {label:'Internal Ops',      val:'AI — Internal Operations'},
+    {label:'No Tag',            val:'None'},
+  ].map(ai=>`<div class="pill-wrap">
+    <button class="pill ${activeFilters.aiTag.has(ai.val)?'active-ai':''}" onclick="toggleFilter('aiTag','${ai.val}')">${ai.label}</button>
+    <div class="tooltip">${AI_TIPS[ai.val]||''}</div>
+  </div>`).join('');
+}
+function toggleFilter(group,value){
+  const s=activeFilters[group];
+  if(s.has(value))s.delete(value);else s.add(value);
+  renderFilters();renderPortfolio();
+}
+function clearFilters(){
+  Object.keys(activeFilters).forEach(k=>activeFilters[k].clear());
+  document.querySelectorAll('.dropdown-item input[type=checkbox]').forEach(cb=>cb.checked=false);
+  DD_KEYS.forEach(k=>{
+    const badge=document.getElementById('dbadge-'+k),btn=document.getElementById('dbtn-'+k);
+    if(badge){badge.style.display='none';btn?.classList.remove('has-selection');}
+  });
+  document.getElementById('searchInput').value='';
+  renderFilters();renderPortfolio();
+}
+
+// ── FILTER LOGIC ──
+function applyFilters(items){
+  const q=(document.getElementById('searchInput')?.value||'').toLowerCase().trim();
+  return items.filter(item=>{
+    const pOk=activeFilters.platform.size===0||activeFilters.platform.has(item.platform);
+    const aOk=activeFilters.aiTag.size===0||[...activeFilters.aiTag].some(tag=>itemHasTag(item,tag));
+    const hOk=activeFilters.health.size===0||activeFilters.health.has(item.health);
+    const qOk=activeFilters.quarter.size===0||activeFilters.quarter.has(item.quarter);
+    const dOk=activeFilters.domain.size===0||activeFilters.domain.has(item.domain);
+    const tOk=activeFilters.type.size===0||activeFilters.type.has(item.type);
+    const stOk=activeFilters.state.size===0||activeFilters.state.has(item.state);
+    const sOk=!q||[item.id,item.name,item.owner,item.oneLiner,item.pm].some(f=>f&&f.toLowerCase().includes(q));
+    return pOk&&aOk&&hOk&&qOk&&dOk&&tOk&&stOk&&sOk;
+  });
+}
+
+function typeLabel(type){
+  const m=TYPE_META[type];
+  if(!m) return '';
+  return `<span class="type-label ${m.cls}">${m.short}</span>`;
+}
+function sigDot(health){
+  const m={green:'sig-green',amber:'sig-amber',red:'sig-red',none:'sig-none'};
+  return `<div class="sig-dot ${m[health]||'sig-none'}"></div>`;
+}
+
+function signalsHtml(itemSignals){
+  if(!itemSignals.length) return `<div class="no-signals">No signals logged for this initiative.</div>`;
+  return itemSignals.map(s=>{
+    const tk=s.type.toLowerCase().replace(/[\s\/]+/g,'').replace('workstreamactivity','workstream');
+    const stk = tk === 'workstreamactivity' ? 'workstream' : tk;
+    const statusCls={'In Progress':'s-inprogress','Open':'s-open','Resolved':'s-resolved','Closed':'s-closed','Delayed':'s-delayed'}[s.status]||'s-open';
+    const targetStr=s.targetDate?new Date(s.targetDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):null;
+    return `<div class="signal-item ${stk}">
+      <div class="sig-top-row">
+        <span class="sig-type-badge stb-${stk}">${s.type}</span>
+        <span class="sig-headline">${s.headline}</span>
+      </div>
+      ${s.description?`<div class="sig-desc">${s.description}</div>`:''}
+      ${s.mitigation?`<div class="sig-action"><strong>Action</strong> ${s.mitigation}</div>`:''}
+      <div class="sig-meta-row">
+        ${s.owner&&s.owner!=='—'?`<span class="sig-meta-item"><strong>Owner</strong> ${s.owner}</span>`:''}
+        <span class="status-pill ${statusCls}">${s.status}</span>
+        ${targetStr?`<span class="sig-meta-item"><strong>Target</strong> ${targetStr}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPortfolio(){
+  const filtered=applyFilters(portfolio);
+  renderStats(filtered);
+  document.getElementById('resultCount').innerHTML=`Showing <strong>${filtered.length}</strong> of ${portfolio.length} initiatives`;
+  const byState={};
+  for(const item of filtered){if(!byState[item.state])byState[item.state]=[];byState[item.state].push(item);}
+  const orderedStates=STATE_ORDER.filter(s=>byState[s]);
+
+  const html=orderedStates.map(state=>{
+    const items=byState[state].sort((a,b)=>{
+      const ai=PLATFORM_ORDER.indexOf(a.platform),bi=PLATFORM_ORDER.indexOf(b.platform);
+      return(ai===-1?99:ai)-(bi===-1?99:bi);
+    });
+    const safeState=state.replace(/[^a-zA-Z0-9]/g,'_');
+    const rows=items.map(item=>{
+      const prefix=getPrefix(item.id);
+      const safeId=item.id.replace(/[^a-zA-Z0-9]/g,'_');
+      const itemSignals=signals.filter(s=>s.id===item.id);
+      const cv=canvas[item.id];
+      const openCount=openSignalCount(item.id);
+      return `
+        <div class="init-row${item.state==='On Hold'?' on-hold':''}">
+          <div class="init-header" id="hdr-${safeId}" onclick="toggleRow('${safeId}')">
+            <div class="id-block">
+              <span class="id-badge id-${prefix}">${item.id}</span>
+              ${typeLabel(item.type)}
+            </div>
+            ${sigDot(item.health)}
+            <div class="name-block">
+              <div class="init-name">${item.name}</div>
+              ${item.oneLiner?`<div class="init-oneliner">${item.oneLiner}</div>`:''}
+            </div>
+            <div class="init-owner">${item.owner||'—'}</div>
+            <div class="init-quarter">${item.quarter||'—'}</div>
+            <div class="row-right">
+              ${openCount>0?`<span class="open-sig-badge">${openCount} open</span>`:''}
+              <span class="chevron" id="chev-${safeId}">▼</span>
+            </div>
+          </div>
+          <div class="init-body" id="body-${safeId}">
+            <div class="canvas-section">
+              <div class="canvas-col">
+                <div class="canvas-label">What</div>
+                <div class="canvas-value ${cv?'':'empty'}">${cv?cv.what:'Canvas not yet populated.'}</div>
+              </div>
+              <div class="canvas-col">
+                <div class="canvas-label">Why</div>
+                <div class="canvas-value ${cv&&cv.why?'':'empty'}">${cv&&cv.why?cv.why:'—'}</div>
+              </div>
+              <div class="canvas-col">
+                <div class="canvas-label">Outcomes</div>
+                <div class="canvas-value ${cv&&cv.outcomes?'':'empty'}">${cv&&cv.outcomes?cv.outcomes:'—'}</div>
+              </div>
+              <div class="canvas-col">
+                <div class="canvas-label">Value</div>
+                <div class="canvas-value">${cv?`<strong>${cv.value}</strong>`:'<span class="empty">—</span>'}</div>
+                <div class="canvas-meta-row">
+                  <div class="canvas-label">Program Manager</div>
+                  <div class="canvas-value">${item.pm||'—'}</div>
+                </div>
+                <div class="canvas-meta-row">
+                  <div class="canvas-label">Domain</div>
+                  <div class="canvas-value">${item.domain||'—'}</div>
+                </div>
+                ${item.aiTag&&item.aiTag!=='None'?`<div class="canvas-meta-row"><div class="canvas-label">AI Tag</div><div class="canvas-value"><span class="ai-chip">${item.aiTag}</span></div></div>`:''}
+              </div>
+            </div>
+            <div class="signals-section">
+              <div class="signals-label">Signals (${itemSignals.length})</div>
+              ${signalsHtml(itemSignals)}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `<div class="swimlane" id="sw-${safeState}">
+      <div class="sw-header" onclick="toggleSwimlane('${safeState}')">
+        <div class="sw-title">${state}</div>
+        <div class="sw-count">${items.length}</div>
+        <div class="sw-line"></div>
+        <span class="sw-chevron" id="swchev-${safeState}">▼</span>
+      </div>
+      <div class="sw-body" id="swbody-${safeState}">${rows}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('portfolioView').innerHTML=filtered.length?html:`
+    <div class="empty-state"><div class="empty-state-title">No initiatives match the active filters</div><div>Try adjusting or clearing the filters above</div></div>`;
+}
+
+function toggleRow(safeId){
+  const body=document.getElementById('body-'+safeId);
+  const chev=document.getElementById('chev-'+safeId);
+  const header=document.getElementById('hdr-'+safeId);
+  if(!body)return;
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+  if(header)header.classList.toggle('row-expanded',open);
+}
+function toggleSwimlane(safeState){
+  document.getElementById('swbody-'+safeState)?.classList.toggle('collapsed');
+  document.getElementById('swchev-'+safeState)?.classList.toggle('collapsed');
+}
+
+renderUpcoming();
+buildDropdowns();
+renderFilters();
+renderPortfolio();
+</script>
 </body>
 </html>
