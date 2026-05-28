@@ -1,4 +1,4 @@
-<!-- v1.5 · 2026-05-27 · Reporting: Portfolio Intelligence Dashboard moved to Portfolio Intelligence Views section; thumbnails removed; three clean groups -->
+<!-- v1.7 · 2026-05-27 · Shortcuts: Roadmaps + How-To added; Views: one section, CPTO Dashboard Suite, Portfolio Intelligence View, Initiative Brief, GTM before Stale -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,25 +276,15 @@
     border-top: none;
   }
 
-  /* Reporting subhead — slightly different treatment */
-  .reporting-subhead {
-    background: #eef3f7;
-    color: var(--q-dark-blue);
-    letter-spacing: 0.12em;
-    font-size: 10px;
+  /* Inline link within item desc */
+  .inline-link {
+    color: var(--q-medium-blue);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
   }
 
-  /* Indented suite items */
-  .item-indented {
-    padding-left: 48px;
-    border-left: 3px solid var(--q-light-gray);
-    background: #fafbfc;
-  }
-
-  .item-indented:hover {
-    background: #f0f4f8;
-    border-left-color: var(--q-medium-blue);
-  }
+  .inline-link:hover { text-decoration: underline; }
 
   /* Badge variants */
   .badge-live         { background: #e8f5e0; color: #3a6e00; }
@@ -330,7 +320,7 @@
   <div class="card">
     <div class="card-header">
       <div class="card-title">Shortcuts</div>
-      <div class="card-count">8</div>
+      <div class="card-count">10</div>
     </div>
     <div class="shortcuts-grid">
 
@@ -353,6 +343,14 @@
           <div class="sc-name">CPTO ELT Status Reports</div>
           <div class="sc-right"><div class="badge badge-doc">Folder</div><div class="item-arrow">↗</div></div>
         </a>
+        <a class="sc-item" href="https://prodcloudoutlook-my.sharepoint.com/personal/rakesh_shah_quest_com/Documents/Quest%20Consolidated%20Roadmaps%20-%20FY27.pptx?d=w8646ba1412bb494c942c8d3c329f7e5a&csf=1&web=1&e=GPUY5G" target="_blank">
+          <div class="sc-name">Consolidated Roadmaps — FY27</div>
+          <div class="sc-right"><div class="badge badge-doc">PPTX</div><div class="item-arrow">↗</div></div>
+        </a>
+        <a class="sc-item" href="https://prodcloudoutlook.sharepoint.com/sites/QuestPMO-ProgramOffice/Shared%20Documents/Portfolio%20Intelligence%20Model%20-%20POC/HTML%20Artifacts%20%26%20Publishing/Initiative-Brief-How-To.docx?d=wddfbbfdbfe164ae68a4bf1a88d9cda99&csf=1&web=1&e=oQtCO0" target="_blank">
+          <div class="sc-name">Initiative Brief — How-To</div>
+          <div class="sc-right"><div class="badge badge-doc">Word</div><div class="item-arrow">↗</div></div>
+        </a>
       </div>
 
       <!-- Divider -->
@@ -365,7 +363,7 @@
           <div class="sc-name">Intake Form</div>
           <div class="sc-right"><div class="badge badge-board">Form</div><div class="item-arrow">↗</div></div>
         </a>
-        <a class="sc-item" href="https://quest806443.monday.com/boards/18414927391" target="_blank">
+        <a class="sc-item" href="https://quest806443.monday.com/boards/18414927391/" target="_blank">
           <div class="sc-name">Intake Board</div>
           <div class="sc-right"><div class="badge badge-board">Monday</div><div class="item-arrow">↗</div></div>
         </a>
@@ -384,84 +382,18 @@
     </div>
   </div>
 
-  <!-- Portfolio Intelligence Reporting -->
+  <!-- Portfolio Intelligence Views -->
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Portfolio Intelligence Reporting — HTML</div>
-      <div class="card-count">8 items</div>
+      <div class="card-title">Portfolio Intelligence Views — HTML</div>
+      <div class="card-count">7 items</div>
     </div>
     <div class="item-list">
 
-      <!-- Executive Dashboard Suite -->
-      <div class="section-subhead reporting-subhead">Executive Dashboard Suite — Mike's Friday View</div>
-
-      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/executive-dashboard.html" target="_blank">
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/CPTOdashboard" target="_blank">
         <div>
-          <div class="item-name">Executive Dashboard View</div>
-          <div class="item-desc">Mike's Friday landing page. Entry point to all reporting tools — tabs for Metrics, Portfolio Health, Big Bets, and Agenda.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
-        </div>
-        <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
-          <div class="item-arrow">↗</div>
-        </div>
-      </a>
-
-      <a class="item item-full item-indented" href="https://jorie-maloney.github.io/quest-program-office-poc/cpto-metrics.html" target="_blank">
-        <div>
-          <div class="item-name">CPTO Metrics Report</div>
-          <div class="item-desc">Brooke's weekly executive metrics briefing. Product growth, portfolio health, AI adoption, engineering productivity.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
-        </div>
-        <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
-          <div class="item-arrow">↗</div>
-        </div>
-      </a>
-
-      <a class="item item-full item-indented" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-health.html" target="_blank">
-        <div>
-          <div class="item-name">Portfolio Health Summary</div>
-          <div class="item-desc">Roll-up view. Green, amber, red by domain. Brooke curates. Drills through to Portfolio Intelligence Dashboard.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
-        </div>
-        <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
-          <div class="item-arrow">↗</div>
-        </div>
-      </a>
-
-      <a class="item item-full item-indented" href="https://jorie-maloney.github.io/quest-program-office-poc/big-bets-big-wins.html" target="_blank">
-        <div>
-          <div class="item-name">Big Bets, Big Wins</div>
-          <div class="item-desc">Narrative summary from Product Delivery. Michael Vaughn's tool — what's coming out of the org worth naming.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
-        </div>
-        <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
-          <div class="item-arrow">↗</div>
-        </div>
-      </a>
-
-      <a class="item item-full item-indented" href="https://jorie-maloney.github.io/quest-program-office-poc/leadership-agenda.html" target="_blank">
-        <div>
-          <div class="item-name">Leadership Agenda Builder</div>
-          <div class="item-desc">Mike flags discussion items after consuming Friday reporting. Drives Monday agenda. PO captures follow-ons to intake.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
-        </div>
-        <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
-          <div class="item-arrow">↗</div>
-        </div>
-      </a>
-
-      <!-- Portfolio Intelligence Views -->
-      <div class="section-subhead reporting-subhead">Portfolio Intelligence Views</div>
-
-      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html" target="_blank">
-        <div>
-          <div class="item-name">Portfolio Intelligence Dashboard</div>
-          <div class="item-desc">The working view. Live data, always on. Program managers maintain it, everyone inspects it.</div>
+          <div class="item-name">CPTO Dashboard Suite</div>
+          <div class="item-desc">Mike's Friday landing page — one URL, five tabs. Summary · Performance Metrics · Portfolio Health · AI Acceleration · Wins · Next Steps</div>
           <div class="item-updated">Last updated: 27 May 2026</div>
         </div>
         <div class="item-right">
@@ -470,14 +402,26 @@
         </div>
       </a>
 
-      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/stale-stalled.html" target="_blank">
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html" target="_blank">
         <div>
-          <div class="item-name">Stale &amp; Stalled Dashboard</div>
-          <div class="item-desc">Surfaces data currency and momentum gaps before the Friday reporting cycle runs.</div>
-          <div class="item-updated">Placeholder — not yet built</div>
+          <div class="item-name">Portfolio Intelligence View</div>
+          <div class="item-desc">Complete, filterable view of the full portfolio. Program managers maintain it, everyone inspects it.</div>
+          <div class="item-updated">Last updated: 27 May 2026</div>
         </div>
         <div class="item-right">
-          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="badge badge-in-progress">In Progress</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/initiative-brief-template" target="_blank">
+        <div>
+          <div class="item-name">Initiative Brief</div>
+          <div class="item-desc">Portfolio intelligence at the initiative level — canvas, signals, and one-liner in a single shareable view.</div>
+          <div class="item-updated">Last updated: 27 May 2026</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-in-progress">In Progress</div>
           <div class="item-arrow">↗</div>
         </div>
       </a>
@@ -486,6 +430,18 @@
         <div>
           <div class="item-name">GTM Readiness Outlook</div>
           <div class="item-desc">Live calendar view of upcoming product milestones filtered for GTM and M&amp;D. Self-serve, no health signals.</div>
+          <div class="item-updated">Placeholder — not yet built</div>
+        </div>
+        <div class="item-right">
+          <div class="badge badge-placeholder">Placeholder</div>
+          <div class="item-arrow">↗</div>
+        </div>
+      </a>
+
+      <a class="item item-full" href="https://jorie-maloney.github.io/quest-program-office-poc/stale-stalled.html" target="_blank">
+        <div>
+          <div class="item-name">Stale &amp; Stalled</div>
+          <div class="item-desc">Surfaces data currency and momentum gaps before the Friday reporting cycle runs.</div>
           <div class="item-updated">Placeholder — not yet built</div>
         </div>
         <div class="item-right">
