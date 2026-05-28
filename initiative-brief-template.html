@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XX-000 — Initiative Name · Initiative Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --q-dark:#14215c;--q-mid:#0a8cbf;--q-night:#0a0e21;--q-lime:#a9bf04;
+  --q-bright:#5ad2ee;--q-gray:#64748b;--q-lgray:#e2e8f0;--q-xlgray:#f1f5f9;
+  --q-bg:#f4f5f7;--q-text:#1a1a2e;--q-muted:#64748b;--q-border:#e2e8f0;
+  --green:#16a34a;--green-bg:#dcfce7;--green-dot:#22c55e;
+  --amber:#d97706;--amber-bg:#fef3c7;--amber-dot:#f59e0b;
+  --red:#dc2626;
+  --platform-bg:#f1f5f9;--platform-color:#475569;
+  --shadow-sm:0 1px 2px rgba(10,14,33,.06);--radius:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--q-bg);color:var(--q-text);font-size:14px;line-height:1.5;}
+
+/* ── Topnav ── */
+.topnav{background:var(--q-dark);padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 1px 4px rgba(10,14,33,.18);}
+.nav-logo{display:flex;align-items:center;}
+.nav-quest-svg{height:22px;width:auto;}
+.nav-context{font-size:11px;color:rgba(255,255,255,.4);border-left:1px solid rgba(255,255,255,.12);margin-left:16px;padding-left:16px;letter-spacing:.06em;text-transform:uppercase;}
+.nav-breadcrumb{font-size:11px;color:rgba(255,255,255,.35);border-left:1px solid rgba(255,255,255,.08);margin-left:12px;padding-left:12px;}
+.nav-breadcrumb .current{color:var(--q-bright);font-weight:600;}
+.nav-right{display:flex;align-items:center;gap:14px;}
+.nav-datestamp{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;}
+.mode-toggle{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:6px;padding:3px;gap:2px;}
+.mode-btn{font-size:11px;font-weight:700;padding:4px 12px;border-radius:4px;border:none;cursor:pointer;transition:all .15s;color:rgba(255,255,255,.5);background:transparent;font-family:'Nunito Sans',sans-serif;}
+.mode-btn.active{background:white;color:var(--q-dark);}
+.mode-btn.working.active{background:var(--q-lime);color:var(--q-night);}
+
+/* Working banner */
+.working-banner{display:none;background:var(--q-lime);padding:8px 32px;font-size:12px;font-weight:700;color:var(--q-night);align-items:center;justify-content:space-between;}
+.working-banner.visible{display:flex;}
+.print-btn{font-size:11px;font-weight:800;padding:5px 14px;border-radius:4px;border:none;background:var(--q-dark);color:white;cursor:pointer;font-family:'Nunito Sans',sans-serif;}
+.print-btn:hover{opacity:.85;}
+
+/* ── Hero ── */
+.hero{background:var(--q-dark);padding:24px 32px 20px;border-bottom:3px solid var(--q-lime);}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--q-mid);text-transform:uppercase;margin-bottom:8px;}
+.id-badge{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;padding:2px 8px;border-radius:3px;background:var(--platform-bg);color:var(--platform-color);}
+.hero-title{font-size:24px;font-weight:800;color:white;margin-bottom:12px;line-height:1.2;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.meta-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;}
+.mt-dark{background:rgba(255,255,255,.1);color:#c8d8e8;}
+.mt-lime{background:var(--q-lime);color:var(--q-night);}
+.mt-signal{background:rgba(255,255,255,.1);color:#c8d8e8;display:flex;align-items:center;gap:5px;}
+.sig-dot-inline{width:8px;height:8px;border-radius:50%;display:inline-block;background:#94a3b8;}
+
+/* ── One-liner strip ── */
+.oneliner-strip{background:white;border-bottom:1px solid var(--q-border);padding:12px 32px;display:flex;align-items:flex-start;gap:12px;}
+.ol-dot{width:10px;height:10px;border-radius:50%;background:#94a3b8;margin-top:4px;flex-shrink:0;}
+.ol-label{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--q-gray);white-space:nowrap;margin-top:2px;}
+.ol-text{font-size:13.5px;color:var(--q-muted);line-height:1.5;font-style:italic;}
+
+/* ── Main layout ── */
+.main{max-width:1280px;margin:0 auto;padding:20px 32px 60px;display:grid;grid-template-columns:40fr 60fr;gap:20px;align-items:start;}
+
+.col-header{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--q-dark);display:flex;align-items:center;justify-content:space-between;}
+.col-header-label{color:var(--q-dark);}
+.col-header-sub{font-weight:600;color:var(--q-gray);font-size:10px;}
+
+/* ── Cards ── */
+.card{background:white;border:1px solid var(--q-border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:10px;}
+.card:last-child{margin-bottom:0;}
+.card-header{padding:10px 14px 9px;border-bottom:1px solid var(--q-lgray);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--q-mid);}
+.card-body{padding:14px;}
+.field-value{font-size:13px;color:var(--q-text);line-height:1.65;}
+.field-value.empty{color:#94a3b8;font-style:italic;font-size:12.5px;}
+.value-display{font-size:16px;font-weight:700;color:var(--q-gray);margin-bottom:4px;}
+.value-sub{font-size:12px;color:var(--q-gray);line-height:1.5;}
+
+.stakeholder-list{display:flex;flex-wrap:wrap;gap:5px;}
+.stakeholder-pill{background:var(--q-xlgray);border:1px solid var(--q-lgray);border-radius:20px;padding:3px 10px;font-size:11.5px;color:var(--q-text);}
+.stakeholder-role{color:var(--q-gray);font-size:11px;}
+
+/* ── Working session notes ── */
+.notes-panel{display:none;margin-top:10px;}
+.notes-panel.visible{display:block;}
+.notes-card{background:#fffbeb;border:1px solid #fcd34d;border-radius:var(--radius);overflow:hidden;}
+.notes-card-header{padding:10px 14px;border-bottom:1px solid #fde68a;display:flex;align-items:center;justify-content:space-between;}
+.notes-card-title{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#92400e;}
+.saved-ind{font-size:10px;color:var(--green);font-weight:700;opacity:0;transition:opacity .3s;}
+.saved-ind.show{opacity:1;}
+.notes-ta{width:100%;min-height:120px;padding:12px 14px;border:none;background:#fffbeb;font-family:'Nunito Sans',sans-serif;font-size:13px;color:var(--q-text);resize:vertical;outline:none;line-height:1.6;}
+.notes-ta::placeholder{color:#d97706;opacity:.6;}
+.notes-hint{padding:7px 14px;border-top:1px solid #fde68a;font-size:10.5px;color:#b45309;}
+
+/* ── Signal controls ── */
+.sig-controls{background:white;border:1px solid var(--q-border);border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;}
+.sig-control-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.sig-control-label{font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--q-gray);white-space:nowrap;min-width:36px;}
+.sig-pills{display:flex;gap:4px;flex-wrap:wrap;}
+.sig-pill{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--q-lgray);color:var(--q-gray);background:white;transition:all .12s;font-family:'Nunito Sans',sans-serif;}
+.sig-pill:hover{border-color:var(--q-mid);color:var(--q-mid);}
+.sig-pill.active{background:var(--q-dark);border-color:var(--q-dark);color:white;}
+.sort-pill{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--q-lgray);color:var(--q-gray);background:white;transition:all .12s;font-family:'Nunito Sans',sans-serif;}
+.sort-pill.active{background:var(--q-mid);border-color:var(--q-mid);color:white;}
+.sig-divider{width:1px;height:16px;background:var(--q-lgray);flex-shrink:0;}
+.sig-clear-btn{font-size:11px;font-weight:600;color:var(--q-gray);cursor:pointer;background:none;border:none;font-family:'Nunito Sans',sans-serif;padding:2px 4px;transition:color .12s;}
+.sig-clear-btn:hover{color:var(--q-mid);}
+
+/* ── Signal entries ── */
+.sig-list{display:flex;flex-direction:column;gap:6px;}
+.signal-entry{background:white;border:1px solid var(--q-border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);}
+.signal-entry-header{padding:10px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background .12s;}
+.signal-entry-header:hover{background:#fafbfc;}
+.sig-type-badge{font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:2px 6px;border-radius:2px;flex-shrink:0;white-space:nowrap;}
+.stb-risk{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+.stb-issue{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;}
+.stb-dependency{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;}
+.stb-assumption{background:#faf5ff;color:#7e22ce;border:1px solid #e9d5ff;}
+.stb-milestone{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.stb-decision{background:#faf5ff;color:#6b21a8;border:1px solid #e9d5ff;}
+.stb-win{background:#f7fee7;color:#3f6212;border:1px solid #d9f99d;}
+.stb-workstream{background:#f8fafc;color:#475569;border:1px solid #e2e8f0;}
+.sig-headline{font-size:12.5px;font-weight:700;color:var(--q-text);flex:1;line-height:1.35;}
+.status-pill{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;flex-shrink:0;}
+.s-open{background:#fee2e2;color:#991b1b;}
+.s-inprogress{background:#dbeafe;color:#1e40af;}
+.s-resolved{background:#dcfce7;color:#15803d;}
+.s-closed{background:var(--q-lgray);color:var(--q-gray);}
+.s-delayed{background:#fef3c7;color:#92400e;}
+.s-complete{background:#dcfce7;color:#15803d;}
+.sig-target-mini{font-family:'DM Mono',monospace;font-size:10px;color:var(--q-gray);white-space:nowrap;flex-shrink:0;}
+.sig-target-mini.soon{color:var(--amber);font-weight:700;}
+.chevron{font-size:10px;color:var(--q-gray);transition:transform .2s;flex-shrink:0;}
+.chevron.open{transform:rotate(180deg);color:var(--q-mid);}
+.sig-flag{font-size:9px;font-weight:800;background:#dbeafe;color:#1e40af;padding:1px 5px;border-radius:2px;flex-shrink:0;}
+.signal-entry-body{border-top:1px solid var(--q-lgray);background:#fafbfc;padding:12px 14px;}
+.sig-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;}
+.sig-field-label{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--q-gray);margin-bottom:3px;}
+.sig-field-value{font-size:12.5px;color:var(--q-text);line-height:1.55;}
+.sig-field-value.empty{color:#94a3b8;font-style:italic;}
+.sig-meta-row{display:flex;gap:16px;padding-top:8px;border-top:1px solid var(--q-lgray);flex-wrap:wrap;}
+.sig-meta-item{display:flex;flex-direction:column;gap:1px;}
+.sig-po-note{margin-top:8px;padding:6px 10px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:4px;font-size:11.5px;color:#0369a1;line-height:1.45;display:none;}
+.sig-po-note.visible{display:block;}
+.sig-po-note-label{font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#0284c7;margin-bottom:2px;}
+.sig-note-row{margin-top:10px;padding-top:10px;border-top:1px dashed #fcd34d;display:none;}
+.sig-note-row.visible{display:block;}
+.sig-note-label{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#92400e;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.sig-note-saved{font-size:10px;color:var(--green);font-weight:700;opacity:0;transition:opacity .3s;}
+.sig-note-saved.show{opacity:1;}
+.sig-note-ta{width:100%;min-height:52px;padding:7px 10px;border:1px solid #fcd34d;border-radius:5px;background:#fffbeb;font-family:'Nunito Sans',sans-serif;font-size:12px;color:var(--q-text);resize:vertical;outline:none;line-height:1.5;}
+.sig-note-ta:focus{border-color:var(--amber);box-shadow:0 0 0 2px rgba(245,158,11,.12);}
+.sig-note-ta::placeholder{color:#d97706;opacity:.6;}
+
+.empty-signals{padding:40px 20px;text-align:center;background:white;border:1px solid var(--q-border);border-radius:var(--radius);}
+.empty-signals-title{font-size:13px;font-weight:700;color:var(--q-dark);margin-bottom:6px;}
+.empty-signals-sub{font-size:12px;color:var(--q-gray);}
+
+.no-results{padding:32px 16px;text-align:center;font-size:13px;color:var(--q-gray);font-style:italic;background:white;border:1px solid var(--q-border);border-radius:var(--radius);}
+
+footer{background:var(--q-dark);padding:12px 32px;font-size:11px;color:rgba(255,255,255,.35);display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+
+@media print{
+  .topnav,.working-banner,.sig-controls,.chevron,.mode-toggle,footer{display:none!important;}
+  body{background:white;font-size:11px;}
+  .main{grid-template-columns:1fr;gap:16px;padding:0;max-width:100%;}
+  .hero{padding:16px 20px;}.hero-title{font-size:18px;}
+  .card,.signal-entry{box-shadow:none;margin-bottom:8px;page-break-inside:avoid;}
+  .signal-entry-body{display:block!important;}
+  .notes-panel,.sig-note-row,.sig-po-note{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <div class="nav-logo">
+    <svg class="nav-quest-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 542.96 134.49">
+      <path fill="#fff" d="M258.06,89.97c0,4.97-1.06,9.42-3.18,13.36s-4.97,7-8.54,9.18c-3.58,2.18-7.72,3.27-12.45,3.27-5.21,0-9.24-1.45-12.09-4.36-2.85-2.91-4.27-7.21-4.27-12.9v-58.52h-22.9v63.25c0,5.94,1.24,11.27,3.73,15.99,2.48,4.73,6.06,8.45,10.72,11.18,4.66,2.73,10.21,4.09,16.63,4.09,8.12,0,15.18-2.03,21.17-6.09,5.01-3.39,8.97-7.74,11.91-13.03v17.3h22.35V39.98h-23.08v49.99h0Z"/>
+      <path fill="#fff" d="M364.2,43.89c-6.79-3.82-14.78-5.73-23.99-5.73-9.7,0-18.18,2.03-25.44,6.09-7.27,4.06-12.93,9.7-16.99,16.9-4.06,7.21-6.09,15.54-6.09,24.99s2.03,17.81,6.09,25.08c4.06,7.27,9.75,12.97,17.08,17.08,7.33,4.12,15.9,6.18,25.72,6.18,10.9,0,19.96-2.55,27.17-7.63,7.21-5.09,12.33-12,15.36-20.72h-21.63c-1.7,3.76-4.36,6.54-8,8.36-3.63,1.82-7.88,2.73-12.72,2.73-8.36,0-14.81-2.64-19.36-7.91-3.46-4.01-5.59-9.38-6.42-16.08h69.94c.24-1.45.42-2.91.55-4.36.12-1.45.18-3.03.18-4.73,0-9.21-1.88-17.27-5.63-24.17-3.76-6.91-9.03-12.27-15.81-16.08ZM339.85,55.43c7.15,0,12.72,2.18,16.72,6.54,3.3,3.6,5.21,8.7,5.79,15.27h-46.99c1.01-5.64,3.01-10.26,6.03-13.81,4.54-5.33,10.69-8,18.45-8h0Z"/>
+      <path fill="#fff" d="M445.7,77.97l-15.99-3.63c-4.85-1.21-8.3-2.64-10.36-4.27-2.06-1.64-3.09-3.66-3.09-6.09,0-3.15,1.33-5.54,4-7.18,2.66-1.64,6.6-2.45,11.81-2.45,5.57,0,9.97.97,13.18,2.91s5.12,4.79,5.73,8.54h20.9c-.73-8.6-4.58-15.36-11.54-20.26-6.97-4.91-16.21-7.36-27.72-7.36s-20.75,2.45-27.35,7.36c-6.61,4.91-9.9,11.66-9.9,20.26,0,7.03,2.45,12.88,7.36,17.54,4.91,4.67,12.45,8.09,22.63,10.27l14.9,3.45c4.72,1.09,7.93,2.45,9.63,4.09,1.69,1.64,2.54,3.73,2.54,6.27,0,3.52-1.49,6.21-4.45,8.09-2.97,1.88-7.42,2.82-13.36,2.82-6.54,0-11.75-1.21-15.63-3.63s-6.12-6-6.72-10.72h-20.9c.73,9.57,4.91,17.06,12.54,22.45s17.87,8.09,30.72,8.09,21.75-2.42,28.53-7.27c6.78-4.84,10.18-11.69,10.18-20.54,0-6.91-2.33-12.9-7-17.99-4.67-5.09-11.54-8.66-20.63-10.72Z"/>
+      <path fill="#fff" d="M542.96,57.98v-17.99h-25.26V10.36l-23.08,8.54v21.08h-30.86c6.83,3.14,12.72,14.41,13.04,17.99h17.81v44.16c0,10.79,2.69,18.87,8.09,24.26,5.39,5.39,13.78,8.09,25.17,8.09,3.27,0,6.24-.21,8.91-.64,2.66-.43,4.73-1,6.18-1.73v-17.81c-1.45.49-3,.88-4.63,1.18-1.64.3-3.48.45-5.54.45-5.21,0-9.03-1.09-11.45-3.27-2.43-2.18-3.64-5.51-3.64-10v-44.71h25.26Z"/>
+      <path fill="#fff" d="M187.17,112.75l-30.77,1.16c.89-.69,1.76-1.4,2.59-2.14,6.06-5.45,10.54-12.09,13.45-19.9,2.91-7.81,4.36-16.14,4.36-24.99,0-13.21-2.79-24.84-8.36-34.9s-13.3-17.9-23.17-23.54C135.39,2.82,124.03,0,111.19,0s-23.84,2.82-33.72,8.45c-6.19,3.53-11.54,7.93-16.04,13.18l15.94,15.76c3.15-5.03,7.17-9.11,12.1-12.22,6.24-3.94,13.48-5.91,21.72-5.91s15.66,1.97,21.9,5.91c6.24,3.94,11.09,9.45,14.54,16.54s5.18,15.36,5.18,24.81c0,9.94-1.76,18.66-5.27,26.17-3.52,7.51-8.39,13.3-14.63,17.36-6.24,4.06-13.48,6.09-21.72,6.09s-15.3-2.03-21.54-6.09c-2.95-1.92-5.58-4.23-7.9-6.9l-14.78,14.95c3.23,2.92,6.78,5.52,10.69,7.76,10,5.76,21.6,8.63,34.8,8.63,6.91,0,13.09-.09,18.54-.27,5.45-.18,10.69-.39,15.72-.64,5.03-.24,10.42-.45,16.18-.64,5.75-.18,27.98-.27,35.61-.27,0,0-10.03-3-11.34-19.92h0Z"/>
+      <polygon fill="#fff" points="87.48 62.69 55.03 30.61 45.53 40.22 70.26 64.44 26.45 64.44 26.45 80.41 69.72 80.44 45.9 104.75 55.51 114.24 87.59 81.79 97.08 72.19 87.48 62.69"/>
+      <rect fill="#fff" y="64.44" width="15.96" height="15.96"/>
+    </svg>
+    <div class="nav-context">Program Office</div>
+    <div class="nav-breadcrumb">Portfolio Intelligence <span style="opacity:.4;margin:0 4px;">/</span> Platform <span style="opacity:.4;margin:0 4px;">/</span> <span class="current">XX-000</span></div>
+  </div>
+  <div class="nav-right">
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="share-btn" onclick="setMode('share')">Share View</button>
+      <button class="mode-btn working" id="working-btn" onclick="setMode('working')">Working Session</button>
+    </div>
+    <span class="nav-datestamp" id="nav-date">—</span>
+  </div>
+</div>
+
+<div class="working-banner" id="working-banner">
+  <span>⚡ Working Session — notes auto-save to your browser. Switch to Share View to hide them.</span>
+  <button class="print-btn" onclick="printSession()">Print Session Notes →</button>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow"><span class="id-badge">XX-000</span>Platform · Type · Initiative Brief</div>
+  <div class="hero-title">Initiative Name</div>
+  <div class="hero-meta">
+    <span class="meta-tag mt-dark">Platform</span>
+    <span class="meta-tag mt-dark">Domain</span>
+    <span class="meta-tag mt-dark">State</span>
+    <span class="meta-tag mt-dark">Impact</span>
+    <span class="meta-tag mt-dark">AI Tag</span>
+    <span class="meta-tag mt-dark">Quarter</span>
+    <span class="meta-tag mt-signal"><span class="sig-dot-inline"></span>&nbsp;Signal</span>
+    <span class="meta-tag mt-dark">Owner: —</span>
+    <span class="meta-tag mt-dark">PM: —</span>
+  </div>
+</div>
+
+<div class="oneliner-strip">
+  <div class="ol-dot"></div>
+  <span class="ol-label">Signal</span>
+  <span class="ol-text">One-liner goes here — what is this, where does it stand, what is the next meaningful thing.</span>
+</div>
+
+<div class="main">
+
+  <!-- LEFT: Canvas -->
+  <div>
+    <div class="col-header">
+      <span class="col-header-label">Canvas</span>
+      <span class="col-header-sub">Initiative context</span>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">What</span></div>
+      <div class="card-body"><div class="field-value empty">Not yet populated.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Why</span></div>
+      <div class="card-body"><div class="field-value empty">Not yet populated.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Outcomes</span></div>
+      <div class="card-body"><div class="field-value empty">Not yet populated.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Value</span></div>
+      <div class="card-body">
+        <div class="value-display">TBD</div>
+        <div class="value-sub">To be populated once Why is confirmed.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Key Decisions &amp; Rationale</span></div>
+      <div class="card-body"><div class="field-value empty">Not yet populated.</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Stakeholders &amp; Core Team</span></div>
+      <div class="card-body">
+        <div class="stakeholder-list">
+          <div class="stakeholder-pill">Owner Name <span class="stakeholder-role">— Role</span></div>
+          <div class="stakeholder-pill">PM Name <span class="stakeholder-role">— Program Manager</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Links &amp; Artifacts</span></div>
+      <div class="card-body"><div class="field-value empty" style="padding:4px 0;">No links logged yet.</div></div>
+    </div>
+
+    <!-- General working session notes -->
+    <div class="notes-panel" id="notes-panel">
+      <div class="notes-card">
+        <div class="notes-card-header">
+          <span class="notes-card-title">Session Notes — General</span>
+          <span class="saved-ind" id="saved-general">✓ Saved</span>
+        </div>
+        <textarea class="notes-ta" id="notes-ta-general"
+          placeholder="General follow-ups, canvas gaps, decisions to confirm..."
+          oninput="autoSave('general')"></textarea>
+        <div class="notes-hint">Saves to your browser · Print Session Notes exports all notes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Signals -->
+  <div>
+    <div class="col-header">
+      <span class="col-header-label">Signals</span>
+      <span class="col-header-sub" id="sig-count-display">0 entries</span>
+    </div>
+
+    <div class="sig-controls">
+      <div class="sig-control-row">
+        <span class="sig-control-label">Sort</span>
+        <button class="sort-pill active" id="sort-date" onclick="setSort('date')">Target Date</button>
+        <button class="sort-pill" id="sort-type" onclick="setSort('type')">Type</button>
+        <button class="sort-pill" id="sort-status" onclick="setSort('status')">Status</button>
+      </div>
+      <div class="sig-control-row">
+        <span class="sig-control-label">Filter</span>
+        <div class="sig-pills" id="type-filters"></div>
+        <div class="sig-divider"></div>
+        <button class="sig-clear-btn" onclick="clearFilters()">Clear</button>
+      </div>
+    </div>
+
+    <div class="sig-list" id="sig-list"></div>
+  </div>
+
+</div>
+
+<footer>
+  <span>Quest Program Office · XX-000 Initiative Name · Initiative Brief</span>
+  <span>Schema v1.6 · Source of truth: Monday</span>
+</footer>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+// Replace SIGNALS with the initiative's signal entries from the Signals board.
+// Each entry follows the schema below. Remove this comment block when populated.
+//
+// Required fields: id, type, headline, status
+// Optional fields: domain, description, action, owner, targetDate, impact, flagged, poNote
+//
+// type options: Risk | Issue | Dependency | Assumption | Decision | Milestone | Workstream Activity | Win
+// status options: Open | In Progress | Delayed | Resolved | Closed
+// flagged: true = shows "Weekly" badge (Flag for Weekly Report = Yes on Signals board)
+// poNote: PO-only note from the Notes field on the Signals board — shown in Working Session only
+
+const SIGNALS = [
+  // {
+  //   id: 's1',
+  //   type: 'Workstream Activity',
+  //   domain: 'Product Strategy & Roadmap',
+  //   headline: 'Signal headline',
+  //   description: 'Full description of the signal entry.',
+  //   action: 'What is being done or what was done.',
+  //   owner: 'Owner Name',
+  //   status: 'In Progress',
+  //   targetDate: '2026-06-01',   // ISO format, or null
+  //   impact: 'High',             // High | Medium | Low, or omit
+  //   flagged: true,              // true if Flag for Weekly Report = Yes
+  //   poNote: 'PO working note.', // from Notes field, or omit
+  // },
+];
+
+// ── STORAGE KEY — update per initiative to avoid localStorage collisions ──
+const STORAGE_KEY = 'po_XX000_brief_v1';
+
+// ── SORT / FILTER ─────────────────────────────────────────────────────────
+const TYPE_PRIORITY = {'Issue':1,'Risk':2,'Dependency':3,'Assumption':4,'Decision':5,'Milestone':6,'Win':7,'Workstream Activity':8};
+const STATUS_PRIORITY = {'Delayed':1,'Open':2,'In Progress':3,'Resolved':4,'Closed':5,'Complete':6};
+const TYPE_CLS = {'Risk':'stb-risk','Issue':'stb-issue','Dependency':'stb-dependency','Assumption':'stb-assumption','Milestone':'stb-milestone','Decision':'stb-decision','Win':'stb-win','Workstream Activity':'stb-workstream'};
+const STATUS_CLS = {'Open':'s-open','In Progress':'s-inprogress','Resolved':'s-resolved','Closed':'s-closed','Delayed':'s-delayed','Complete':'s-complete'};
+
+let currentSort='date', activeTypeFilters=new Set(), currentMode='share';
+
+function setSort(m){
+  currentSort=m;
+  document.querySelectorAll('.sort-pill').forEach(p=>p.classList.remove('active'));
+  document.getElementById('sort-'+m).classList.add('active');
+  renderSignals();
+}
+function sortSignals(sigs){
+  const s=[...sigs];
+  if(currentSort==='date'){
+    s.sort((a,b)=>{
+      const aD=a.targetDate?new Date(a.targetDate):null, bD=b.targetDate?new Date(b.targetDate):null;
+      if(!aD&&!bD)return(TYPE_PRIORITY[a.type]||9)-(TYPE_PRIORITY[b.type]||9);
+      if(!aD)return 1; if(!bD)return -1; return aD-bD;
+    });
+  } else if(currentSort==='type'){
+    s.sort((a,b)=>(TYPE_PRIORITY[a.type]||9)-(TYPE_PRIORITY[b.type]||9));
+  } else if(currentSort==='status'){
+    s.sort((a,b)=>(STATUS_PRIORITY[a.status]||9)-(STATUS_PRIORITY[b.status]||9));
+  }
+  return s;
+}
+function buildTypeFilters(){
+  const types=[...new Set(SIGNALS.map(s=>s.type))];
+  document.getElementById('type-filters').innerHTML=types.map(t=>`<button class="sig-pill" id="fp-${t.replace(/\s/g,'_')}" onclick="toggleTypeFilter('${t}')">${t}</button>`).join('');
+}
+function toggleTypeFilter(type){
+  if(activeTypeFilters.has(type)){activeTypeFilters.delete(type);document.getElementById('fp-'+type.replace(/\s/g,'_')).classList.remove('active');}
+  else{activeTypeFilters.add(type);document.getElementById('fp-'+type.replace(/\s/g,'_')).classList.add('active');}
+  renderSignals();
+}
+function clearFilters(){
+  activeTypeFilters.clear();
+  document.querySelectorAll('.sig-pill').forEach(p=>p.classList.remove('active'));
+  renderSignals();
+}
+function filterSignals(sigs){return activeTypeFilters.size?sigs.filter(s=>activeTypeFilters.has(s.type)):sigs;}
+
+// ── RENDER ────────────────────────────────────────────────────────────────
+function fmtDate(d){if(!d)return null;return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function isSoon(d){if(!d)return false;const diff=(new Date(d)-new Date())/86400000;return diff>=-1&&diff<=14;}
+
+function sigHtml(s){
+  const bc=TYPE_CLS[s.type]||'stb-workstream';
+  const sc=STATUS_CLS[s.status]||'s-open';
+  const dateStr=fmtDate(s.targetDate);
+  const soon=isSoon(s.targetDate);
+  const savedNote=loadNote('sig-'+s.id);
+  return `<div class="signal-entry" id="entry-${s.id}">
+    <div class="signal-entry-header" onclick="toggleSig('${s.id}')">
+      <span class="sig-type-badge ${bc}">${s.type}</span>
+      <span class="sig-headline">${s.headline}</span>
+      ${dateStr?`<span class="sig-target-mini${soon?' soon':''}">${dateStr}</span>`:''}
+      <span class="status-pill ${sc}">${s.status}</span>
+      ${s.flagged?'<span class="sig-flag">Weekly</span>':''}
+      <span class="chevron open" id="chev-${s.id}">▼</span>
+    </div>
+    <div class="signal-entry-body" id="body-${s.id}">
+      <div class="sig-body-grid">
+        <div><div class="sig-field-label">Description</div><div class="sig-field-value ${s.description?'':'empty'}">${s.description||'Not recorded.'}</div></div>
+        <div><div class="sig-field-label">Action / Mitigation</div><div class="sig-field-value ${s.action?'':'empty'}">${s.action||'No action logged.'}</div></div>
+      </div>
+      <div class="sig-meta-row">
+        <div class="sig-meta-item"><div class="sig-field-label">Owner</div><div class="sig-field-value" style="font-size:12px;">${s.owner||'—'}</div></div>
+        ${s.domain?`<div class="sig-meta-item"><div class="sig-field-label">Domain</div><div class="sig-field-value" style="font-size:12px;">${s.domain}</div></div>`:''}
+        ${s.impact?`<div class="sig-meta-item"><div class="sig-field-label">Impact</div><div class="sig-field-value" style="font-size:12px;">${s.impact}</div></div>`:''}
+        ${dateStr?`<div class="sig-meta-item"><div class="sig-field-label">Target Date</div><div class="sig-field-value" style="font-size:12px;font-family:'DM Mono',monospace;${soon?'color:var(--amber);font-weight:700;':''}">${dateStr}</div></div>`:''}
+      </div>
+      ${s.poNote?`<div class="sig-po-note" id="ponote-${s.id}"><div class="sig-po-note-label">PO Note</div>${s.poNote}</div>`:''}
+      <div class="sig-note-row${currentMode==='working'?' visible':''}" id="signote-row-${s.id}">
+        <div class="sig-note-label"><span>Signal Note${savedNote?' 📝':''}</span><span class="sig-note-saved" id="signote-saved-${s.id}">✓ Saved</span></div>
+        <textarea class="sig-note-ta" id="signote-ta-${s.id}" placeholder="Note for this signal..." oninput="autoSave('sig-${s.id}')">${savedNote}</textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSignals(){
+  const filtered=filterSignals(sortSignals(SIGNALS));
+  const list=document.getElementById('sig-list');
+  if(!SIGNALS.length){
+    list.innerHTML=`<div class="empty-signals"><div class="empty-signals-title">No signals logged yet</div><div class="empty-signals-sub">Signals from the Signals board will appear here once populated.</div></div>`;
+  } else if(!filtered.length){
+    list.innerHTML='<div class="no-results">No signals match the active filters.</div>';
+  } else {
+    list.innerHTML=filtered.map(sigHtml).join('');
+  }
+  const total=SIGNALS.length, shown=filtered.length;
+  document.getElementById('sig-count-display').textContent=
+    !total ? '0 entries' :
+    activeTypeFilters.size ? `${shown} of ${total} entries` :
+    `${total} ${total===1?'entry':'entries'}`;
+}
+
+function toggleSig(id){
+  const body=document.getElementById('body-'+id), chev=document.getElementById('chev-'+id);
+  if(!body)return;
+  const isHidden=body.style.display==='none';
+  body.style.display=isHidden?'block':'none';
+  if(chev)chev.classList.toggle('open',isHidden);
+}
+
+// ── MODE TOGGLE ───────────────────────────────────────────────────────────
+function setMode(mode){
+  currentMode=mode;
+  const isW=mode==='working';
+  document.getElementById('share-btn').classList.toggle('active',!isW);
+  document.getElementById('working-btn').classList.toggle('active',isW);
+  document.getElementById('working-banner').classList.toggle('visible',isW);
+  document.getElementById('notes-panel').classList.toggle('visible',isW);
+  document.querySelectorAll('.sig-note-row').forEach(r=>r.classList.toggle('visible',isW));
+  document.querySelectorAll('.sig-po-note').forEach(r=>r.classList.toggle('visible',isW));
+}
+
+// ── NOTES ─────────────────────────────────────────────────────────────────
+const storageKey=id=>STORAGE_KEY+'_'+id;
+function loadNote(id){try{return localStorage.getItem(storageKey(id))||'';}catch(e){return '';}}
+function saveNoteVal(id,val){try{localStorage.setItem(storageKey(id),val);}catch(e){}}
+
+const saveTimers={};
+function autoSave(id){
+  clearTimeout(saveTimers[id]);
+  saveTimers[id]=setTimeout(()=>{
+    if(id==='general'){
+      const ta=document.getElementById('notes-ta-general'); if(!ta)return;
+      saveNoteVal('general',ta.value); showSaved('saved-general');
+    } else {
+      const rawId=id.replace(/^sig-/,'');
+      const ta=document.getElementById('signote-ta-'+rawId); if(!ta)return;
+      saveNoteVal(id,ta.value); showSaved('signote-saved-'+rawId);
+    }
+  },600);
+}
+function showSaved(elId){
+  const el=document.getElementById(elId);
+  if(el){el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
+}
+
+// ── PRINT ─────────────────────────────────────────────────────────────────
+function printSession(){
+  const gn=loadNote('general').trim();
+  const hasSignalNotes=SIGNALS.some(s=>loadNote('sig-'+s.id).trim());
+  if(!gn&&!hasSignalNotes){alert('No session notes yet. Add notes in Working Session mode first.');return;}
+  window.print();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+function init(){
+  // Set today's date in the topnav
+  document.getElementById('nav-date').textContent=new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'});
+  buildTypeFilters();
+  renderSignals();
+  const gn=loadNote('general');
+  const ta=document.getElementById('notes-ta-general');
+  if(ta&&gn)ta.value=gn;
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPTO Executive Dashboard — Quest</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,300;1,6..12,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --q-dark:#14215c;--q-mid:#0a8cbf;--q-bright:#5ad2ee;--q-lime:#a9bf04;
+  --q-muted:#64748b;--q-lgray:#e2e8f0;--q-xlgray:#f1f5f9;--q-bg:#f4f5f7;
+  --q-white:#ffffff;--q-border:#e2e8f0;--q-text:#1a1a2e;
+  --green:#16a34a;--green-bg:#dcfce7;--green-dot:#22c55e;
+  --amber:#d97706;--amber-bg:#fef3c7;--amber-dot:#f59e0b;
+  --red:#dc2626;--red-bg:#fee2e2;--red-dot:#ef4444;
+  --IS:#1e40af;--IS-bg:#dbeafe;--DS:#5b21b6;--DS-bg:#ede9fe;
+  --XP:#0a8cbf;--XP-bg:#e0f2fe;--AIE:#065f46;--AIE-bg:#d1fae5;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--q-bg);color:var(--q-text);font-size:14px;line-height:1.5;min-height:100vh;}
+
+.sample-banner{background:var(--q-lime);color:#0a0e21;text-align:center;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:5px 20px;position:sticky;top:0;z-index:999;}
+
+.topnav{background:var(--q-dark);padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:27px;z-index:200;box-shadow:0 1px 4px rgba(10,14,33,.18);}
+.nav-quest-svg{height:22px;width:auto;}
+.nav-logo{display:flex;align-items:center;}
+.nav-context{font-size:11px;color:rgba(255,255,255,.4);border-left:1px solid rgba(255,255,255,.12);margin-left:16px;padding-left:16px;letter-spacing:.06em;text-transform:uppercase;}
+.nav-right{display:flex;align-items:center;gap:20px;}
+.nav-datestamp{font-size:11px;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace;}
+.nav-user{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.7);}
+.nav-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(90,210,238,.4);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--q-bright);}
+
+.tabbar{background:var(--q-white);border-bottom:2px solid var(--q-border);padding:0 32px;display:flex;align-items:flex-end;position:sticky;top:79px;z-index:150;box-shadow:0 1px 3px rgba(10,14,33,.06);}
+.tab-btn{padding:14px 18px 12px;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--q-muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:7px;font-family:'Nunito Sans',sans-serif;}
+.tab-btn:hover{color:var(--q-dark);}
+.tab-btn.active{color:var(--q-dark);border-bottom-color:var(--q-lime);}
+.tab-num{font-size:9px;font-weight:800;color:var(--q-lgray);background:var(--q-xlgray);padding:1px 6px;border-radius:10px;}
+.tab-btn.active .tab-num{background:rgba(169,191,4,.15);color:#6b7c00;}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.panel-wrap{max-width:1160px;margin:0 auto;padding:28px 32px 80px;}
+
+.section-eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--q-mid);margin-bottom:4px;}
+.section-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--q-dark);line-height:1.15;margin-bottom:2px;}
+.section-title em{font-style:italic;color:var(--q-mid);}
+.section-sub{font-size:11.5px;color:var(--q-muted);margin-bottom:24px;font-family:'DM Mono',monospace;}
+.rag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;display:inline-block;}
+.rag-dot.g{background:var(--green-dot);}
+.rag-dot.a{background:var(--amber-dot);}
+.rag-dot.r{background:var(--red-dot);}
+.strip-label{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--q-mid);margin-bottom:8px;display:flex;align-items:center;gap:10px;}
+.strip-label::after{content:'';flex:1;height:1px;background:var(--q-border);}
+
+/* ── SUMMARY ── */
+.summary-hero{background:var(--q-dark);border-radius:10px;padding:28px 32px;margin-bottom:20px;}
+.summary-greeting{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:6px;}
+.summary-headline{font-family:'DM Serif Display',serif;font-size:26px;color:white;line-height:1.2;}
+.summary-headline em{font-style:italic;color:var(--q-bright);}
+.summary-date{font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;margin-top:8px;}
+.metrics-strip{display:grid;gap:10px;margin-bottom:14px;}
+.metrics-4{grid-template-columns:repeat(4,1fr);}
+.metric-tile{background:var(--q-white);border:1px solid var(--q-border);border-radius:8px;padding:16px 18px;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.metric-tile-lbl{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--q-muted);margin-bottom:6px;}
+.metric-tile-val{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--q-dark);line-height:1;margin-bottom:4px;}
+.metric-tile-sub{font-size:10.5px;color:var(--q-muted);line-height:1.4;}
+.metric-tile-sub .g{color:var(--green);}
+.metric-tile-sub .a{color:var(--amber);}
+.summary-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;}
+.summary-card{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;padding:18px 20px;box-shadow:0 1px 3px rgba(10,14,33,.05);}
+.summary-card-ey{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--q-muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.summary-card-ey::after{content:'';flex:1;height:1px;background:var(--q-border);}
+.red-row{display:flex;align-items:flex-start;gap:9px;padding:9px 12px;background:var(--red-bg);border:1px solid rgba(220,38,38,.15);border-radius:6px;margin-bottom:7px;}
+.red-row:last-child{margin-bottom:0;}
+.amber-row{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;background:var(--amber-bg);border:1px solid rgba(217,119,6,.15);border-radius:6px;margin-bottom:6px;}
+.amber-row:last-child{margin-bottom:0;}
+.sig-dot-sm{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.sig-dot-sm.r{background:var(--red-dot);}
+.sig-dot-sm.a{background:var(--amber-dot);}
+.sig-name-r{font-size:12px;font-weight:600;color:var(--red);margin-bottom:2px;}
+.sig-name-a{font-size:12px;font-weight:600;color:var(--amber);}
+.sig-sub{font-size:11px;color:var(--q-muted);}
+.win-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--q-border);}
+.win-row:last-child{border-bottom:none;padding-bottom:0;}
+.win-num-sm{font-family:'DM Mono',monospace;font-size:10px;color:#6b7c00;background:rgba(169,191,4,.12);padding:2px 7px;border-radius:3px;flex-shrink:0;margin-top:1px;font-weight:500;}
+.win-title-sm{font-size:12px;font-weight:600;color:var(--q-text);margin-bottom:2px;}
+.win-team-sm{font-size:11px;color:var(--q-muted);}
+.routing-cat{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--q-border);}
+.routing-cat:last-child{border-bottom:none;}
+.routing-cat-name{font-size:12px;font-weight:600;color:var(--q-text);}
+.routing-cat-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--q-muted);}
+.routing-cat-count.has{color:var(--q-mid);font-weight:700;}
+.routing-empty{font-size:12px;color:var(--q-muted);font-style:italic;text-align:center;padding:12px 0;}
+.dates-strip{background:var(--q-white);border:1px solid var(--q-border);border-radius:8px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.date-item{display:flex;align-items:center;gap:10px;flex:1;padding:0 16px;}
+.date-item:first-child{padding-left:0;}
+.date-item:last-child{padding-right:0;}
+.date-item+.date-item{border-left:1px solid var(--q-border);}
+.date-pill{font-family:'DM Mono',monospace;font-size:10px;font-weight:600;color:var(--q-mid);background:var(--IS-bg);padding:3px 8px;border-radius:4px;flex-shrink:0;white-space:nowrap;}
+.date-label{font-size:12px;font-weight:600;color:var(--q-dark);}
+.date-sub{font-size:10.5px;color:var(--q-muted);}
+.quick-nav-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--q-muted);margin-bottom:10px;}
+.nav-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.nav-card{background:var(--q-white);border:1px solid var(--q-border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px;box-shadow:0 1px 2px rgba(10,14,33,.04);text-decoration:none;}
+.nav-card:hover{border-color:var(--q-mid);box-shadow:0 2px 8px rgba(10,140,191,.1);}
+.nav-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.nav-icon.blue{background:rgba(10,140,191,.1);color:var(--q-mid);}
+.nav-icon.green{background:var(--green-bg);color:var(--green);}
+.nav-icon.lime{background:rgba(169,191,4,.12);color:#6b7c00;}
+.nav-icon.amber{background:var(--amber-bg);color:var(--amber);}
+.nav-label{font-size:11px;font-weight:700;color:var(--q-dark);line-height:1.3;}
+.nav-sub{font-size:10px;color:var(--q-muted);margin-top:1px;}
+
+/* ── PORTFOLIO HEALTH ── */
+.platform-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.platform-tile{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;padding:18px 20px;box-shadow:0 1px 3px rgba(10,14,33,.05);}
+.platform-tile-name{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.pt-IS{color:var(--IS);}
+.pt-DS{color:var(--DS);}
+.pt-XP{color:var(--XP);}
+.platform-tile-count{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--q-dark);line-height:1;margin-bottom:8px;}
+.platform-tile-count span{font-size:13px;color:var(--q-muted);font-family:'Nunito Sans',sans-serif;font-weight:400;margin-left:4px;}
+.platform-rag-row{display:flex;gap:8px;}
+.prc{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;}
+.prc-g{background:var(--green-bg);color:var(--green);}
+.prc-a{background:var(--amber-bg);color:var(--amber);}
+.prc-r{background:var(--red-bg);color:var(--red);}
+
+/* Initiative table — portfolio intelligence style */
+.ph-platform-block{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;margin-bottom:20px;overflow:hidden;box-shadow:0 1px 3px rgba(10,14,33,.05);}
+.ph-platform-header{padding:14px 18px;border-bottom:1px solid var(--q-border);display:flex;align-items:center;gap:10px;background:var(--q-xlgray);}
+.ph-platform-badge{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;}
+.phb-IS{background:var(--IS-bg);color:var(--IS);}
+.phb-DS{background:var(--DS-bg);color:var(--DS);}
+.phb-XP{background:var(--XP-bg);color:var(--XP);}
+.ph-state-label{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--q-muted);padding:8px 18px 6px;border-bottom:1px solid var(--q-border);background:var(--q-xlgray);}
+/* Table header row */
+.ph-table-header{display:grid;grid-template-columns:106px 14px minmax(200px,1fr) 72px 90px;gap:0 10px;padding:7px 16px;background:var(--q-xlgray);border-bottom:1px solid var(--q-border);}
+.ph-th{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--q-muted);white-space:nowrap;}
+/* Initiative row */
+.ph-init-row{border-bottom:1px solid var(--q-border);}
+.ph-init-row:last-child{border-bottom:none;}
+.ph-init-main{display:grid;grid-template-columns:106px 14px minmax(200px,1fr) 72px 90px;gap:0 10px;padding:10px 16px;cursor:pointer;transition:background .12s;align-items:start;}
+.ph-init-main:hover{background:var(--q-xlgray);}
+.ph-init-main.expanded{background:var(--q-xlgray);}
+.ph-cell{font-size:12px;color:var(--q-text);padding-right:12px;line-height:1.4;}
+
+.ph-cell-type{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--q-muted);margin-top:4px;display:flex;align-items:center;gap:4px;}
+.ph-ai-icon{font-size:10px;color:var(--q-mid);opacity:.8;flex-shrink:0;}
+.ph-dot-g{width:10px;height:10px;border-radius:50%;background:var(--green-dot);flex-shrink:0;margin-top:3px;}
+.ph-dot-a{width:10px;height:10px;border-radius:50%;background:var(--amber-dot);flex-shrink:0;margin-top:3px;}
+.ph-dot-r{width:10px;height:10px;border-radius:50%;background:var(--red-dot);flex-shrink:0;margin-top:3px;}
+
+.ph-cell-id{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;padding:2px 6px;border-radius:3px;letter-spacing:.02em;white-space:nowrap;display:inline-block;}
+.id-IS{background:var(--IS-bg);color:var(--IS);}
+.id-DS{background:var(--DS-bg);color:var(--DS);}
+.id-XP{background:var(--XP-bg);color:var(--XP);}
+.id-AIE{background:var(--AIE-bg);color:var(--AIE);}
+.ph-cell-name{font-weight:600;}
+.ph-cell-oneliner{font-size:11.5px;color:var(--q-muted);margin-top:3px;line-height:1.5;}
+.ph-cell-quarter{font-family:'DM Mono',monospace;font-size:11px;color:var(--q-muted);}
+.ph-cell-owner{font-size:11px;color:var(--q-muted);display:flex;align-items:flex-start;justify-content:space-between;gap:4px;}
+.health-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.hb-g{background:var(--green-bg);color:var(--green);}
+.hb-a{background:var(--amber-bg);color:var(--amber);}
+.hb-r{background:var(--red-bg);color:var(--red);}
+.ph-chevron{font-size:9px;color:var(--q-muted);transition:transform .2s;flex-shrink:0;margin-left:4px;}
+.ph-chevron.open{transform:rotate(180deg);}
+/* Expanded signals panel */
+.ph-init-detail{display:none;padding:12px 18px 14px;background:var(--q-white);border-top:1px solid var(--q-border);}
+.ph-init-detail.open{display:block;}
+.ph-signals-label{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--q-muted);margin-bottom:8px;}
+.ph-signal-row{display:flex;align-items:flex-start;gap:10px;padding:7px 10px;border-radius:6px;margin-bottom:5px;font-size:11.5px;}
+.ph-signal-row:last-child{margin-bottom:0;}
+.ph-signal-row.risk{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);}
+.ph-signal-row.amber{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);}
+.ph-signal-row.win{background:rgba(34,197,94,.05);border:1px solid rgba(34,197,94,.15);}
+.ph-signal-row.info{background:var(--q-xlgray);border:1px solid var(--q-border);}
+.ph-signal-type{font-size:8.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0;margin-top:2px;min-width:60px;}
+.ph-signal-type.risk{color:var(--red);}
+.ph-signal-type.amber{color:var(--amber);}
+.ph-signal-type.win{color:var(--green);}
+.ph-signal-type.info{color:var(--q-muted);}
+.ph-signal-text{color:var(--q-text);line-height:1.5;}
+.ph-deeplink{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;font-weight:700;color:var(--q-mid);text-decoration:none;padding:5px 12px;border:1px solid rgba(10,140,191,.25);border-radius:5px;background:rgba(10,140,191,.04);transition:all .15s;}
+.ph-deeplink:hover{background:rgba(10,140,191,.1);}
+
+.drillthrough{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 20px;background:var(--q-white);border:1px solid var(--q-mid);border-radius:8px;font-size:12px;font-weight:700;color:var(--q-mid);transition:all .15s;text-decoration:none;width:100%;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.drillthrough:hover{background:rgba(10,140,191,.04);}
+
+/* Domain signals */
+.domain-signals-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.dsc{background:var(--q-white);border:1px solid var(--q-border);border-left:3px solid var(--q-border);border-radius:8px;padding:14px 16px;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.dsc.green{border-left-color:var(--green-dot);}
+.dsc.amber{border-left-color:var(--amber-dot);}
+.dsc.red{border-left-color:var(--red-dot);}
+.dsc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.dsc-name{font-size:12px;font-weight:700;color:var(--q-dark);}
+.dsc-rag{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.dsc-rag.green{color:var(--green);}
+.dsc-rag.amber{color:var(--amber);}
+.dsc-rag.red{color:var(--red);}
+.dsc-sig{display:flex;align-items:flex-start;gap:8px;padding:6px 9px;background:var(--q-xlgray);border-radius:5px;margin-bottom:5px;font-size:11px;color:var(--q-muted);}
+.dsc-sig:last-child{margin-bottom:0;}
+.dsc-sig-id{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.02em;flex-shrink:0;margin-top:1px;}
+
+/* ── METRICS PLACEHOLDER ── */
+.placeholder-card{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;padding:60px 48px;text-align:center;box-shadow:0 1px 3px rgba(10,14,33,.05);max-width:680px;margin:0 auto;}
+.placeholder-icon{font-size:40px;margin-bottom:16px;opacity:.3;}
+.placeholder-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--q-dark);margin-bottom:10px;}
+.placeholder-title em{font-style:italic;color:var(--q-mid);}
+.placeholder-body{font-size:13px;color:var(--q-muted);line-height:1.7;margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto;}
+.placeholder-body strong{color:var(--q-dark);font-weight:700;}
+.chip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;text-align:left;}
+.chip{background:var(--q-xlgray);border:1px solid var(--q-border);border-radius:6px;padding:12px 14px;}
+.chip-num{font-family:'DM Mono',monospace;font-size:9px;color:var(--q-mid);margin-bottom:4px;font-weight:500;}
+.chip-name{font-size:11px;font-weight:700;color:var(--q-dark);line-height:1.3;}
+.status-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(169,191,4,.1);border:1px solid rgba(169,191,4,.3);border-radius:20px;padding:6px 16px;font-size:11px;font-weight:700;color:#6b7c00;}
+
+/* ── WINS ── */
+.wins-context{background:rgba(169,191,4,.07);border:1px solid rgba(169,191,4,.25);border-radius:8px;padding:12px 18px;font-size:12px;color:var(--q-muted);line-height:1.6;margin-bottom:20px;}
+.wins-context strong{color:var(--q-dark);}
+.win-card{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;overflow:hidden;margin-bottom:12px;box-shadow:0 1px 3px rgba(10,14,33,.05);}
+.win-header{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;transition:background .12s;}
+.win-header:hover{background:var(--q-xlgray);}
+.win-badge{font-family:'DM Mono',monospace;font-size:9.5px;color:#6b7c00;background:rgba(169,191,4,.12);padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px;font-weight:500;}
+.win-tb{flex:1;}
+.win-title{font-size:13.5px;font-weight:700;color:var(--q-dark);margin-bottom:3px;line-height:1.3;}
+.win-preview{font-size:12px;color:var(--q-muted);line-height:1.5;}
+.win-chev{font-size:10px;color:var(--q-muted);transition:transform .2s;flex-shrink:0;margin-top:4px;}
+.win-chev.open{transform:rotate(180deg);}
+.win-body{display:none;padding:0 20px 18px;border-top:1px solid var(--q-border);}
+.win-body.open{display:block;padding-top:16px;}
+.win-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.win-sec{background:var(--q-xlgray);border:1px solid var(--q-border);border-radius:7px;padding:12px 14px;}
+.win-sec-lbl{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--q-mid);margin-bottom:8px;}
+.win-sec-body{font-size:12px;color:var(--q-muted);line-height:1.6;}
+.qa-row{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--q-border);}
+.qa-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.qa-q{font-size:11px;font-weight:700;color:var(--q-dark);margin-bottom:3px;}
+.qa-a{font-size:11.5px;color:var(--q-muted);line-height:1.55;}
+.win-recog{display:flex;align-items:center;gap:8px;padding:9px 12px;background:rgba(169,191,4,.06);border-radius:6px;border:1px solid rgba(169,191,4,.2);margin-bottom:8px;font-size:11.5px;color:var(--q-muted);}
+.win-recog strong{color:var(--q-dark);font-weight:700;}
+.win-chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.win-chip{font-size:10px;color:var(--q-muted);background:var(--q-xlgray);border:1px solid var(--q-border);border-radius:4px;padding:3px 9px;font-family:'DM Mono',monospace;}
+.screenshot-ph{width:100%;height:110px;border-radius:6px;background:var(--q-xlgray);border:1px solid var(--q-border);margin-bottom:10px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;}
+.screenshot-inner{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(10,14,33,.04) 0,rgba(10,14,33,.04) 1px,transparent 1px,transparent 16px),repeating-linear-gradient(90deg,rgba(10,14,33,.03) 0,rgba(10,14,33,.03) 1px,transparent 1px,transparent 60px);}
+.screenshot-lbl{position:relative;z-index:2;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--q-muted);opacity:.5;}
+.kudos-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:none;border:1px solid var(--q-border);border-radius:6px;font-size:11px;font-weight:700;color:var(--q-muted);cursor:pointer;font-family:'Nunito Sans',sans-serif;transition:all .15s;}
+.kudos-btn:hover{border-color:var(--q-lime);color:#6b7c00;background:rgba(169,191,4,.06);}
+.candid-section{background:var(--red-bg);border:1px solid rgba(220,38,38,.2);border-radius:10px;padding:18px 22px;margin-top:20px;}
+.candid-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.candid-tag{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--red);background:rgba(220,38,38,.1);padding:3px 10px;border-radius:4px;border:1px solid rgba(220,38,38,.2);}
+.candid-title{font-size:12px;font-weight:700;color:var(--q-dark);}
+.candid-body{font-size:12.5px;color:var(--q-muted);line-height:1.7;}
+.la-block{background:var(--q-xlgray);border:1px solid var(--q-border);border-radius:8px;padding:14px 18px;margin-top:12px;}
+.la-label{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--q-mid);margin-bottom:7px;}
+.la-body{font-size:12px;color:var(--q-muted);line-height:1.65;}
+
+/* ── NEXT STEPS ── */
+.ns-intro{font-size:13px;color:var(--q-muted);line-height:1.65;margin-bottom:24px;max-width:680px;}
+.ns-item-card{background:var(--q-white);border:1px solid var(--q-border);border-radius:8px;margin-bottom:7px;box-shadow:0 1px 2px rgba(10,14,33,.04);}
+.ns-item-row{padding:11px 16px;display:flex;align-items:center;gap:12px;}
+.ns-type{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:3px;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.ns-type-win{background:var(--green-bg);color:var(--green);}
+.ns-type-signal{background:var(--amber-bg);color:var(--amber);}
+.ns-type-ahead{background:var(--IS-bg);color:var(--IS);}
+.ns-type-upcoming{background:var(--IS-bg);color:var(--IS);}
+.ns-type-custom{background:var(--q-xlgray);color:var(--q-muted);}
+.ns-item-text{flex:1;}
+.ns-item-title{font-size:13px;font-weight:700;color:var(--q-dark);margin-bottom:3px;}
+.ns-item-sub{font-size:11px;color:var(--q-muted);}
+.ns-checks{display:flex;flex-direction:row;gap:6px;flex-shrink:0;flex-wrap:wrap;align-items:center;}
+.ns-check-label{display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 10px;border:1px solid var(--q-border);border-radius:6px;font-size:10.5px;font-weight:600;color:var(--q-muted);transition:all .12s;user-select:none;white-space:nowrap;}
+.ns-check-label:hover{border-color:var(--q-mid);color:var(--q-dark);}
+.ns-check-label input{display:none;}
+.ns-check-label.checked-agenda{border-color:var(--q-dark);background:rgba(20,33,92,.06);color:var(--q-dark);}
+.ns-check-label.checked-elt{border-color:var(--q-mid);background:rgba(10,140,191,.07);color:var(--q-mid);}
+.ns-check-label.checked-social{border-color:var(--q-lime);background:rgba(169,191,4,.07);color:#6b7c00;}
+.ns-add-own{background:var(--q-white);border:1px dashed var(--q-lgray);border-radius:8px;padding:14px 16px;margin-top:8px;}
+.ns-add-own-label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--q-muted);margin-bottom:8px;}
+.ns-add-own-row{display:flex;gap:8px;}
+.ns-add-input{flex:1;padding:7px 11px;background:var(--q-xlgray);border:1px solid var(--q-border);border-radius:6px;font-size:12px;color:var(--q-text);font-family:'Nunito Sans',sans-serif;outline:none;transition:border-color .15s;}
+.ns-add-input:focus{border-color:var(--q-mid);}
+.ns-add-input::placeholder{color:var(--q-muted);}
+.ns-add-btn{padding:7px 16px;background:var(--q-dark);color:white;font-size:12px;font-weight:700;border:none;border-radius:6px;cursor:pointer;font-family:'Nunito Sans',sans-serif;white-space:nowrap;transition:opacity .15s;flex-shrink:0;}
+.ns-add-btn:hover{opacity:.85;}
+.ns-actions-panel{background:var(--q-white);border:1px solid var(--q-border);border-radius:10px;padding:22px 24px;margin-top:24px;box-shadow:0 1px 3px rgba(10,14,33,.05);}
+.ns-actions-header{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--q-dark);margin-bottom:6px;}
+.ns-actions-sub{font-size:12px;color:var(--q-muted);margin-bottom:18px;}
+.ns-action-row{display:flex;gap:10px;flex-wrap:wrap;}
+.ns-action-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito Sans',sans-serif;transition:all .15s;border:1px solid transparent;}
+.ns-action-btn:disabled{opacity:.3;cursor:not-allowed;}
+.ns-btn-agenda{background:var(--q-dark);color:white;border-color:var(--q-dark);}
+.ns-btn-agenda:hover:not(:disabled){opacity:.85;}
+.ns-btn-elt{background:var(--q-mid);color:white;border-color:var(--q-mid);}
+.ns-btn-elt:hover:not(:disabled){opacity:.85;}
+.ns-btn-social{background:rgba(169,191,4,.12);color:#6b7c00;border-color:rgba(169,191,4,.3);}
+.ns-btn-social:hover:not(:disabled){background:rgba(169,191,4,.2);}
+.ns-btn-deck{background:none;color:var(--q-muted);border-color:var(--q-border);}
+.ns-btn-deck:hover{color:var(--q-dark);border-color:var(--q-mid);}
+.ns-deck-ph{background:var(--q-xlgray);border:1px dashed var(--q-lgray);border-radius:8px;padding:18px 20px;margin-top:16px;display:none;}
+.ns-deck-ph.visible{display:block;}
+.ns-deck-ph-label{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--q-mid);margin-bottom:7px;}
+.ns-deck-ph-body{font-size:12px;color:var(--q-muted);line-height:1.65;}
+.ns-deck-ph-body strong{color:var(--q-dark);}
+
+/* Preview modal */
+.preview-modal{display:none;position:fixed;inset:0;background:rgba(10,14,33,.5);z-index:500;align-items:center;justify-content:center;padding:32px;}
+.preview-modal.open{display:flex;}
+.preview-card{background:var(--q-white);border-radius:12px;max-width:680px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 16px 48px rgba(10,14,33,.25);}
+.preview-header{background:var(--q-dark);padding:18px 24px;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;}
+.preview-header-title{font-size:13px;font-weight:700;color:white;}
+.preview-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+.preview-close:hover{color:white;}
+.preview-body{padding:24px;}
+.preview-text{font-size:13px;color:var(--q-text);line-height:1.75;white-space:pre-wrap;font-family:'Nunito Sans',sans-serif;}
+.preview-footer{display:flex;gap:10px;padding:0 24px 20px;}
+.preview-send{padding:9px 18px;background:var(--q-dark);color:white;font-size:12px;font-weight:800;border:none;border-radius:6px;cursor:pointer;font-family:'Nunito Sans',sans-serif;}
+.preview-send:hover{opacity:.85;}
+.preview-dismiss{padding:9px 14px;background:none;color:var(--q-muted);font-size:12px;font-weight:600;border:1px solid var(--q-border);border-radius:6px;cursor:pointer;font-family:'Nunito Sans',sans-serif;}
+
+.toast{position:fixed;bottom:32px;right:32px;background:var(--q-dark);color:white;font-size:12px;font-weight:700;padding:10px 18px;border-radius:6px;z-index:9999;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;box-shadow:0 4px 16px rgba(10,14,33,.2);}
+.toast.show{opacity:1;transform:translateY(0);}
+.mb-16{margin-bottom:16px;}.mb-20{margin-bottom:20px;}.mt-12{margin-top:12px;}.mt-20{margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="sample-banner">⚠ Sample Data — POC Mockup — Not for Distribution</div>
+
+<nav class="topnav">
+  <div class="nav-logo">
+    <svg class="nav-quest-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 542.96 134.49">
+      <path fill="#fff" d="M258.06,89.97c0,4.97-1.06,9.42-3.18,13.36s-4.97,7-8.54,9.18c-3.58,2.18-7.72,3.27-12.45,3.27-5.21,0-9.24-1.45-12.09-4.36-2.85-2.91-4.27-7.21-4.27-12.9v-58.52h-22.9v63.25c0,5.94,1.24,11.27,3.73,15.99,2.48,4.73,6.06,8.45,10.72,11.18,4.66,2.73,10.21,4.09,16.63,4.09,8.12,0,15.18-2.03,21.17-6.09,5.01-3.39,8.97-7.74,11.91-13.03v17.3h22.35V39.98h-23.08v49.99h0Z"/>
+      <path fill="#fff" d="M364.2,43.89c-6.79-3.82-14.78-5.73-23.99-5.73-9.7,0-18.18,2.03-25.44,6.09-7.27,4.06-12.93,9.7-16.99,16.9-4.06,7.21-6.09,15.54-6.09,24.99s2.03,17.81,6.09,25.08c4.06,7.27,9.75,12.97,17.08,17.08,7.33,4.12,15.9,6.18,25.72,6.18,10.9,0,19.96-2.55,27.17-7.63,7.21-5.09,12.33-12,15.36-20.72h-21.63c-1.7,3.76-4.36,6.54-8,8.36-3.63,1.82-7.88,2.73-12.72,2.73-8.36,0-14.81-2.64-19.36-7.91-3.46-4.01-5.59-9.38-6.42-16.08h69.94c.24-1.45.42-2.91.55-4.36.12-1.45.18-3.03.18-4.73,0-9.21-1.88-17.27-5.63-24.17-3.76-6.91-9.03-12.27-15.81-16.08ZM339.85,55.43c7.15,0,12.72,2.18,16.72,6.54,3.3,3.6,5.21,8.7,5.79,15.27h-46.99c1.01-5.64,3.01-10.26,6.03-13.81,4.54-5.33,10.69-8,18.45-8h0Z"/>
+      <path fill="#fff" d="M445.7,77.97l-15.99-3.63c-4.85-1.21-8.3-2.64-10.36-4.27-2.06-1.64-3.09-3.66-3.09-6.09,0-3.15,1.33-5.54,4-7.18,2.66-1.64,6.6-2.45,11.81-2.45,5.57,0,9.97.97,13.18,2.91s5.12,4.79,5.73,8.54h20.9c-.73-8.6-4.58-15.36-11.54-20.26-6.97-4.91-16.21-7.36-27.72-7.36s-20.75,2.45-27.35,7.36c-6.61,4.91-9.9,11.66-9.9,20.26,0,7.03,2.45,12.88,7.36,17.54,4.91,4.67,12.45,8.09,22.63,10.27l14.9,3.45c4.72,1.09,7.93,2.45,9.63,4.09,1.69,1.64,2.54,3.73,2.54,6.27,0,3.52-1.49,6.21-4.45,8.09-2.97,1.88-7.42,2.82-13.36,2.82-6.54,0-11.75-1.21-15.63-3.63s-6.12-6-6.72-10.72h-20.9c.73,9.57,4.91,17.06,12.54,22.45s17.87,8.09,30.72,8.09,21.75-2.42,28.53-7.27c6.78-4.84,10.18-11.69,10.18-20.54,0-6.91-2.33-12.9-7-17.99-4.67-5.09-11.54-8.66-20.63-10.72Z"/>
+      <path fill="#fff" d="M542.96,57.98v-17.99h-25.26V10.36l-23.08,8.54v21.08h-30.86c6.83,3.14,12.72,14.41,13.04,17.99h17.81v44.16c0,10.79,2.69,18.87,8.09,24.26,5.39,5.39,13.78,8.09,25.17,8.09,3.27,0,6.24-.21,8.91-.64,2.66-.43,4.73-1,6.18-1.73v-17.81c-1.45.49-3,.88-4.63,1.18-1.64.3-3.48.45-5.54.45-5.21,0-9.03-1.09-11.45-3.27-2.43-2.18-3.64-5.51-3.64-10v-44.71h25.26Z"/>
+      <path fill="#fff" d="M187.17,112.75l-30.77,1.16c.89-.69,1.76-1.4,2.59-2.14,6.06-5.45,10.54-12.09,13.45-19.9,2.91-7.81,4.36-16.14,4.36-24.99,0-13.21-2.79-24.84-8.36-34.9s-13.3-17.9-23.17-23.54C135.39,2.82,124.03,0,111.19,0s-23.84,2.82-33.72,8.45c-6.19,3.53-11.54,7.93-16.04,13.18l15.94,15.76c3.15-5.03,7.17-9.11,12.1-12.22,6.24-3.94,13.48-5.91,21.72-5.91s15.66,1.97,21.9,5.91c6.24,3.94,11.09,9.45,14.54,16.54s5.18,15.36,5.18,24.81c0,9.94-1.76,18.66-5.27,26.17-3.52,7.51-8.39,13.3-14.63,17.36-6.24,4.06-13.48,6.09-21.72,6.09s-15.3-2.03-21.54-6.09c-2.95-1.92-5.58-4.23-7.9-6.9l-14.78,14.95c3.23,2.92,6.78,5.52,10.69,7.76,10,5.76,21.6,8.63,34.8,8.63,6.91,0,13.09-.09,18.54-.27,5.45-.18,10.69-.39,15.72-.64,5.03-.24,10.42-.45,16.18-.64,5.75-.18,27.98-.27,35.61-.27,0,0-10.03-3-11.34-19.92h0Z"/>
+      <polygon fill="#fff" points="87.48 62.69 55.03 30.61 45.53 40.22 70.26 64.44 26.45 64.44 26.45 80.41 69.72 80.44 45.9 104.75 55.51 114.24 87.59 81.79 97.08 72.19 87.48 62.69"/>
+      <rect fill="#fff" y="64.44" width="15.96" height="15.96"/>
+    </svg>
+    <div class="nav-context">CPTO Executive Dashboard</div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-datestamp" id="nav-date"></div>
+    <div class="nav-user"><div class="nav-avatar">ML</div><span>Michael Laudon</span></div>
+  </div>
+</nav>
+
+<div class="tabbar">
+  <button class="tab-btn active" onclick="switchTab(0)" id="tab-btn-0"><span class="tab-num">01</span> Summary</button>
+  <button class="tab-btn" onclick="switchTab(1)" id="tab-btn-1"><span class="tab-num">02</span> Performance Metrics</button>
+  <button class="tab-btn" onclick="switchTab(2)" id="tab-btn-2"><span class="tab-num">03</span> Portfolio Health</button>
+  <button class="tab-btn" onclick="switchTab(3)" id="tab-btn-3"><span class="tab-num">04</span> ✦ AI Acceleration</button>
+  <button class="tab-btn" onclick="switchTab(4)" id="tab-btn-4"><span class="tab-num">05</span> Wins</button>
+  <button class="tab-btn" onclick="switchTab(5)" id="tab-btn-5"><span class="tab-num">06</span> Next Steps</button>
+</div>
+
+<!-- ═══ TAB 1: SUMMARY ═══ -->
+<div class="tab-panel active" id="panel-0">
+<div class="panel-wrap">
+
+  <div class="summary-hero mb-20">
+    <div class="summary-greeting" id="time-greeting">Good morning, Michael</div>
+    <div class="summary-headline">This Week's <em>Summary</em></div>
+    <div class="summary-date">Friday, Sample data only</div>
+  </div>
+
+  <div class="strip-label">Financial Performance</div>
+  <div class="metrics-strip metrics-4 mb-16">
+    <div class="metric-tile"><div class="metric-tile-lbl">YTD Product Revenue</div><div class="metric-tile-val">$XX.XM</div><div class="metric-tile-sub">ACT vs AOP <span class="a">($X.XM)</span></div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">New Product Revenue</div><div class="metric-tile-val">$X.XM</div><div class="metric-tile-sub">ADPF + Identity Defense + Identity Recovery &nbsp;|&nbsp; X.X%</div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">FY27 Open Pipeline</div><div class="metric-tile-val">$XXX.XM</div><div class="metric-tile-sub">Q3 leads $XXX.XM &nbsp;|&nbsp; SaaS Migration $XX.XM</div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">Available to Renew</div><div class="metric-tile-val">$XXXM</div><div class="metric-tile-sub">Core delivering XX% ATR</div></div>
+  </div>
+
+  <div class="strip-label">Delivery &amp; Reliability</div>
+  <div class="metrics-strip metrics-4 mb-20">
+    <div class="metric-tile"><div class="metric-tile-lbl">On-Time Delivery</div><div class="metric-tile-val">XX%</div><div class="metric-tile-sub"><span class="g">IS XX%</span> &nbsp;|&nbsp; <span class="g">DS XX%</span></div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">SaaS Uptime</div><div class="metric-tile-val">XX.XX%</div><div class="metric-tile-sub"><span class="g">IS XX%</span> &nbsp;|&nbsp; <span class="g">DS XX.X%</span></div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">FY27 Releases</div><div class="metric-tile-val">XX</div><div class="metric-tile-sub">DS X releases &nbsp;|&nbsp; IS XX releases</div></div>
+    <div class="metric-tile"><div class="metric-tile-lbl">Feature Adoption (All)</div><div class="metric-tile-val">XX.X%</div><div class="metric-tile-sub">Avg TTFU XX.X days &nbsp;|&nbsp; X AI enabled features</div></div>
+  </div>
+
+  <div class="summary-3col mb-16">
+    <div class="summary-card">
+      <div class="summary-card-ey">Needs Your Attention</div>
+      <div class="red-row"><div class="sig-dot-sm r"></div><div><div class="sig-name-r">Enterprise Operations — Amber</div><div class="sig-sub">Accounting optimization discovery at risk · Scope undefined · Stakeholder alignment pending</div></div></div>
+      <div style="margin-top:8px;">
+        <div class="amber-row"><div class="sig-dot-sm a"></div><div><div class="sig-name-a">Foglight AI Insights — Amber</div><div class="sig-sub">Pricing decisions outstanding · June launch target at risk</div></div></div>
+        <div class="amber-row"><div class="sig-dot-sm a"></div><div><div class="sig-name-a">Partner BUILD Program — Amber</div><div class="sig-sub">XP-003 · Product readiness intake underway across 15 products · Owner TBD</div></div></div>
+        <div class="amber-row"><div class="sig-dot-sm a"></div><div><div class="sig-name-a">Mythos / AI Capability Access — Amber</div><div class="sig-sub">XP-001 · External timeline uncontrolled · Ownership transfer pending</div></div></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-ey">Wins This Week</div>
+      <div class="win-row"><div class="win-num-sm">01</div><div><div class="win-title-sm">Quest Data Modeler — GA Achieved</div><div class="win-team-sm">Vani Mishra · Data Solutions</div></div></div>
+      <div class="win-row"><div class="win-num-sm">02</div><div><div class="win-title-sm">AskQ — 1,400+ Weekly Conversations</div><div class="win-team-sm">Jeff Harris · Support Platform</div></div></div>
+      <div class="win-row"><div class="win-num-sm">03</div><div><div class="win-title-sm">BYOI Okta Federation — Production Ready</div><div class="win-team-sm">Cross-Platform · XP-004</div></div></div>
+      <div class="win-row"><div class="win-num-sm">04</div><div><div class="win-title-sm">IRAP Certification — Closed Ahead of Schedule</div><div class="win-team-sm">Richard Kulkarni · XP-002</div></div></div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-ey">This Week's Routing</div>
+      <div id="routing-status"><div class="routing-empty">No items routed yet.<br>Use Next Steps to route this week's signals.</div></div>
+      <div style="margin-top:12px;">
+        <button onclick="switchTab(5)" style="width:100%;padding:8px 0;background:none;border:1px solid var(--q-border);border-radius:6px;font-size:11.5px;font-weight:700;color:var(--q-mid);cursor:pointer;font-family:'Nunito Sans',sans-serif;transition:all .15s;" onmouseover="this.style.borderColor='var(--q-mid)'" onmouseout="this.style.borderColor='var(--q-border)'">Open Next Steps →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip-label" style="margin-bottom:10px;">Upcoming Key Dates</div>
+  <div class="dates-strip mb-16">
+    <div class="date-item"><div class="date-pill">Jun 8</div><div><div class="date-label">Company-Wide Town Hall</div><div class="date-sub">12 days out · CPTO remarks in preparation</div></div></div>
+    <div class="date-item"><div class="date-pill">Jun 9</div><div><div class="date-label">QDM Partner Fast Lane</div><div class="date-sub">DS-001 · Training &amp; accreditation sessions</div></div></div>
+    <div class="date-item"><div class="date-pill">Jul 31</div><div><div class="date-label">End of FY27 Q3</div><div class="date-sub">Multiple GA targets · IS-008, DS-009 watch dates</div></div></div>
+    <div class="date-item"><div class="date-pill">Jul 31</div><div><div class="date-label">Project Recovery GA Target</div><div class="date-sub">IS-008 · AI-driven identity restore</div></div></div>
+  </div>
+
+  </div>
+
+</div>
+
+<div class="tab-panel" id="panel-1">
+<div class="panel-wrap">
+  <div class="section-eyebrow">Performance Metrics</div>
+  <div class="section-title">This Week's <em>Metrics Report</em></div>
+  <div class="section-sub">Integration roadmap · POC phase</div>
+  <div class="placeholder-card">
+    <div class="placeholder-icon">▦</div>
+    <div class="placeholder-title">This Week's <em>Metrics Report</em></div>
+    <div class="placeholder-body">The program office maintains a <strong>weekly metrics briefing</strong> that synthesizes product, engineering, AI adoption, and customer health data into a structured executive report. The vision is for that report to find its permanent home here — surfaced in context alongside portfolio health and wins, rather than as a standalone artifact.<br><br>This tab is the designated integration point once that capability is brought into the dashboard.</div>
+    <div class="chip-grid">
+      <div class="chip"><div class="chip-num">01</div><div class="chip-name">Product Growth &amp; Revenue Impact</div></div>
+      <div class="chip"><div class="chip-num">02</div><div class="chip-name">Product Portfolio Health</div></div>
+      <div class="chip"><div class="chip-num">03</div><div class="chip-name">AI Enabled Feature Adoption</div></div>
+      <div class="chip"><div class="chip-num">04</div><div class="chip-name">Engineering Productivity</div></div>
+      <div class="chip"><div class="chip-num">05</div><div class="chip-name">AI Development Metrics</div></div>
+      <div class="chip"><div class="chip-num">06</div><div class="chip-name">Product Quality &amp; Customer Impact</div></div>
+    </div>
+    <div class="status-tag">◎ &nbsp; Integration planned · Currently produced and delivered separately</div>
+  </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-2">
+<div class="panel-wrap">
+
+  <div class="section-eyebrow">Portfolio Health</div>
+  <div class="section-title">This Week's <em>Signal</em></div>
+  <div class="section-sub">High impact initiatives · High impact initiatives · Click any row to expand signals · Click through to full intelligence view</div>
+
+  <!-- Platform roll-up -->
+  <div class="platform-strip">
+    <div class="platform-tile">
+      <div class="platform-tile-name pt-IS">Identity Solutions</div>
+      <div class="platform-tile-count">4 <span>high impact</span></div>
+      <div class="platform-rag-row"><span class="prc prc-g">3 Green</span><span class="prc prc-a">1 Amber</span><span class="prc prc-r">0 Red</span></div>
+    </div>
+    <div class="platform-tile">
+      <div class="platform-tile-name pt-DS">Data Solutions</div>
+      <div class="platform-tile-count">4 <span>high impact</span></div>
+      <div class="platform-rag-row"><span class="prc prc-g">2 Green</span><span class="prc prc-a">2 Amber</span><span class="prc prc-r">0 Red</span></div>
+    </div>
+    <div class="platform-tile">
+      <div class="platform-tile-name pt-XP">Cross-Platform</div>
+      <div class="platform-tile-count">4 <span>high impact</span></div>
+      <div class="platform-rag-row"><span class="prc prc-g">2 Green</span><span class="prc prc-a">2 Amber</span><span class="prc prc-r">0 Red</span></div>
+    </div>
+  </div>
+
+  <!-- IS Block -->
+  <div class="ph-platform-block">
+    <div class="ph-platform-header"><span class="ph-platform-badge phb-IS">Identity Solutions</span></div>
+
+    <div class="ph-state-label">Build &amp; Launch</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div>
+      <div class="ph-th"></div>
+      <div class="ph-th">Initiative</div>
+      <div class="ph-th">Quarter</div>
+      <div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-IS-001">
+      <div class="ph-init-main" onclick="togglePhRow('IS-001')">
+        <div class="ph-cell"><span class="ph-cell-id id-IS">IS-001</span><div class="ph-cell-type">Feature <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">FedRAMP Certification</div><div class="ph-cell-oneliner">Identity Defense &amp; Identity Recovery FedRAMP compliance on track — cross-functional teams GREEN post-commitment. Commercial unlock for US government sector.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Rakesh Shah <span class="ph-chevron" id="phchev-IS-001">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-IS-001">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Cross-functional teams GREEN. Compliance pathway confirmed. No blockers reported this week.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=IS-001" target="_blank">↗ Open IS-001 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-IS-008">
+      <div class="ph-init-main" onclick="togglePhRow('IS-008')">
+        <div class="ph-cell"><span class="ph-cell-id id-IS">IS-008</span><div class="ph-cell-type">Product <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Project Recovery — AI Identity Restore</div><div class="ph-cell-oneliner">AI-driven identity restore capability in Build &amp; Launch — Production Ready 4/21, GA target 7/31. Real-world testing underway; scope may adjust based on feedback.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q3</div>
+        
+        <div class="ph-cell ph-cell-owner">TBD <span class="ph-chevron" id="phchev-IS-008">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-IS-008">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Milestone</span><span class="ph-signal-text">Production Ready achieved 4/21. GA target July 31 — end of FY27 Q3.</span></div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Watch</span><span class="ph-signal-text">Owner TBD — initiative needs a named product lead before Build &amp; Launch progresses.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=IS-008" target="_blank">↗ Open IS-008 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-IS-010">
+      <div class="ph-init-main" onclick="togglePhRow('IS-010')">
+        <div class="ph-cell"><span class="ph-cell-id id-IS">IS-010</span><div class="ph-cell-type">Feature <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">ODM Support Case Reduction</div><div class="ph-cell-oneliner">Support case reduction via guided onboarding and AI-assisted migration — targeting ~30% near-term reduction. Cross-functional teams engaged across Product, Engineering, Support, and PSO.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Jeff Harris <span class="ph-chevron" id="phchev-IS-010">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-IS-010">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Onboarding improvements and AI migration assistance in delivery. ~30% case reduction targeted near-term, up to ~40% addressable over time.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=IS-010" target="_blank">↗ Open IS-010 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-state-label" style="border-top:1px solid var(--q-border);">Discover &amp; Plan</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-AIE-001">
+      <div class="ph-init-main" onclick="togglePhRow('AIE-001')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-001</span><div class="ph-cell-type">Internal <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">AskQ — Support AI Chatbot</div><div class="ph-cell-oneliner">AskQ Phase 1 at 1,400+ weekly conversations, 50% deflection rate, 97% CSAT. Phase 2 focus on advanced capabilities. On-site with Maven 5/19 to align on Phase 2 roadmap.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q1</div>
+        
+        <div class="ph-cell ph-cell-owner">Jeff Harris <span class="ph-chevron" id="phchev-AIE-001">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-AIE-001">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Salesforce Systems Refresh scheduled May 18 may impact Co-pilot functionality. Mitigation: expose pilot team to AskQ and require adoption for case resolution.</span></div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Milestone</span><span class="ph-signal-text">Phase 1 KPIs confirmed: 1,400+ weekly conversations, 50% deflection, 97% CSAT. Phase 2 roadmap session with Maven scheduled.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-001" target="_blank">↗ Open AIE-001 in Portfolio Intelligence</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- DS Block -->
+  <div class="ph-platform-block">
+    <div class="ph-platform-header"><span class="ph-platform-badge phb-DS">Data Solutions</span></div>
+
+    <div class="ph-state-label">Build &amp; Launch</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-DS-001">
+      <div class="ph-init-main" onclick="togglePhRow('DS-001')">
+        <div class="ph-cell"><span class="ph-cell-id id-DS">DS-001</span><div class="ph-cell-type">Product <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Quest Data Modeler</div><div class="ph-cell-oneliner">GA achieved May 19 — all cross-functional teams GREEN post-release. Announced at Gartner London May 13. Partner Fast Lane sessions June 9. Training collateral for accreditation being finalized.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Vani Mishra <span class="ph-chevron" id="phchev-DS-001">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-DS-001">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row win"><span class="ph-signal-type win">Win</span><span class="ph-signal-text">GA achieved May 19. Announced at Gartner London May 13. All cross-functional teams GREEN post-release.</span></div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Ahead</span><span class="ph-signal-text">Partner Fast Lane sessions June 9. Self-paced training released May 8. Accreditation collateral being finalized.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=DS-001" target="_blank">↗ Open DS-001 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-DS-003">
+      <div class="ph-init-main" onclick="togglePhRow('DS-003')">
+        <div class="ph-cell"><span class="ph-cell-id id-DS">DS-003</span><div class="ph-cell-type">Product <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Foglight AI Insights</div><div class="ph-cell-oneliner">Progressing toward a targeted June launch — amber due to unresolved product concerns and outstanding pricing decisions. Agent stability improved but performance and response consistency still need work.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Lior Astor <span class="ph-chevron" id="phchev-DS-003">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-DS-003">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Pricing and license model definition still outstanding — requires both platform and product effort. Blocking GA readiness.</span></div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Agent performance and response consistency need improvement before June launch. Product milestones being monitored.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=DS-003" target="_blank">↗ Open DS-003 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-DS-009">
+      <div class="ph-init-main" onclick="togglePhRow('DS-009')">
+        <div class="ph-cell"><span class="ph-cell-id id-DS">DS-009</span><div class="ph-cell-type">Product <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">AI-Native Database DevOps</div><div class="ph-cell-oneliner">AI-native database DevOps capability in Build &amp; Launch — deployment target 7/15, GA target 7/31. Customer validation underway to confirm willingness to pay.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q3</div>
+        
+        <div class="ph-cell ph-cell-owner">Julie Hyman <span class="ph-chevron" id="phchev-DS-009">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-DS-009">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Milestone</span><span class="ph-signal-text">Deployment target 7/15. GA target 7/31 — end of FY27 Q3.</span></div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Watch</span><span class="ph-signal-text">Customer validation underway to confirm what customers will pay — commercial signal pending.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=DS-009" target="_blank">↗ Open DS-009 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-state-label" style="border-top:1px solid var(--q-border);">Discover &amp; Plan</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-DS-006">
+      <div class="ph-init-main" onclick="togglePhRow('DS-006')">
+        <div class="ph-cell"><span class="ph-cell-id id-DS">DS-006</span><div class="ph-cell-type">Internal</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">DB Management Tools Cross-Sell</div><div class="ph-cell-oneliner">Cross-sell motion across DB management tools in Discover &amp; Plan — commercial and marketing signal being developed. High impact, amber signal.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Ryan Crochet <span class="ph-chevron" id="phchev-DS-006">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-DS-006">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Watch</span><span class="ph-signal-text">Amber signal with no one-liner detail yet from program manager. Danielle to confirm status at next cadence.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=DS-006" target="_blank">↗ Open DS-006 in Portfolio Intelligence</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- XP Block -->
+  <div class="ph-platform-block">
+    <div class="ph-platform-header"><span class="ph-platform-badge phb-XP">Cross-Platform</span></div>
+
+    <div class="ph-state-label">Build &amp; Launch</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-XP-004">
+      <div class="ph-init-main" onclick="togglePhRow('XP-004')">
+        <div class="ph-cell"><span class="ph-cell-id id-XP">XP-004</span><div class="ph-cell-type">Feature <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">BYOI — Okta Federation</div><div class="ph-cell-oneliner">Okta federation enabling customers to bring their own identity provider — Production Ready 5/15, GA target 5/22. Expands ADPF customer reach.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">TBD <span class="ph-chevron" id="phchev-XP-004">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-XP-004">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row win"><span class="ph-signal-type win">Milestone</span><span class="ph-signal-text">Production Ready achieved 5/15. GA target 5/22 — on track.</span></div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Watch</span><span class="ph-signal-text">Owner TBD — product lead needs to be named for ongoing execution accountability.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=XP-004" target="_blank">↗ Open XP-004 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-state-label" style="border-top:1px solid var(--q-border);">Discover &amp; Plan</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-XP-001">
+      <div class="ph-init-main" onclick="togglePhRow('XP-001')">
+        <div class="ph-cell"><span class="ph-cell-id id-XP">XP-001</span><div class="ph-cell-type">Internal <span class="ph-ai-icon" title="AI-tagged initiative">✦</span></div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Mythos Access / AI Capability Enablement</div><div class="ph-cell-oneliner">Quest pursuing early access to Anthropic Mythos — external timeline uncontrolled, roadmap dependencies unconfirmed, vendor conversation pending. Ownership transfer to product leads required.</div></div>
+        <div class="ph-cell ph-cell-quarter">TBD</div>
+        
+        <div class="ph-cell ph-cell-owner">TBD <span class="ph-chevron" id="phchev-XP-001">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-XP-001">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Timeline uncontrolled — external dependency on Anthropic access. Roadmap dependencies not confirmed across IS/DS initiatives.</span></div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Action</span><span class="ph-signal-text">Ciaran to transfer ownership to Rakesh, Martin, and Olivier Le Rudulier. Product to assess mitigation via Opus if Mythos access delayed.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=XP-001" target="_blank">↗ Open XP-001 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="phrow-XP-003">
+      <div class="ph-init-main" onclick="togglePhRow('XP-003')">
+        <div class="ph-cell"><span class="ph-cell-id id-XP">XP-003</span><div class="ph-cell-type">Internal</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Partner BUILD Program</div><div class="ph-cell-oneliner">Partner BUILD motion defined and in progress — product readiness intake underway across 15 products spanning IS and DS. Owner TBD (Maureen Perrelli).</div></div>
+        <div class="ph-cell ph-cell-quarter">TBD</div>
+        
+        <div class="ph-cell ph-cell-owner">TBD <span class="ph-chevron" id="phchev-XP-003">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-XP-003">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Owner not yet formally named. Transition from Brooke to Jorie in progress. 15-product readiness intake creates coordination complexity.</span></div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">AchieveUnite-defined motion in execution. Four tracks: IP Build (Partner), IP Build (Azure), Customer Success Build, Professional Services Build.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=XP-003" target="_blank">↗ Open XP-003 in Portfolio Intelligence</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Domain signals -->
+  <div class="strip-label mt-20 mb-16" style="margin-top:24px;">Top Signals by Domain</div>
+  <div class="domain-signals-grid mb-16">
+    <div class="dsc green">
+      <div class="dsc-top"><div class="dsc-name">Product Strategy &amp; Roadmap</div><div class="dsc-rag green"><span class="rag-dot g"></span> Green</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-DS dsc-sig-id">DS-001</span><span>QDM GA achieved May 19 — all teams GREEN. Partner Fast Lane June 9.</span></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-XP dsc-sig-id">XP-005</span><span>Program Office Framework v0.2 published — stakeholder activation next.</span></div>
+    </div>
+    <div class="dsc amber">
+      <div class="dsc-top"><div class="dsc-name">Product Delivery</div><div class="dsc-rag amber"><span class="rag-dot a"></span> Amber</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-DS dsc-sig-id">DS-003</span><span>Foglight AI Insights — pricing decisions outstanding, agent consistency needs work before June launch.</span></div>
+    </div>
+    <div class="dsc green">
+      <div class="dsc-top"><div class="dsc-name">Commercial</div><div class="dsc-rag green"><span class="rag-dot g"></span> Green</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-IS dsc-sig-id">IS-001</span><span>FedRAMP on track — US government sector unlock imminent.</span></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-XP dsc-sig-id">XP-003</span><span>Partner BUILD motion in execution — product readiness intake underway.</span></div>
+    </div>
+    <div class="dsc amber">
+      <div class="dsc-top"><div class="dsc-name">Enterprise Operations</div><div class="dsc-rag amber"><span class="rag-dot a"></span> Amber</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-AIE dsc-sig-id">AIE-003</span><span>Accounting optimization in early discovery — scope undefined, ELT pipeline commitment at risk without progress.</span></div>
+    </div>
+    <div class="dsc green">
+      <div class="dsc-top"><div class="dsc-name">Customer</div><div class="dsc-rag green"><span class="rag-dot g"></span> Green</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-AIE dsc-sig-id">AIE-001</span><span>AskQ 1,400+ weekly conversations, 50% deflection, 97% CSAT — Phase 1 KPIs confirmed.</span></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-AIE dsc-sig-id">AIE-004</span><span>CSM AI pilot active — daily brief redesign underway toward action-first format.</span></div>
+    </div>
+    <div class="dsc green">
+      <div class="dsc-top"><div class="dsc-name">Marketing</div><div class="dsc-rag green"><span class="rag-dot g"></span> Green</div></div>
+      <div class="dsc-sig"><span class="ph-cell-id id-DS dsc-sig-id">DS-001</span><span>QDM announced at Gartner London May 13. Enablement for Sales, Presales, and Partners progressing.</span></div>
+    </div>
+  </div>
+
+  <a class="drillthrough" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html" target="_blank">↗ &nbsp; View full Portfolio Intelligence dashboard for complete initiative detail</a>
+
+</div>
+</div>
+
+<div class="tab-panel" id="panel-3">
+<div class="panel-wrap">
+
+  <div class="section-eyebrow">AI Center of Excellence</div>
+  <div class="section-title">This Week's <em>AI Acceleration</em></div>
+  <div class="section-sub">AI in our products · AI in how we build · AI in how we operate</div>
+
+  <!-- Three AI lenses -->
+  <div class="platform-strip">
+    <div class="platform-tile">
+      <div class="platform-tile-name" style="color:var(--q-mid);">AI in Our Products</div>
+      <div class="platform-tile-count">8 <span>active initiatives</span></div>
+      <div style="font-size:11px;color:var(--q-muted);margin-bottom:8px;line-height:1.5;">AI built into what we sell — customer-facing capabilities across IS and DS platforms.</div>
+      <div class="platform-rag-row"><span class="prc prc-g">6 Green</span><span class="prc prc-a">2 Amber</span></div>
+    </div>
+    <div class="platform-tile">
+      <div class="platform-tile-name" style="color:#5b21b6;">AI in How We Build</div>
+      <div class="platform-tile-count">4 <span>active initiatives</span></div>
+      <div style="font-size:11px;color:var(--q-muted);margin-bottom:8px;line-height:1.5;">AI tools used by engineers, PMs, and designers to build faster across the full product lifecycle.</div>
+      <div class="platform-rag-row"><span class="prc prc-g">4 Green</span></div>
+    </div>
+    <div class="platform-tile">
+      <div class="platform-tile-name" style="color:#065f46;">AI in How We Operate</div>
+      <div class="platform-tile-count">7 <span>active initiatives</span></div>
+      <div style="font-size:11px;color:var(--q-muted);margin-bottom:8px;line-height:1.5;">AI adopted by Sales, CS, Support, Finance, and Operations to run the business more efficiently.</div>
+      <div class="platform-rag-row"><span class="prc prc-g">5 Green</span><span class="prc prc-a">2 Amber</span></div>
+    </div>
+  </div>
+
+  <!-- AI in How We Operate (AIE) -->
+  <div class="ph-platform-block">
+    <div class="ph-platform-header" style="background:rgba(6,95,70,.05);">
+      <span class="ph-platform-badge" style="background:var(--AIE-bg);color:var(--AIE);">AI — Internal Operations</span>
+      <span style="font-size:11px;color:var(--q-muted);margin-left:8px;">AI adopted by Sales, CS, Support, Finance, and Operations</span>
+    </div>
+    <div class="ph-state-label">Build &amp; Launch — High Impact</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-001">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-001')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-001</span><div class="ph-cell-type">Support</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">AskQ — Support AI Chatbot</div><div class="ph-cell-oneliner">1,400+ weekly conversations, 50% deflection, 97% CSAT. Phase 2 roadmap session with Maven scheduled. Salesforce refresh risk being managed.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q1</div>
+        
+        <div class="ph-cell ph-cell-owner">Jeff Harris <span class="ph-chevron" id="phchev-ai-AIE-001">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-001">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row win"><span class="ph-signal-type win">Metric</span><span class="ph-signal-text">Phase 1 KPIs confirmed: 1,400+ weekly conversations, 50% deflection rate, 97% CSAT.</span></div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Salesforce Systems Refresh may impact Co-pilot functionality. Mitigation in progress.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-001" target="_blank">↗ Open AIE-001 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-004">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-004')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-004</span><div class="ph-cell-type">Customer Success</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Optimizing CS with AI (&gt;50K)</div><div class="ph-cell-oneliner">CSM AI pilot active — daily brief redesign underway toward action-first format. Connector dependencies consolidated. Workstream cadence established.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Stephanie W. <span class="ph-chevron" id="phchev-ai-AIE-004">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-004">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Daily brief redesign in progress — action-first format prioritizing urgency, health signals, churn risk. Weekly review cadence established.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-004" target="_blank">↗ Open AIE-004 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-006">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-006')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-006</span><div class="ph-cell-type">Sales Operations</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Optimizing Sales Operations with AI</div><div class="ph-cell-oneliner">Two workstreams — Deal Desk Optimization and Order Management Process — in scoping. Kickoff call scheduled 5/15. Combined value TBD.</div></div>
+        <div class="ph-cell ph-cell-quarter">TBD</div>
+        
+        <div class="ph-cell ph-cell-owner">George Li <span class="ph-chevron" id="phchev-ai-AIE-006">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-006">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Deal Desk: AI-recommended discounting at point of sale. Order Mgmt: automate order workflows. Scoping underway — not yet staffed.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-006" target="_blank">↗ Open AIE-006 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-014">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-014')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-014</span><div class="ph-cell-type">Sales</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Sales Guide Agent</div><div class="ph-cell-oneliner">AI agent guiding sales reps through systems and tools — resourced with Rajesh Goldy. Requirements elaborated with Brian Holohan as business owner.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Brian Holohan <span class="ph-chevron" id="phchev-ai-AIE-014">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-014">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Goldy (Ciaran's team) is the technical resource. Also stress-testing AIE-007 standards as they're built — linked initiative.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-014" target="_blank">↗ Open AIE-014 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-state-label" style="border-top:1px solid var(--q-border);">Discover &amp; Plan — High Impact</div>
+    <div class="ph-table-header">
+      <div class="ph-th">ID</div><div class="ph-th"></div><div class="ph-th">Initiative</div><div class="ph-th">Quarter</div><div class="ph-th">Owner</div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-005">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-005')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-005</span><div class="ph-cell-type">Customer Success</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">LT 50K Frictionless Renewals</div><div class="ph-cell-oneliner">Automating the sub-$50K renewal motion using AI — dependent on churn model being built. Scope and stakeholder alignment in progress.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Stephanie W. <span class="ph-chevron" id="phchev-ai-AIE-005">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-005">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Dependency</span><span class="ph-signal-text">Dependent on churn model being built (AIE-004 workstream). Scope and stakeholder alignment in progress.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-005" target="_blank">↗ Open AIE-005 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-007">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-007')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-007</span><div class="ph-cell-type">Enterprise IT</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-g"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">AI Bot / Agent Enablement — Platform &amp; Standards</div><div class="ph-cell-oneliner">Foundational initiative defining how business teams build and publish AI bots and agents — guardrails, approved tooling, and internal publishing standards before backlog opens.</div></div>
+        <div class="ph-cell ph-cell-quarter">FY27-Q2</div>
+        
+        <div class="ph-cell ph-cell-owner">Anil K. <span class="ph-chevron" id="phchev-ai-AIE-007">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-007">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row info"><span class="ph-signal-type info">Status</span><span class="ph-signal-text">Sales Guide Agent (AIE-014) is the live pilot stress-testing these standards. Backlog of bot ideas gates on this work completing first.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-007" target="_blank">↗ Open AIE-007 in Portfolio Intelligence</a>
+      </div>
+    </div>
+
+    <div class="ph-init-row" id="airow-AIE-003">
+      <div class="ph-init-main" onclick="togglePhRow('ai-AIE-003')">
+        <div class="ph-cell"><span class="ph-cell-id id-AIE">AIE-003</span><div class="ph-cell-type">Finance</div></div>
+        <div class="ph-cell" style="display:flex;align-items:flex-start;padding-top:3px;justify-content:center;"><div class="ph-dot-a"></div></div>
+        <div class="ph-cell"><div class="ph-cell-name">Accounting Optimization</div><div class="ph-cell-oneliner">AI-driven accounting optimization in early discovery — Anil working with Ashish to define scope. $1M–$2M value estimate, 15–20 FTE impact. ELT pipeline commitment at risk without progress.</div></div>
+        <div class="ph-cell ph-cell-quarter">TBD</div>
+        
+        <div class="ph-cell ph-cell-owner">Anil K. <span class="ph-chevron" id="phchev-ai-AIE-003">▼</span></div>
+      </div>
+      <div class="ph-init-detail" id="phdetail-ai-AIE-003">
+        <div class="ph-signals-label">Key Signals</div>
+        <div class="ph-signal-row amber"><span class="ph-signal-type amber">Risk</span><span class="ph-signal-text">Initiative is on ELT pipeline with $1M–$2M value commitment — discovery not yet producing enough detail to move to Plan. Scope definition urgent.</span></div>
+        <a class="ph-deeplink" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html?expand=AIE-003" target="_blank">↗ Open AIE-003 in Portfolio Intelligence</a>
+      </div>
+    </div>
+  </div>
+
+  <a class="drillthrough" href="https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html" target="_blank">↗ &nbsp; View full Portfolio Intelligence dashboard for complete initiative detail</a>
+
+</div>
+</div>
+
+<div class="tab-panel" id="panel-4">
+<div class="panel-wrap">
+  <div class="section-eyebrow">Wins</div>
+  <div class="section-title">This Week's <em>Wins</em></div>
+  <div class="section-sub">4 wins this week</div>
+  <div class="wins-context mb-20"><strong>Context:</strong> Strong execution week with strategic positioning work completing and customer-requested identity capabilities shipping. Teams maintained momentum. Mix of strategic foundation work and immediate customer value delivery.</div>
+
+  <div class="win-card">
+    <div class="win-header" onclick="toggleWin('w1')">
+      <div class="win-badge">WIN 01</div>
+      <div class="win-tb"><div class="win-title">Quest AI Foundry — Strategic Positioning</div><div class="win-preview">Platform reframed from AI assistant to enterprise AI operationalization framework. Category evolution complete.</div></div>
+      <div class="win-chev" id="chev-w1">▼</div>
+    </div>
+    <div class="win-body" id="body-w1">
+      <div class="win-2col">
+        <div class="win-sec"><div class="win-sec-lbl">Technical Layer</div><div class="win-sec-body">Comprehensive market positioning work reframes the AI Foundry around metadata-first AI generation, automated opportunity discovery, and governance-aware orchestration. Built demonstrable product that analyzes data models to generate AI agent opportunities packaged across runtime platforms.</div></div>
+        <div class="win-sec"><div class="win-sec-lbl">CEO Q&amp;A — Ready If Asked</div><div class="win-sec-body"><div class="qa-row"><div class="qa-q">How big is this market?</div><div class="qa-a">Enterprise AI governance, metadata intelligence, and semantic orchestration — collectively multi-billion dollar markets with accelerating growth.</div></div><div class="qa-row"><div class="qa-q">What makes us different?</div><div class="qa-a">Metadata-first approach discovers AI opportunities automatically from existing enterprise data models. Governance-aware from inception.</div></div><div class="qa-row"><div class="qa-q">Who are we partnering with?</div><div class="qa-a">Ecosystem alignment identified with Microsoft, OpenAI, Databricks, Snowflake, Collibra, Alation — co-sell opportunities identified.</div></div></div></div>
+      </div>
+      <div class="screenshot-ph mb-16"><div class="screenshot-inner"></div><div class="screenshot-lbl">Product UI — blurred for POC</div></div>
+      <div class="win-recog mb-16"><span>★</span><div><strong>Adrian Moir &amp; Aaron Newsome</strong> — Data Solutions team led strategic positioning and market analysis</div></div>
+      <div class="win-chips"><span class="win-chip">TAM analysis: 6 markets</span><span class="win-chip">8 partner opportunities assessed</span><span class="win-chip">Differentiation framework complete</span></div>
+      <div style="margin-top:10px;"><button class="kudos-btn" onclick="sendKudos('Adrian Moir and Aaron Newsome','Quest AI Foundry strategic positioning — platform reframed as governed enterprise AI operationalization. Category evolution complete.')">★ Send Kudos</button></div>
+    </div>
+  </div>
+
+  <div class="win-card">
+    <div class="win-header" onclick="toggleWin('w2')">
+      <div class="win-badge">WIN 02</div>
+      <div class="win-tb"><div class="win-title">Quest Data Modeler — GA Achieved</div><div class="win-preview">GA achieved May 19. Announced at Gartner London May 13. All cross-functional teams GREEN post-release.</div></div>
+      <div class="win-chev" id="chev-w2">▼</div>
+    </div>
+    <div class="win-body" id="body-w2">
+      <div class="win-2col">
+        <div class="win-sec"><div class="win-sec-lbl">Technical Layer</div><div class="win-sec-body">GA achieved May 19. Self-paced training released May 8. Partner Fast Lane sessions scheduled June 9. Training collateral for upcoming accreditation being finalized. All cross-functional teams remained GREEN through launch.</div></div>
+        <div class="win-sec"><div class="win-sec-lbl">CEO Q&amp;A — Ready If Asked</div><div class="win-sec-body"><div class="qa-row"><div class="qa-q">What is Quest Data Modeler?</div><div class="qa-a">AI-powered data modeling platform. Announced at Gartner London — market-facing launch aligned to a major industry event.</div></div><div class="qa-row"><div class="qa-q">What's the partner opportunity?</div><div class="qa-a">Fast Lane partner training June 9 — accelerating partner capability to sell and implement QDM.</div></div></div></div>
+      </div>
+      <div class="screenshot-ph mb-16"><div class="screenshot-inner"></div><div class="screenshot-lbl">Product UI — blurred for POC</div></div>
+      <div class="win-recog mb-16"><span>★</span><div><strong>Vani Mishra &amp; Team</strong> — Data Solutions delivered GA on schedule with all cross-functional teams aligned</div></div>
+      <div class="win-chips"><span class="win-chip">GA May 19</span><span class="win-chip">Gartner London announced</span><span class="win-chip">Partner Fast Lane Jun 9</span></div>
+      <div style="margin-top:10px;"><button class="kudos-btn" onclick="sendKudos('Vani Mishra and the Quest Data Modeler team','Quest Data Modeler GA achieved May 19 — announced at Gartner London, all cross-functional teams GREEN. Exceptional cross-functional execution.')">★ Send Kudos</button></div>
+    </div>
+  </div>
+
+  <div class="win-card">
+    <div class="win-header" onclick="toggleWin('w3')">
+      <div class="win-badge">WIN 03</div>
+      <div class="win-tb"><div class="win-title">BYOI — Okta Federation Production Ready</div><div class="win-preview">Okta federation enabling customers to bring their own identity provider hit Production Ready 5/15. Expands ADPF customer reach.</div></div>
+      <div class="win-chev" id="chev-w3">▼</div>
+    </div>
+    <div class="win-body" id="body-w3">
+      <div class="win-2col">
+        <div class="win-sec"><div class="win-sec-lbl">Technical Layer</div><div class="win-sec-body">Okta federation capability enabling customers to bring their own identity provider reached Production Ready on 5/15. GA target 5/22. Expands ADPF customer reach by removing identity provider lock-in as a barrier to adoption.</div></div>
+        <div class="win-sec"><div class="win-sec-lbl">CEO Q&amp;A — Ready If Asked</div><div class="win-sec-body"><div class="qa-row"><div class="qa-q">What does BYOI mean for customers?</div><div class="qa-a">Customers can use their existing identity provider — removing a key adoption barrier and expanding who can use ADPF.</div></div><div class="qa-row"><div class="qa-q">What's the revenue impact?</div><div class="qa-a">Expands addressable ADPF customer base — removes identity provider lock-in as a blocker to purchase.</div></div></div></div>
+      </div>
+      <div class="screenshot-ph mb-16"><div class="screenshot-inner"></div><div class="screenshot-lbl">Product UI — blurred for POC</div></div>
+      <div class="win-recog mb-16"><span>★</span><div><strong>Cross-Platform Team — XP-004</strong> — Okta federation capability delivered on schedule</div></div>
+      <div class="win-chips"><span class="win-chip">Production Ready 5/15</span><span class="win-chip">GA target 5/22</span><span class="win-chip">ADPF reach expansion</span></div>
+      <div style="margin-top:10px;"><button class="kudos-btn" onclick="sendKudos('the XP-004 team','BYOI Okta Federation reached Production Ready on 5/15 — on track for GA 5/22. Expands ADPF customer reach by removing identity provider lock-in.')">★ Send Kudos</button></div>
+    </div>
+  </div>
+
+  <div class="win-card">
+    <div class="win-header" onclick="toggleWin('w4')">
+      <div class="win-badge">WIN 04</div>
+      <div class="win-tb"><div class="win-title">IRAP Certification — Closed Ahead of Schedule</div><div class="win-preview">Cyber Security and Data Management Platform IRAP Assessment Reports received. Australia government sector sales now enabled. Closed ahead of time.</div></div>
+      <div class="win-chev" id="chev-w4">▼</div>
+    </div>
+    <div class="win-body" id="body-w4">
+      <div class="win-2col">
+        <div class="win-sec"><div class="win-sec-lbl">Technical Layer</div><div class="win-sec-body">Final versions of the Cyber Security Platform IRAP Assessment Report and Data Management Platform IRAP Assessment Report received. No further action needed. Richard Kulkarni and his sales team now have what is required to increase sales in AU Gov sector.</div></div>
+        <div class="win-sec"><div class="win-sec-lbl">CEO Q&amp;A — Ready If Asked</div><div class="win-sec-body"><div class="qa-row"><div class="qa-q">What does IRAP certification unlock?</div><div class="qa-a">Australian government sector sales. IRAP is the required certification framework for selling to AU Gov — this removes the compliance barrier.</div></div><div class="qa-row"><div class="qa-q">How significant is the AU Gov opportunity?</div><div class="qa-a">Government sector is a high-value, relationship-driven segment. IRAP certification is the table-stakes requirement to compete.</div></div></div></div>
+      </div>
+      <div class="win-recog mb-16"><span>★</span><div><strong>Richard Kulkarni &amp; Team</strong> — XP-002 delivered IRAP certification ahead of schedule</div></div>
+      <div class="win-chips"><span class="win-chip">Closed ahead of schedule</span><span class="win-chip">AU Gov sector unlocked</span><span class="win-chip">Both platforms certified</span></div>
+      <div style="margin-top:10px;"><button class="kudos-btn" onclick="sendKudos('Richard Kulkarni and the IRAP team','IRAP Certification complete — both the Cyber Security Platform and Data Management Platform IRAP Assessment Reports received ahead of schedule. Australia government sector sales now enabled. Major achievement.')">★ Send Kudos</button></div>
+    </div>
+  </div>
+
+  <div class="la-block mt-12 mb-16">
+    <div class="la-label">Looking Ahead</div>
+    <div class="la-body">Quest Data Modeler Partner Fast Lane sessions June 9 — accreditation pathway opening for partners. AI-native Database DevOps and Project Recovery both targeting July 31 GA — FY27 Q3 end. Foglight AI Insights June launch dependent on pricing resolution this week.</div>
+  </div>
+  <div class="candid-section">
+    <div class="candid-header"><span class="candid-tag">CPTO Eyes Only</span><span class="candid-title">Candid Heads-Up</span></div>
+    <div class="candid-body">Foglight AI Insights pricing is the week's critical dependency — without pricing decisions, June launch is at risk and the amber holds. AI Foundry positioning is compelling but partnership opportunities remain directional — follow-through required to convert analysis into formalized agreements. Partner BUILD Program needs a named owner before product readiness intake can move at pace. Mythos access timeline is external and uncontrolled — product teams need a mitigation plan via Opus that doesn't depend on early access.</div>
+  </div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel-5">
+<div class="panel-wrap">
+  <div class="section-eyebrow">Next Steps</div>
+  <div class="section-title">Next Week's <em>Momentum</em></div>
+  <div class="section-sub">One pass · Check the boxes · Generate at the bottom</div>
+  <div class="ns-intro">Review each item. Check how you want to route it — leadership agenda, ELT update, or flag for social. Use "Add your own" for anything not captured here. Then generate at the bottom.</div>
+
+  <div class="strip-label" style="margin-bottom:12px;">Upcoming</div>
+  <div class="ns-item-card">
+    <div class="ns-item-row">
+      <span class="ns-type ns-type-upcoming">Upcoming</span>
+      <div class="ns-item-text"><div class="ns-item-title">Company-Wide Town Hall — June 8</div><div class="ns-item-sub">12 days out · Confirm CPTO remarks, agenda, and any product announcements</div></div>
+      <div class="ns-checks">
+        <label class="ns-check-label checked-agenda" id="nslbl-upcoming-agenda"><input type="checkbox" checked onchange="toggleNs('upcoming','agenda')"> ✦ Leadership Agenda</label>
+        <label class="ns-check-label" id="nslbl-upcoming-elt"><input type="checkbox" onchange="toggleNs('upcoming','elt')"> ↗ ELT Update</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip-label" style="margin-bottom:12px;margin-top:20px;">Wins This Week</div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-win">Win</span><div class="ns-item-text"><div class="ns-item-title">Quest Data Modeler — GA Achieved</div><div class="ns-item-sub">DS-001 · Gartner London announcement · All teams GREEN</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-0-agenda"><input type="checkbox" onchange="toggleNs(0,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-0-elt"><input type="checkbox" onchange="toggleNs(0,'elt')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-0-social"><input type="checkbox" onchange="toggleNs(0,'social')"> ◎ Flag for Social</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-win">Win</span><div class="ns-item-text"><div class="ns-item-title">IRAP Certification — Closed Ahead of Schedule</div><div class="ns-item-sub">XP-002 · AU Gov sector unlocked · Both platforms certified</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-1-agenda"><input type="checkbox" onchange="toggleNs(1,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-1-elt"><input type="checkbox" onchange="toggleNs(1,'elt')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-1-social"><input type="checkbox" onchange="toggleNs(1,'social')"> ◎ Flag for Social</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-win">Win</span><div class="ns-item-text"><div class="ns-item-title">BYOI Okta Federation — Production Ready</div><div class="ns-item-sub">XP-004 · Production Ready 5/15 · GA target 5/22</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-2-agenda"><input type="checkbox" onchange="toggleNs(2,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-2-elt"><input type="checkbox" onchange="toggleNs(2,'elt')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-2-social"><input type="checkbox" onchange="toggleNs(2,'social')"> ◎ Flag for Social</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-win">Win</span><div class="ns-item-text"><div class="ns-item-title">Quest AI Foundry — Strategic Positioning Complete</div><div class="ns-item-sub">Platform reframed as governed enterprise AI operationalization · Multi-billion dollar market alignment</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-3-agenda"><input type="checkbox" onchange="toggleNs(3,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-3-elt"><input type="checkbox" onchange="toggleNs(3,'elt')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-3-social"><input type="checkbox" onchange="toggleNs(3,'social')"> ◎ Flag for Social</label></div></div></div>
+
+  <div class="strip-label" style="margin-bottom:12px;margin-top:20px;">Signals Worth Routing</div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-signal">Signal</span><div class="ns-item-text"><div class="ns-item-title">Foglight AI Insights — Pricing Decisions Outstanding</div><div class="ns-item-sub">DS-003 · June launch at risk · License model definition needed this week</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-4-agenda"><input type="checkbox" onchange="toggleNs(4,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-4-elt"><input type="checkbox" onchange="toggleNs(4,'elt')"> ↗ ELT Update</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-signal">Signal</span><div class="ns-item-text"><div class="ns-item-title">Mythos Access — Ownership Transfer Required</div><div class="ns-item-sub">XP-001 · Ciaran to transfer to Rakesh, Martin, Olivier · Mitigation plan via Opus needed</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-5-agenda"><input type="checkbox" onchange="toggleNs(5,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-5-elt"><input type="checkbox" onchange="toggleNs(5,'elt')"> ↗ ELT Update</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-signal">Signal</span><div class="ns-item-text"><div class="ns-item-title">Partner BUILD Program — Owner TBD</div><div class="ns-item-sub">XP-003 · Maureen Perrelli · Transition to Jorie in progress · 15 products in scope</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-6-agenda"><input type="checkbox" onchange="toggleNs(6,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-6-elt"><input type="checkbox" onchange="toggleNs(6,'elt')"> ↗ ELT Update</label></div></div></div>
+
+  <div class="strip-label" style="margin-bottom:12px;margin-top:20px;">Looking Ahead</div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-ahead">Ahead</span><div class="ns-item-text"><div class="ns-item-title">QDM Partner Fast Lane — June 9</div><div class="ns-item-sub">DS-001 · Partner accreditation sessions · Training collateral being finalized</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-7-agenda"><input type="checkbox" onchange="toggleNs(7,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-7-elt"><input type="checkbox" onchange="toggleNs(7,'elt')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-7-social"><input type="checkbox" onchange="toggleNs(7,'social')"> ◎ Flag for Social</label></div></div></div>
+  <div class="ns-item-card"><div class="ns-item-row"><span class="ns-type ns-type-ahead">Ahead</span><div class="ns-item-text"><div class="ns-item-title">FY27 Q3 GA Targets — July 31</div><div class="ns-item-sub">IS-008 Project Recovery · DS-009 AI-Native Database DevOps · Both targeting end of quarter</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-8-agenda"><input type="checkbox" onchange="toggleNs(8,'agenda')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-8-elt"><input type="checkbox" onchange="toggleNs(8,'elt')"> ↗ ELT Update</label></div></div></div>
+
+  <div class="strip-label" style="margin-bottom:12px;margin-top:20px;">Add Your Own</div>
+  <div class="ns-add-own">
+    <div class="ns-add-own-label">Flag something else for next week</div>
+    <div class="ns-add-own-row">
+      <input class="ns-add-input" id="ns-custom-input" type="text" placeholder="Describe the item you want to route…" />
+      <button class="ns-add-btn" onclick="addCustomNsItem()">Add</button>
+    </div>
+  </div>
+  <div id="ns-custom-items"></div>
+
+  <div class="ns-actions-panel">
+    <div class="ns-actions-header">Generate &amp; Send</div>
+    <div class="ns-actions-sub" id="ns-actions-sub">Check items above to activate.</div>
+    <div class="ns-action-row">
+      <button class="ns-action-btn ns-btn-agenda" id="ns-btn-agenda" onclick="generateAgenda()" disabled>✦ Build Leadership Agenda</button>
+      <button class="ns-action-btn ns-btn-elt" id="ns-btn-elt" onclick="generateElt()" disabled>↗ Generate ELT Update</button>
+      <button class="ns-action-btn ns-btn-social" id="ns-btn-social" onclick="generateSocial()" disabled>◎ Flag for Social</button>
+      <button class="ns-action-btn ns-btn-deck" onclick="toggleNsDeck()">▦ Build Summary Deck</button>
+    </div>
+    <div class="ns-deck-ph" id="ns-deck-ph">
+      <div class="ns-deck-ph-label">Deck Generation — Coming Soon</div>
+      <div class="ns-deck-ph-body">The vision: selected items feed into a <strong>CPTO briefing deck template</strong> — formatted, on-brand, ready to present. This is the designated integration point for AI-assisted deck generation once that capability is built.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+
+<!-- Preview Modal -->
+<div class="preview-modal" id="preview-modal">
+  <div class="preview-card">
+    <div class="preview-header"><div class="preview-header-title" id="preview-title">Preview</div><button class="preview-close" onclick="closePreview()">✕</button></div>
+    <div class="preview-body"><div class="preview-text" id="preview-text"></div></div>
+    <div class="preview-footer"><button class="preview-send" id="preview-send-btn">Open in Mail</button><button class="preview-dismiss" onclick="closePreview()">Dismiss</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var BCC='marjorie.maloney@quest.com';
+var PORTFOLIO_BASE='https://jorie-maloney.github.io/quest-program-office-poc/portfolio-dashboard.html';
+
+// Greeting & date
+(function(){
+  var h=new Date().getHours();
+  document.getElementById('time-greeting').textContent=(h<12?'Good morning':h<17?'Good afternoon':'Good evening')+', Michael';
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var n=new Date();
+  document.getElementById('nav-date').textContent=days[n.getDay()]+', '+months[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+})();
+
+
+function fmtDate(){
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var n=new Date();
+  return months[n.getMonth()]+' '+n.getDate()+', '+n.getFullYear();
+}
+
+// Tab switching
+function switchTab(idx){
+  document.querySelectorAll('.tab-panel').forEach(function(p,i){p.classList.toggle('active',i===idx);});
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===idx);});
+  if(idx===0) updateRoutingStatus();
+}
+
+// Win cards
+function toggleWin(id){
+  var body=document.getElementById('body-'+id);
+  var chev=document.getElementById('chev-'+id);
+  body.classList.toggle('open');
+  chev.classList.toggle('open',body.classList.contains('open'));
+}
+
+// Portfolio row expand
+function togglePhRow(id){
+  var detail=document.getElementById('phdetail-'+id);
+  var chev=document.getElementById('phchev-'+id);
+  var main=document.querySelector('#phrow-'+id+' .ph-init-main');
+  if(!detail)return;
+  var open=detail.classList.toggle('open');
+  if(chev) chev.classList.toggle('open',open);
+  if(main) main.classList.toggle('expanded',open);
+}
+
+// Kudos
+function sendKudos(names,win){
+  var subject=encodeURIComponent('Thank you — '+names);
+  var body=encodeURIComponent('Hi '+names+',\n\nI just wanted to take a moment to recognize the great work this week on:\n\n'+win+'\n\nThis kind of execution is exactly what moves Quest forward. Thank you.\n\nMike');
+  window.location.href='mailto:?bcc='+encodeURIComponent(BCC)+'&subject='+subject+'&body='+body;
+  showToast('Kudos email opened ✓');
+}
+
+// Next Steps routing
+var nsState={};
+var customNsItems={};
+var customNsCounter=100;
+
+var nsTitles={
+  'upcoming':'Company-Wide Town Hall — June 8',
+  0:'Quest Data Modeler — GA Achieved',
+  1:'IRAP Certification — Closed Ahead of Schedule',
+  2:'BYOI Okta Federation — Production Ready',
+  3:'Quest AI Foundry — Strategic Positioning Complete',
+  4:'Foglight AI Insights — Pricing Decisions Outstanding',
+  5:'Mythos Access — Ownership Transfer Required',
+  6:'Partner BUILD Program — Owner TBD',
+  7:'QDM Partner Fast Lane — June 9',
+  8:'FY27 Q3 GA Targets — July 31'
+};
+
+var nsBullets={
+  'upcoming':'Company-wide town hall scheduled for June 8. CPTO remarks and any product announcements in preparation.',
+  0:'Quest Data Modeler GA achieved May 19. Announced at Gartner London May 13. All cross-functional teams GREEN post-release. Partner Fast Lane sessions June 9.',
+  1:'IRAP Certification complete ahead of schedule. Cyber Security Platform and Data Management Platform IRAP Assessment Reports received. Australia government sector sales now enabled.',
+  2:'BYOI Okta Federation reached Production Ready 5/15 — GA target 5/22. Enables customers to bring their own identity provider, expanding ADPF customer reach.',
+  3:'Quest AI Foundry strategic positioning reframes the platform as governed enterprise AI operationalization. Expands addressable market into enterprise AI governance, metadata intelligence, and semantic orchestration.',
+  4:'Foglight AI Insights June launch at risk — pricing and license model definition still outstanding. Agent performance and response consistency also need improvement before GA.',
+  5:'Mythos / AI Capability Access ownership transfer required — Ciaran to transition to Rakesh, Martin, and Olivier Le Rudulier. Product teams need a mitigation plan via Opus that does not depend on early access.',
+  6:'Partner BUILD Program needs a named owner before product readiness intake can move at pace. Transition from Brooke to Jorie in progress. 15 products in scope.',
+  7:'QDM Partner Fast Lane sessions June 9 — partner accreditation pathway opening. Training collateral for sessions being finalized this week.',
+  8:'IS-008 Project Recovery and DS-009 AI-Native Database DevOps both targeting July 31 GA — end of FY27 Q3. Both in Build and Launch, tracking on schedule.'
+};
+
+var nsTypes={'upcoming':'ahead',0:'win',1:'win',2:'win',3:'win',4:'signal',5:'signal',6:'signal',7:'ahead',8:'ahead'};
+
+nsState['upcoming']={agenda:true};
+
+function toggleNs(idx,cat){
+  if(!nsState[idx]) nsState[idx]={};
+  nsState[idx][cat]=!nsState[idx][cat];
+  if(!nsState[idx][cat]) delete nsState[idx][cat];
+  if(Object.keys(nsState[idx]).length===0) delete nsState[idx];
+  var lbl=document.getElementById('nslbl-'+idx+'-'+cat);
+  if(lbl) lbl.classList.toggle('checked-'+cat,!!(nsState[idx]&&nsState[idx][cat]));
+  updateNsActions();updateRoutingStatus();
+}
+
+function addCustomNsItem(){
+  var input=document.getElementById('ns-custom-input');
+  var val=input.value.trim();
+  if(!val)return;
+  var id=customNsCounter++;
+  customNsItems[id]=val;
+  nsState[id]={};
+  input.value='';
+  var container=document.getElementById('ns-custom-items');
+  var card=document.createElement('div');
+  card.className='ns-item-card';
+  card.id='nscard-custom-'+id;
+  card.innerHTML='<div class="ns-item-row"><span class="ns-type ns-type-custom">Custom</span><div class="ns-item-text"><div class="ns-item-title">'+val+'</div></div><div class="ns-checks"><label class="ns-check-label" id="nslbl-'+id+'-agenda"><input type="checkbox" onchange="toggleNs('+id+',\'agenda\')"> ✦ Leadership Agenda</label><label class="ns-check-label" id="nslbl-'+id+'-elt"><input type="checkbox" onchange="toggleNs('+id+',\'elt\')"> ↗ ELT Update</label><label class="ns-check-label" id="nslbl-'+id+'-social"><input type="checkbox" onchange="toggleNs('+id+',\'social\')"> ◎ Flag for Social</label></div></div>';
+  container.appendChild(card);
+  updateNsActions();
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var inp=document.getElementById('ns-custom-input');
+  if(inp) inp.addEventListener('keydown',function(e){if(e.key==='Enter')addCustomNsItem();});
+  updateNsActions();updateRoutingStatus();
+});
+
+function getByCategory(cat){return Object.keys(nsState).filter(function(k){return nsState[k]&&nsState[k][cat];});}
+
+function updateNsActions(){
+  var a=getByCategory('agenda'),e=getByCategory('elt'),s=getByCategory('social');
+  document.getElementById('ns-btn-agenda').disabled=a.length===0;
+  document.getElementById('ns-btn-elt').disabled=e.length===0;
+  document.getElementById('ns-btn-social').disabled=s.length===0;
+  var sub=document.getElementById('ns-actions-sub');
+  var parts=[];
+  if(a.length>0) parts.push(a.length+' for leadership agenda');
+  if(e.length>0) parts.push(e.length+' for ELT update');
+  if(s.length>0) parts.push(s.length+' flagged for social');
+  sub.textContent=parts.length>0?parts.join(' · ')+'.':'Check items above to activate.';
+}
+
+function updateRoutingStatus(){
+  var el=document.getElementById('routing-status');
+  if(!el)return;
+  var a=getByCategory('agenda'),e=getByCategory('elt'),s=getByCategory('social');
+  if(a.length===0&&e.length===0&&s.length===0){el.innerHTML='<div class="routing-empty">No items routed yet.<br>Use Next Steps to route this week\'s signals.</div>';return;}
+  var html='';
+  if(a.length>0) html+='<div class="routing-cat"><span class="routing-cat-name">✦ Leadership Agenda</span><span class="routing-cat-count has">'+a.length+' item'+(a.length>1?'s':'')+'</span></div>';
+  if(e.length>0) html+='<div class="routing-cat"><span class="routing-cat-name">↗ ELT Update</span><span class="routing-cat-count has">'+e.length+' item'+(e.length>1?'s':'')+'</span></div>';
+  if(s.length>0) html+='<div class="routing-cat"><span class="routing-cat-name">◎ Flagged for Social</span><span class="routing-cat-count has">'+s.length+' item'+(s.length>1?'s':'')+'</span></div>';
+  el.innerHTML=html;
+}
+
+function getTitle(k){return nsTitles[k]||customNsItems[k]||('Item '+k);}
+function getBullet(k){return nsBullets[k]||customNsItems[k]||'';}
+
+function generateAgenda(){
+  var items=getByCategory('agenda');
+  var lines=items.map(function(k,i){return (i+1)+'. '+getTitle(k);}).join('\n\n');
+  var text='Hi team,\n\nThese are things that are top of mind as we head into next week — please let\'s prepare to discuss on our Leadership team call.\n\n'+lines+'\n\nThanks,\nMike';
+  showPreview('Leadership Agenda — Preview',text,'Next Week — CPTO Leadership Agenda',text);
+}
+
+function generateElt(){
+  var items=getByCategory('elt');
+  var wins=items.filter(function(k){return nsTypes[k]==='win';});
+  var signals=items.filter(function(k){return nsTypes[k]==='signal';});
+  var ahead=items.filter(function(k){return nsTypes[k]==='ahead'||customNsItems[k];});
+  var lede=wins.length>0?'Closed the week with strong execution and continued momentum across the portfolio.':'Closing the week with continued execution momentum across the portfolio.';
+  var text='Quest Product & Technology  |  '+fmtDate()+'\n\n'+lede+'\n\nThis Week\n\n';
+  wins.concat(signals).forEach(function(k){text+=getTitle(k)+'\n'+getBullet(k)+'\n\n';});
+  if(ahead.length>0){text+='Looking Ahead\n\n';ahead.forEach(function(k){text+=getBullet(k)+'\n\n';});}
+  showPreview('ELT Update — Preview',text.trim(),'Quest Product & Technology — Weekly Update, '+fmtDate(),text.trim());
+}
+
+function generateSocial(){
+  var items=getByCategory('social');
+  var lines=items.map(function(k,i){return (i+1)+'. '+getTitle(k)+'\n'+getBullet(k);}).join('\n\n');
+  var text='Hi,\n\nFlagging the following items from this week\'s product update as potential LinkedIn post opportunities. Please review and advise.\n\n'+lines+'\n\nThanks,\nMike';
+  showPreview('Social Flag — Preview',text,'LinkedIn Opportunity — Quest Product Update',text);
+}
+
+var _ms='',_mb='';
+function showPreview(title,text,subject,body){
+  document.getElementById('preview-title').textContent=title;
+  document.getElementById('preview-text').textContent=text;
+  _ms=subject;_mb=body;
+  document.getElementById('preview-modal').classList.add('open');
+  document.getElementById('preview-send-btn').onclick=function(){
+    window.location.href='mailto:?bcc='+encodeURIComponent(BCC)+'&subject='+encodeURIComponent(_ms)+'&body='+encodeURIComponent(_mb);
+    closePreview();showToast('Email draft opened ✓');
+  };
+}
+function closePreview(){document.getElementById('preview-modal').classList.remove('open');}
+function toggleNsDeck(){document.getElementById('ns-deck-ph').classList.toggle('visible');}
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+</script>
+</body>
+</html>
